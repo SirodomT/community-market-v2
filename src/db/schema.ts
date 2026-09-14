@@ -46,3 +46,24 @@ export const users = mysqlTable("users", {
     .defaultNow()
     .notNull(),
 });
+export const sessions = mysqlTable("sessions", {
+  id: int("id").autoincrement().primaryKey(),
+
+  userId: int("user_id")
+    .notNull()
+    .references(() => users.id, {
+      onDelete: "cascade",
+    }),
+
+  tokenHash: varchar("token_hash", {
+    length: 64,
+  })
+    .notNull()
+    .unique(),
+
+  expiresAt: timestamp("expires_at").notNull(),
+
+  createdAt: timestamp("created_at")
+    .defaultNow()
+    .notNull(),
+});
