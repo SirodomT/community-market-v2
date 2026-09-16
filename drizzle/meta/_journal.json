@@ -22,6 +22,13 @@
       "when": 1789398824427,
       "tag": "0002_skinny_black_panther",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1789523093598,
+      "tag": "0003_fixed_zombie",
+      "breakpoints": true
     }
   ]
 }

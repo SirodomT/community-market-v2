@@ -1,0 +1,113 @@
+"use server";
+
+import { and, eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
+
+import { db } from "@/db";
+import { products, shops } from "@/db/schema";
+import { requireRole } from "@/lib/auth";
+
+async function getSellerShopId(userId: number) {
+  const result = await db
+    .select({
+      id: shops.id,
+    })
+    .from(shops)
+    .where(eq(shops.ownerId, userId))
+    .limit(1);
+
+  if (result.length === 0) {
+    throw new Error("Shop not found");
+  }
+
+  return result[0].id;
+}
+
+export async function toggleProductStatus(
+  formData: FormData
+) {
+  const user = await requireRole(["SELLER"]);
+
+  const productId = Number(
+    formData.get("productId")
+  );
+
+  if (
+    !Number.isInteger(productId) ||
+    productId <= 0
+  ) {
+    throw new Error("Invalid product ID");
+  }
+
+  const shopId = await getSellerShopId(user.id);
+
+  const result = await db
+    .select({
+      id: products.id,
+      status: products.status,
+    })
+    .from(products)
+    .where(
+      and(
+        eq(products.id, productId),
+        eq(products.shopId, shopId)
+      )
+    )
+    .limit(1);
+
+  if (result.length === 0) {
+    throw new Error("Product not found");
+  }
+
+  const nextStatus =
+    result[0].status === "ACTIVE"
+      ? "INACTIVE"
+      : "ACTIVE";
+
+  await db
+    .update(products)
+    .set({
+      status: nextStatus,
+      updatedAt: new Date(),
+    })
+    .where(
+      and(
+        eq(products.id, productId),
+        eq(products.shopId, shopId)
+      )
+    );
+
+  revalidatePath("/seller/products");
+  revalidatePath("/products");
+}
+
+export async function deleteProduct(
+  formData: FormData
+) {
+  const user = await requireRole(["SELLER"]);
+
+  const productId = Number(
+    formData.get("productId")
+  );
+
+  if (
+    !Number.isInteger(productId) ||
+    productId <= 0
+  ) {
+    throw new Error("Invalid product ID");
+  }
+
+  const shopId = await getSellerShopId(user.id);
+
+  await db
+    .delete(products)
+    .where(
+      and(
+        eq(products.id, productId),
+        eq(products.shopId, shopId)
+      )
+    );
+
+  revalidatePath("/seller/products");
+  revalidatePath("/products");
+}

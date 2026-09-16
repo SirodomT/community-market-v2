@@ -5,6 +5,7 @@ import {
   mysqlEnum,
   timestamp,
   text,
+  decimal,
 } from "drizzle-orm/mysql-core";
 
 export const users = mysqlTable("users", {
@@ -142,4 +143,68 @@ export const shopRequests = mysqlTable("shop_requests", {
     .notNull(),
 
   reviewedAt: timestamp("reviewed_at"),
+});
+export const categories = mysqlTable("categories", {
+  id: int("id").autoincrement().primaryKey(),
+
+  name: varchar("name", {
+    length: 100,
+  })
+    .notNull()
+    .unique(),
+
+  createdAt: timestamp("created_at")
+    .defaultNow()
+    .notNull(),
+});
+
+export const products = mysqlTable("products", {
+  id: int("id").autoincrement().primaryKey(),
+
+  shopId: int("shop_id")
+    .notNull()
+    .references(() => shops.id, {
+      onDelete: "cascade",
+    }),
+
+  categoryId: int("category_id").references(
+    () => categories.id,
+    {
+      onDelete: "set null",
+    }
+  ),
+
+  name: varchar("name", {
+    length: 150,
+  }).notNull(),
+
+  description: text("description").notNull(),
+
+  price: decimal("price", {
+    precision: 10,
+    scale: 2,
+  }).notNull(),
+
+  stock: int("stock")
+    .notNull()
+    .default(0),
+
+  imageUrl: varchar("image_url", {
+    length: 500,
+  }),
+
+  status: mysqlEnum("status", [
+    "ACTIVE",
+    "INACTIVE",
+  ])
+    .notNull()
+    .default("ACTIVE"),
+
+  createdAt: timestamp("created_at")
+    .defaultNow()
+    .notNull(),
+
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .notNull(),
 });
