@@ -4,6 +4,7 @@ import {
   varchar,
   mysqlEnum,
   timestamp,
+  text,
 } from "drizzle-orm/mysql-core";
 
 export const users = mysqlTable("users", {
@@ -66,4 +67,79 @@ export const sessions = mysqlTable("sessions", {
   createdAt: timestamp("created_at")
     .defaultNow()
     .notNull(),
+});
+export const shops = mysqlTable("shops", {
+  id: int("id").autoincrement().primaryKey(),
+
+  ownerId: int("owner_id")
+    .notNull()
+    .references(() => users.id, {
+      onDelete: "cascade",
+    })
+    .unique(),
+
+  name: varchar("name", {
+    length: 150,
+  }).notNull(),
+
+  description: text("description").notNull(),
+
+  phone: varchar("phone", {
+    length: 20,
+  }).notNull(),
+
+  address: text("address").notNull(),
+
+  status: mysqlEnum("status", [
+    "ACTIVE",
+    "INACTIVE",
+  ])
+    .notNull()
+    .default("ACTIVE"),
+
+  createdAt: timestamp("created_at")
+    .defaultNow()
+    .notNull(),
+
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .notNull(),
+});
+
+export const shopRequests = mysqlTable("shop_requests", {
+  id: int("id").autoincrement().primaryKey(),
+
+  userId: int("user_id")
+    .notNull()
+    .references(() => users.id, {
+      onDelete: "cascade",
+    }),
+
+  shopName: varchar("shop_name", {
+    length: 150,
+  }).notNull(),
+
+  description: text("description").notNull(),
+
+  phone: varchar("phone", {
+    length: 20,
+  }).notNull(),
+
+  address: text("address").notNull(),
+
+  status: mysqlEnum("status", [
+    "PENDING",
+    "APPROVED",
+    "REJECTED",
+  ])
+    .notNull()
+    .default("PENDING"),
+
+  reviewNote: text("review_note"),
+
+  createdAt: timestamp("created_at")
+    .defaultNow()
+    .notNull(),
+
+  reviewedAt: timestamp("reviewed_at"),
 });
