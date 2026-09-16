@@ -1,5 +1,9 @@
 "use server";
 
+import { randomUUID } from "crypto";
+import { mkdir, writeFile } from "fs/promises";
+import { join } from "path";
+
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
@@ -10,6 +14,30 @@ import {
   shops,
 } from "@/db/schema";
 import { requireRole } from "@/lib/auth";
+
+const ALLOWED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+];
+
+const MAX_IMAGE_SIZE = 900 * 1024; // 900 KB
+
+function getImageExtension(type: string) {
+  switch (type) {
+    case "image/jpeg":
+      return "jpg";
+
+    case "image/png":
+      return "png";
+
+    case "image/webp":
+      return "webp";
+
+    default:
+      return null;
+  }
+}
 
 export async function createProduct(formData: FormData) {
   const user = await requireRole(["SELLER"]);
@@ -50,6 +78,8 @@ export async function createProduct(formData: FormData) {
     .get("categoryId")
     ?.toString()
     .trim();
+
+  const image = formData.get("image");
 
   if (
     !name ||
@@ -102,6 +132,49 @@ export async function createProduct(formData: FormData) {
     categoryId = parsedCategoryId;
   }
 
+  let imageUrl: string | null = null;
+
+  if (image instanceof File && image.size > 0) {
+    if (!ALLOWED_IMAGE_TYPES.includes(image.type)) {
+      redirect("/seller/products/new?error=image");
+    }
+
+    if (image.size > MAX_IMAGE_SIZE) {
+      redirect("/seller/products/new?error=image-size");
+    }
+
+    const extension = getImageExtension(image.type);
+
+    if (!extension) {
+      redirect("/seller/products/new?error=image");
+    }
+
+    const fileName = `${randomUUID()}.${extension}`;
+
+    const uploadDirectory = join(
+      process.cwd(),
+      "public",
+      "uploads",
+      "products"
+    );
+
+    await mkdir(uploadDirectory, {
+      recursive: true,
+    });
+
+    const filePath = join(
+      uploadDirectory,
+      fileName
+    );
+
+    const bytes = await image.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    await writeFile(filePath, buffer);
+
+    imageUrl = `/uploads/products/${fileName}`;
+  }
+
   await db.insert(products).values({
     shopId: shop.id,
     categoryId,
@@ -109,6 +182,7 @@ export async function createProduct(formData: FormData) {
     description,
     price: price.toFixed(2),
     stock,
+    imageUrl,
   });
 
   redirect("/seller/products");

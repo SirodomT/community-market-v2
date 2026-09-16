@@ -1,8 +1,8 @@
+import DeleteProductButton from "@/components/DeleteProductButton";
 import Link from "next/link";
 import { desc, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import {
-  deleteProduct,
   toggleProductStatus,
 } from "./actions";
 import { db } from "@/db";
@@ -181,20 +181,10 @@ export default async function SellerProductsPage() {
       </button>
     </form>
 
-    <form action={deleteProduct}>
-      <input
-        type="hidden"
-        name="productId"
-        value={product.id}
-      />
-
-      <button
-        type="submit"
-        className="rounded-lg border border-red-200 px-3 py-2 text-sm text-red-600 hover:bg-red-50"
-      >
-        ลบ
-      </button>
-    </form>
+    <DeleteProductButton
+  productId={product.id}
+  productName={product.name}
+/>
   </div>
 </td>
                     </tr>
