@@ -1,3 +1,7 @@
+import Link from "next/link";
+import { Store } from "lucide-react";
+import SubmitButton from "@/components/ui/submit-button";
+import { Input } from "@/components/ui/primitives";
 import { registerUser } from "./actions";
 
 export default async function RegisterPage({
@@ -10,117 +14,130 @@ export default async function RegisterPage({
 }) {
   const params = await searchParams;
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow">
-        <h1 className="text-center text-3xl font-bold">
-          สมัครสมาชิก
-        </h1>
+    <main className="page-shell flex items-center justify-center">
+      <div className="w-full max-w-md surface p-5 sm:p-8">
+        <span className="mx-auto mb-5 flex size-14 items-center justify-center rounded-2xl bg-primary-soft text-primary">
+          <Store aria-hidden="true" className="size-6" />
+        </span>
+        <h1 className="text-center text-3xl font-bold">สมัครสมาชิก</h1>
 
-        <p className="mt-2 text-center text-gray-500">
+        <p className="mt-2 text-center text-muted-foreground">
           Community Enterprise Market
         </p>
         {params.success === "1" && (
-  <p className="mt-4 rounded-lg bg-green-100 p-3 text-center text-green-700">
-    สมัครสมาชิกสำเร็จ
-  </p>
-)}
+          <p className="mt-4 rounded-lg bg-green-100 p-3 text-center text-green-700">
+            สมัครสมาชิกสำเร็จ
+          </p>
+        )}
 
-{params.error === "missing" && (
-  <p className="mt-4 rounded-lg bg-red-100 p-3 text-center text-red-700">
-    กรุณากรอกข้อมูลให้ครบ
-  </p>
-)}
+        {params.error === "missing" && (
+          <p
+            role="alert"
+            className="mt-4 rounded-lg bg-red-100 p-3 text-center text-red-700"
+          >
+            กรุณากรอกข้อมูลให้ครบ
+          </p>
+        )}
 
-{params.error === "username" && (
-  <p className="mt-4 rounded-lg bg-red-100 p-3 text-center text-red-700">
-    ชื่อผู้ใช้ต้องมีอย่างน้อย 3 ตัวอักษร
-  </p>
-)}
+        {params.error === "username" && (
+          <p
+            role="alert"
+            className="mt-4 rounded-lg bg-red-100 p-3 text-center text-red-700"
+          >
+            ชื่อผู้ใช้ต้องมีอย่างน้อย 3 ตัวอักษร
+          </p>
+        )}
 
-{params.error === "password" && (
-  <p className="mt-4 rounded-lg bg-red-100 p-3 text-center text-red-700">
-    รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร
-  </p>
-)}
+        {params.error === "password" && (
+          <p
+            role="alert"
+            className="mt-4 rounded-lg bg-red-100 p-3 text-center text-red-700"
+          >
+            รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร
+          </p>
+        )}
 
-{params.error === "email" && (
-  <p className="mt-4 rounded-lg bg-red-100 p-3 text-center text-red-700">
-    อีเมลนี้ถูกใช้งานแล้ว
-  </p>
-)}
-{params.error === "invalid-email" && (
-  <p className="mt-4 rounded-lg bg-red-100 p-3 text-center text-red-700">
-    รูปแบบอีเมลไม่ถูกต้อง
-  </p>
-)}
+        {params.error === "email" && (
+          <p
+            role="alert"
+            className="mt-4 rounded-lg bg-red-100 p-3 text-center text-red-700"
+          >
+            อีเมลนี้ถูกใช้งานแล้ว
+          </p>
+        )}
+        {params.error === "invalid-email" && (
+          <p
+            role="alert"
+            className="mt-4 rounded-lg bg-red-100 p-3 text-center text-red-700"
+          >
+            รูปแบบอีเมลไม่ถูกต้อง
+          </p>
+        )}
 
-        <form
-          action={registerUser}
-          className="mt-8 space-y-5"
-        >
+        <form action={registerUser} className="mt-8 space-y-5">
           <div>
-            <label
-              htmlFor="username"
-              className="mb-2 block font-medium"
-            >
+            <label htmlFor="username" className="field-label">
               ชื่อผู้ใช้
             </label>
 
-            <input
-  id="username"
-  name="username"
-  type="text"
-  required
-  minLength={3}
-  placeholder="กรอกชื่อผู้ใช้"
-  className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-black"
+            <Input
+              id="username"
+              autoComplete="username"
+              name="username"
+              type="text"
+              required
+              minLength={3}
+              placeholder="กรอกชื่อผู้ใช้"
+              className=""
             />
           </div>
 
           <div>
-            <label
-              htmlFor="email"
-              className="mb-2 block font-medium"
-            >
+            <label htmlFor="email" className="field-label">
               อีเมล
             </label>
 
-            <input
-  id="email"
-  name="email"
-  type="email"
-  required
-  placeholder="example@email.com"
-  className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-black"
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              placeholder="example@email.com"
+              className=""
             />
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="mb-2 block font-medium"
-            >
+            <label htmlFor="password" className="field-label">
               รหัสผ่าน
             </label>
 
-            <input
+            <Input
               id="password"
-  name="password"
-  type="password"
-  required
-  minLength={8}
-  placeholder="กรอกรหัสผ่าน"
-  className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-black"
+              name="password"
+              type="password"
+              autoComplete="new-password"
+              required
+              minLength={8}
+              placeholder="กรอกรหัสผ่าน"
+              className=""
             />
           </div>
 
-          <button
-            type="submit"
-            className="w-full rounded-lg bg-black px-4 py-3 font-medium text-white"
-          >
+          <SubmitButton type="submit" variant="primary" className="w-full">
             สมัครสมาชิก
-          </button>
+          </SubmitButton>
         </form>
+        <p className="mt-6 text-center text-sm text-muted-foreground">
+          มีบัญชีแล้ว?{" "}
+          <Link
+            href="/login"
+            className="font-semibold text-primary underline underline-offset-4"
+          >
+            เข้าสู่ระบบ
+          </Link>
+        </p>
       </div>
     </main>
   );

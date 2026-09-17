@@ -1,3 +1,5 @@
+import SubmitButton from "@/components/ui/submit-button";
+import { Input, Textarea } from "@/components/ui/primitives";
 import { redirect } from "next/navigation";
 
 import { requireUser } from "@/lib/auth";
@@ -20,13 +22,11 @@ export default async function SellerApplyPage({
   const params = await searchParams;
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-16">
-      <div className="mx-auto max-w-2xl rounded-2xl bg-white p-8 shadow">
-        <h1 className="text-3xl font-bold">
-          สมัครเปิดร้านค้า
-        </h1>
+    <main className="page-shell">
+      <div className="mx-auto max-w-2xl surface p-5 sm:p-8">
+        <h1 className="text-3xl font-bold">สมัครเปิดร้านค้า</h1>
 
-        <p className="mt-2 text-gray-500">
+        <p className="mt-2 text-muted-foreground">
           ส่งข้อมูลร้านค้าเพื่อให้ผู้ดูแลระบบตรวจสอบ
         </p>
 
@@ -37,13 +37,19 @@ export default async function SellerApplyPage({
         )}
 
         {params.error === "missing" && (
-          <p className="mt-6 rounded-lg bg-red-100 p-4 text-red-700">
+          <p
+            role="alert"
+            className="mt-6 rounded-lg bg-red-100 p-4 text-red-700"
+          >
             กรุณากรอกข้อมูลให้ครบ
           </p>
         )}
 
         {params.error === "name" && (
-          <p className="mt-6 rounded-lg bg-red-100 p-4 text-red-700">
+          <p
+            role="alert"
+            className="mt-6 rounded-lg bg-red-100 p-4 text-red-700"
+          >
             ชื่อร้านต้องมีอย่างน้อย 3 ตัวอักษร
           </p>
         )}
@@ -54,89 +60,71 @@ export default async function SellerApplyPage({
           </p>
         )}
 
-        <form
-          action={submitShopRequest}
-          className="mt-8 space-y-5"
-        >
+        <form action={submitShopRequest} className="mt-8 space-y-5">
           <div>
-            <label
-              htmlFor="shopName"
-              className="mb-2 block font-medium"
-            >
+            <label htmlFor="shopName" className="field-label">
               ชื่อร้าน
             </label>
 
-            <input
+            <Input
               id="shopName"
               name="shopName"
               type="text"
               required
               minLength={3}
               placeholder="กรอกชื่อร้าน"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-black"
+              className=""
             />
           </div>
 
           <div>
-            <label
-              htmlFor="description"
-              className="mb-2 block font-medium"
-            >
+            <label htmlFor="description" className="field-label">
               รายละเอียดร้าน
             </label>
 
-            <textarea
+            <Textarea
               id="description"
               name="description"
               required
               rows={5}
               placeholder="อธิบายเกี่ยวกับร้านและสินค้าของคุณ"
-              className="w-full resize-none rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-black"
+              className="resize-none"
             />
           </div>
 
           <div>
-            <label
-              htmlFor="phone"
-              className="mb-2 block font-medium"
-            >
+            <label htmlFor="phone" className="field-label">
               เบอร์โทรศัพท์
             </label>
 
-            <input
+            <Input
               id="phone"
               name="phone"
               type="tel"
               required
               placeholder="08xxxxxxxx"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-black"
+              className=""
             />
           </div>
 
           <div>
-            <label
-              htmlFor="address"
-              className="mb-2 block font-medium"
-            >
+            <label htmlFor="address" className="field-label">
               ที่อยู่ร้าน
             </label>
 
-            <textarea
+            <Textarea
               id="address"
               name="address"
               required
               rows={4}
               placeholder="กรอกที่อยู่ร้าน"
-              className="w-full resize-none rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-black"
+              className="resize-none"
             />
           </div>
 
-          <button
-            type="submit"
-            className="w-full rounded-lg bg-black px-4 py-3 font-medium text-white transition hover:bg-gray-800"
-          >
+          <SubmitButton type="submit" variant="primary" className="w-full">
             ส่งคำขอเปิดร้าน
-          </button>
+          </SubmitButton>
         </form>
       </div>
     </main>

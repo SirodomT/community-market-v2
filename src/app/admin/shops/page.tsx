@@ -1,40 +1,14 @@
+import { Store, ShoppingBag } from "lucide-react";
+import SubmitButton from "@/components/ui/submit-button";
+import { StatCard, EmptyState, StatusBadge } from "@/components/ui/primitives";
 import Link from "next/link";
 import { desc, eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import {
-  shops,
-  users,
-} from "@/db/schema";
+import { shops, users } from "@/db/schema";
 import { requireRole } from "@/lib/auth";
 
-import {
-  toggleShopStatus,
-} from "./actions";
-
-type ShopStatus =
-  | "ACTIVE"
-  | "INACTIVE";
-
-type UserStatus =
-  | "ACTIVE"
-  | "SUSPENDED";
-
-const shopStatusLabels: Record<
-  ShopStatus,
-  string
-> = {
-  ACTIVE: "เปิดใช้งาน",
-  INACTIVE: "ปิดใช้งาน",
-};
-
-const userStatusLabels: Record<
-  UserStatus,
-  string
-> = {
-  ACTIVE: "ปกติ",
-  SUSPENDED: "ถูกระงับ",
-};
+import { toggleShopStatus } from "./actions";
 
 export default async function AdminShopsPage() {
   await requireRole(["ADMIN"]);
@@ -43,293 +17,211 @@ export default async function AdminShopsPage() {
     .select({
       id: shops.id,
       name: shops.name,
-      description:
-        shops.description,
+      description: shops.description,
       phone: shops.phone,
       address: shops.address,
       status: shops.status,
       createdAt: shops.createdAt,
 
       ownerId: users.id,
-      ownerUsername:
-        users.username,
+      ownerUsername: users.username,
       ownerEmail: users.email,
-      ownerStatus:
-        users.status,
+      ownerStatus: users.status,
     })
     .from(shops)
-    .innerJoin(
-      users,
-      eq(
-        shops.ownerId,
-        users.id
-      )
-    )
-    .orderBy(
-      desc(shops.createdAt)
-    );
+    .innerJoin(users, eq(shops.ownerId, users.id))
+    .orderBy(desc(shops.createdAt));
 
-  const activeCount =
-    allShops.filter(
-      (shop) =>
-        shop.status === "ACTIVE"
-    ).length;
+  const activeCount = allShops.filter(
+    (shop) => shop.status === "ACTIVE",
+  ).length;
 
-  const inactiveCount =
-    allShops.filter(
-      (shop) =>
-        shop.status ===
-        "INACTIVE"
-    ).length;
+  const inactiveCount = allShops.filter(
+    (shop) => shop.status === "INACTIVE",
+  ).length;
 
   return (
-    <main className="min-h-screen bg-gray-50 px-6 py-16">
+    <main className="page-shell">
       <div className="mx-auto max-w-7xl">
         {/* HEADER */}
         <div>
           <Link
             href="/admin"
-            className="text-sm text-gray-500 hover:text-black"
+            className="text-sm text-muted-foreground hover:text-foreground"
           >
-            ← กลับ Admin Dashboard
+            ← กลับภาพรวมระบบ
           </Link>
 
-          <h1 className="mt-5 text-4xl font-bold">
-            จัดการร้านค้า
-          </h1>
+          <h1 className="mt-5 text-3xl sm:text-4xl font-bold">จัดการร้านค้า</h1>
 
-          <p className="mt-3 text-gray-500">
+          <p className="mt-3 text-muted-foreground">
             ตรวจสอบร้านค้า เจ้าของร้าน และสถานะการเปิดใช้งาน
           </p>
         </div>
 
         {/* STAT */}
         <section className="mt-10 grid gap-5 sm:grid-cols-3">
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-gray-500">
-              ร้านค้าทั้งหมด
-            </p>
+          <StatCard
+            label="ร้านค้าทั้งหมด"
+            value={allShops.length}
+            icon={<Store aria-hidden="true" className="size-5" />}
+          />
 
-            <p className="mt-3 text-4xl font-bold">
-              {allShops.length}
-            </p>
-          </div>
+          <StatCard
+            label="เปิดใช้งาน"
+            value={activeCount}
+            icon={<ShoppingBag aria-hidden="true" className="size-5" />}
+          />
 
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-gray-500">
-              เปิดใช้งาน
-            </p>
-
-            <p className="mt-3 text-4xl font-bold">
-              {activeCount}
-            </p>
-          </div>
-
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-gray-500">
-              ปิดใช้งาน
-            </p>
-
-            <p className="mt-3 text-4xl font-bold">
-              {inactiveCount}
-            </p>
-          </div>
+          <StatCard
+            label="ปิดใช้งาน"
+            value={inactiveCount}
+            icon={<ShoppingBag aria-hidden="true" className="size-5" />}
+          />
         </section>
 
         {/* TABLE */}
-        <section className="mt-10 overflow-hidden rounded-2xl bg-white shadow-sm">
+        <section className="mt-10 overflow-hidden surface">
           <div className="border-b p-6">
-            <h2 className="text-2xl font-bold">
-              ร้านค้าในระบบ
-            </h2>
+            <h2 className="text-2xl font-bold">ร้านค้าในระบบ</h2>
 
-            <p className="mt-2 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-muted-foreground">
               การปิดร้านจะไม่ลบร้านหรือสินค้าออกจากฐานข้อมูล
             </p>
           </div>
 
           {allShops.length === 0 ? (
-            <div className="p-10 text-center text-gray-500">
-              ยังไม่มีร้านค้าในระบบ
+            <div className="mt-6">
+              <EmptyState
+                title="ยังไม่มีร้านค้าในระบบ"
+                description="ข้อมูลจะแสดงที่นี่เมื่อมีรายการใหม่"
+              />
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[1100px] text-left">
+            <div
+              tabIndex={0}
+              role="region"
+              aria-label="ตารางข้อมูล เลื่อนแนวนอนเพื่อดูเพิ่มเติม"
+              className="table-scroll"
+            >
+              <table className="data-table min-w-[720px]">
                 <thead>
-                  <tr className="border-b bg-gray-50 text-sm text-gray-500">
-                    <th className="px-6 py-4 font-medium">
+                  <tr className="border-b bg-background text-sm text-muted-foreground">
+                    <th scope="col" className="px-6 py-4 font-medium">
                       ID
                     </th>
 
-                    <th className="px-6 py-4 font-medium">
+                    <th scope="col" className="px-6 py-4 font-medium">
                       ร้านค้า
                     </th>
 
-                    <th className="px-6 py-4 font-medium">
+                    <th scope="col" className="px-6 py-4 font-medium">
                       เจ้าของร้าน
                     </th>
 
-                    <th className="px-6 py-4 font-medium">
+                    <th scope="col" className="px-6 py-4 font-medium">
                       ติดต่อ
                     </th>
 
-                    <th className="px-6 py-4 font-medium">
+                    <th scope="col" className="px-6 py-4 font-medium">
                       สถานะเจ้าของ
                     </th>
 
-                    <th className="px-6 py-4 font-medium">
+                    <th scope="col" className="px-6 py-4 font-medium">
                       สถานะร้าน
                     </th>
 
-                    <th className="px-6 py-4 font-medium">
+                    <th scope="col" className="px-6 py-4 font-medium">
                       วันที่เปิดร้าน
                     </th>
 
-                    <th className="px-6 py-4 text-right font-medium">
+                    <th
+                      scope="col"
+                      className="px-6 py-4 text-right font-medium"
+                    >
                       จัดการ
                     </th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  {allShops.map(
-                    (shop) => (
-                      <tr
-                        key={shop.id}
-                        className="border-b align-top last:border-0"
-                      >
-                        <td className="px-6 py-5 text-sm text-gray-500">
-                          #{shop.id}
-                        </td>
+                  {allShops.map((shop) => (
+                    <tr
+                      key={shop.id}
+                      className="border-b align-top last:border-0"
+                    >
+                      <td className="px-6 py-5 text-sm text-muted-foreground">
+                        #{shop.id}
+                      </td>
 
-                        <td className="px-6 py-5">
-                          <p className="font-bold">
-                            {shop.name}
-                          </p>
+                      <td className="px-6 py-5">
+                        <p className="font-bold">{shop.name}</p>
 
-                          <p className="mt-2 max-w-xs text-sm leading-6 text-gray-500">
-                            {
-                              shop.description
-                            }
-                          </p>
+                        <p className="mt-2 max-w-xs text-sm leading-6 text-muted-foreground">
+                          {shop.description}
+                        </p>
 
-                          {shop.status ===
-                            "ACTIVE" && (
-                            <Link
-                              href={`/shops/${shop.id}`}
-                              className="mt-3 inline-block text-sm font-medium text-gray-500 hover:text-black"
-                            >
-                              ดูหน้าร้าน →
-                            </Link>
-                          )}
-                        </td>
+                        {shop.status === "ACTIVE" && (
+                          <Link
+                            href={`/shops/${shop.id}`}
+                            className="mt-3 inline-block text-sm font-medium text-muted-foreground hover:text-foreground"
+                          >
+                            ดูหน้าร้าน →
+                          </Link>
+                        )}
+                      </td>
 
-                        <td className="px-6 py-5">
-                          <p className="font-medium">
-                            {
-                              shop.ownerUsername
-                            }
-                          </p>
+                      <td className="px-6 py-5">
+                        <p className="font-medium">{shop.ownerUsername}</p>
 
-                          <p className="mt-1 text-sm text-gray-500">
-                            {
-                              shop.ownerEmail
-                            }
-                          </p>
+                        <p className="mt-1 text-sm text-muted-foreground">
+                          {shop.ownerEmail}
+                        </p>
 
-                          <p className="mt-1 text-xs text-gray-400">
-                            User #
-                            {
-                              shop.ownerId
-                            }
-                          </p>
-                        </td>
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          User #{shop.ownerId}
+                        </p>
+                      </td>
 
-                        <td className="px-6 py-5">
-                          <p className="text-sm">
-                            {shop.phone}
-                          </p>
+                      <td className="px-6 py-5">
+                        <p className="text-sm">{shop.phone}</p>
 
-                          <p className="mt-2 max-w-xs whitespace-pre-wrap text-sm leading-6 text-gray-500">
-                            {
-                              shop.address
-                            }
-                          </p>
-                        </td>
+                        <p className="mt-2 max-w-xs whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
+                          {shop.address}
+                        </p>
+                      </td>
 
-                        <td className="px-6 py-5">
-                          <span
+                      <td className="px-6 py-5">
+                        <StatusBadge status={shop.ownerStatus} />
+                      </td>
+
+                      <td className="px-6 py-5">
+                        <StatusBadge status={shop.status} />
+                      </td>
+
+                      <td className="px-6 py-5 text-sm text-muted-foreground">
+                        {shop.createdAt.toLocaleString("th-TH")}
+                      </td>
+
+                      <td className="px-6 py-5 text-right">
+                        <form action={toggleShopStatus}>
+                          <input type="hidden" name="shopId" value={shop.id} />
+
+                          <SubmitButton
+                            variant="secondary"
+                            type="submit"
                             className={
-                              shop.ownerStatus ===
-                              "ACTIVE"
-                                ? "rounded-full bg-green-100 px-3 py-2 text-xs font-medium text-green-700"
-                                : "rounded-full bg-red-100 px-3 py-2 text-xs font-medium text-red-700"
+                              shop.status === "ACTIVE"
+                                ? "rounded-lg border border-red-200 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50"
+                                : "rounded-lg border border-green-200 px-4 py-2 text-sm font-medium text-green-700 transition hover:bg-green-50"
                             }
                           >
-                            {
-                              userStatusLabels[
-                                shop.ownerStatus as UserStatus
-                              ]
-                            }
-                          </span>
-                        </td>
-
-                        <td className="px-6 py-5">
-                          <span
-                            className={
-                              shop.status ===
-                              "ACTIVE"
-                                ? "rounded-full bg-green-100 px-3 py-2 text-xs font-medium text-green-700"
-                                : "rounded-full bg-gray-100 px-3 py-2 text-xs font-medium text-gray-600"
-                            }
-                          >
-                            {
-                              shopStatusLabels[
-                                shop.status as ShopStatus
-                              ]
-                            }
-                          </span>
-                        </td>
-
-                        <td className="px-6 py-5 text-sm text-gray-500">
-                          {shop.createdAt.toLocaleString(
-                            "th-TH"
-                          )}
-                        </td>
-
-                        <td className="px-6 py-5 text-right">
-                          <form
-                            action={
-                              toggleShopStatus
-                            }
-                          >
-                            <input
-                              type="hidden"
-                              name="shopId"
-                              value={
-                                shop.id
-                              }
-                            />
-
-                            <button
-                              type="submit"
-                              className={
-                                shop.status ===
-                                "ACTIVE"
-                                  ? "rounded-lg border border-red-200 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50"
-                                  : "rounded-lg border border-green-200 px-4 py-2 text-sm font-medium text-green-700 transition hover:bg-green-50"
-                              }
-                            >
-                              {shop.status ===
-                              "ACTIVE"
-                                ? "ปิดร้าน"
-                                : "เปิดร้าน"}
-                            </button>
-                          </form>
-                        </td>
-                      </tr>
-                    )
-                  )}
+                            {shop.status === "ACTIVE" ? "ปิดร้าน" : "เปิดร้าน"}
+                          </SubmitButton>
+                        </form>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

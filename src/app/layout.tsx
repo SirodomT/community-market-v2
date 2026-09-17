@@ -1,11 +1,11 @@
+import { ToastProvider } from "@/components/Feedback";
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Community Enterprise Market",
-  description:
-    "ตลาดวิสาหกิจชุมชน อำเภอนิคมพัฒนา จังหวัดระยอง",
+  description: "ตลาดวิสาหกิจชุมชน อำเภอนิคมพัฒนา จังหวัดระยอง",
 };
 
 export default function RootLayout({
@@ -15,13 +15,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="th">
-     <body>
-  <Navbar />
+      <body>
+        <a href="#main-content" className="skip-link">
+          ข้ามไปยังเนื้อหา
+        </a>
+        <Navbar />
 
-  {children}
+        <div id="main-content" tabIndex={-1}>
+          {children}
+        </div>
 
-  <Footer />
-</body>
+        <Footer />
+        <ToastProvider />
+      </body>
     </html>
   );
 }

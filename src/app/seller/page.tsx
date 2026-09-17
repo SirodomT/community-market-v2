@@ -1,24 +1,15 @@
+import DashboardNav from "@/components/DashboardNav";
+import { Package, TriangleAlert, ShoppingBag, Truck } from "lucide-react";
+import { EmptyState, StatCard } from "@/components/ui/primitives";
 import Link from "next/link";
-import {
-  and,
-  count,
-  eq,
-  gt,
-  lte,
-} from "drizzle-orm";
+import { and, count, eq, gt, lte } from "drizzle-orm";
 
 import { db } from "@/db";
-import {
-  orderShops,
-  products,
-  shops,
-} from "@/db/schema";
+import { orderShops, products, shops } from "@/db/schema";
 import { requireRole } from "@/lib/auth";
 
 export default async function SellerDashboardPage() {
-  const user = await requireRole([
-    "SELLER",
-  ]);
+  const user = await requireRole(["SELLER"]);
 
   const [shop] = await db
     .select({
@@ -30,33 +21,20 @@ export default async function SellerDashboardPage() {
       status: shops.status,
     })
     .from(shops)
-    .where(
-      eq(
-        shops.ownerId,
-        user.id
-      )
-    )
+    .where(eq(shops.ownerId, user.id))
     .limit(1);
 
   if (!shop) {
     return (
-      <main className="min-h-screen bg-gray-50 px-4 py-10 sm:px-6 sm:py-16">
+      <main className="page-shell">
         <div className="mx-auto max-w-4xl">
-          <div className="rounded-2xl bg-white p-8 text-center shadow-sm">
-            <h1 className="text-2xl font-bold">
-              ไม่พบร้านค้า
-            </h1>
-
-            <p className="mt-3 text-gray-500">
-              บัญชีนี้เป็นผู้ขายแต่ยังไม่พบข้อมูลร้านค้า
-            </p>
-
-            <Link
+          <div className="mt-6">
+            <EmptyState
+              title="บัญชีนี้เป็นผู้ขายแต่ยังไม่พบข้อมูลร้านค้า"
+              description="ข้อมูลจะแสดงที่นี่เมื่อมีรายการใหม่"
               href="/"
-              className="mt-6 inline-block rounded-xl bg-black px-6 py-3 font-medium text-white"
-            >
-              กลับหน้าหลัก
-            </Link>
+              label="กลับหน้าหลัก"
+            />
           </div>
         </div>
       </main>
@@ -76,12 +54,7 @@ export default async function SellerDashboardPage() {
         total: count(),
       })
       .from(products)
-      .where(
-        eq(
-          products.shopId,
-          shop.id
-        )
-      ),
+      .where(eq(products.shopId, shop.id)),
 
     // สินค้าใกล้หมด 1 - 5 ชิ้น
     db
@@ -91,23 +64,11 @@ export default async function SellerDashboardPage() {
       .from(products)
       .where(
         and(
-          eq(
-            products.shopId,
-            shop.id
-          ),
-          eq(
-            products.status,
-            "ACTIVE"
-          ),
-          gt(
-            products.stock,
-            0
-          ),
-          lte(
-            products.stock,
-            5
-          )
-        )
+          eq(products.shopId, shop.id),
+          eq(products.status, "ACTIVE"),
+          gt(products.stock, 0),
+          lte(products.stock, 5),
+        ),
       ),
 
     // สินค้าหมด
@@ -118,38 +79,20 @@ export default async function SellerDashboardPage() {
       .from(products)
       .where(
         and(
-          eq(
-            products.shopId,
-            shop.id
-          ),
-          eq(
-            products.status,
-            "ACTIVE"
-          ),
-          eq(
-            products.stock,
-            0
-          )
-        )
+          eq(products.shopId, shop.id),
+          eq(products.status, "ACTIVE"),
+          eq(products.stock, 0),
+        ),
       ),
 
-    // Order รอยืนยัน
+    // คำสั่งซื้อรอยืนยัน
     db
       .select({
         total: count(),
       })
       .from(orderShops)
       .where(
-        and(
-          eq(
-            orderShops.shopId,
-            shop.id
-          ),
-          eq(
-            orderShops.status,
-            "PENDING"
-          )
-        )
+        and(eq(orderShops.shopId, shop.id), eq(orderShops.status, "PENDING")),
       ),
 
     // Order ที่จัดส่งแล้ว รอลูกค้ายืนยัน
@@ -159,54 +102,39 @@ export default async function SellerDashboardPage() {
       })
       .from(orderShops)
       .where(
-        and(
-          eq(
-            orderShops.shopId,
-            shop.id
-          ),
-          eq(
-            orderShops.status,
-            "SHIPPED"
-          )
-        )
+        and(eq(orderShops.shopId, shop.id), eq(orderShops.status, "SHIPPED")),
       ),
   ]);
 
-  const totalProducts =
-    totalProductsResult[0]?.total ?? 0;
+  const totalProducts = totalProductsResult[0]?.total ?? 0;
 
-  const lowStock =
-    lowStockResult[0]?.total ?? 0;
+  const lowStock = lowStockResult[0]?.total ?? 0;
 
-  const outOfStock =
-    outOfStockResult[0]?.total ?? 0;
+  const outOfStock = outOfStockResult[0]?.total ?? 0;
 
-  const pendingOrders =
-    pendingOrdersResult[0]?.total ?? 0;
+  const pendingOrders = pendingOrdersResult[0]?.total ?? 0;
 
-  const shippedOrders =
-    shippedOrdersResult[0]?.total ?? 0;
+  const shippedOrders = shippedOrdersResult[0]?.total ?? 0;
 
-  const hasStockWarning =
-    lowStock > 0 ||
-    outOfStock > 0;
+  const hasStockWarning = lowStock > 0 || outOfStock > 0;
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-10 sm:px-6 sm:py-16">
+    <main className="page-shell">
       <div className="mx-auto max-w-7xl">
+        <DashboardNav mode="seller" />
         {/* HEADER */}
         <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
           <div>
-            <p className="text-sm font-medium text-gray-500">
-              Seller Dashboard
+            <p className="text-sm font-medium text-muted-foreground">
+              ภาพรวมร้าน
             </p>
 
-            <h1 className="mt-2 text-3xl font-bold sm:text-4xl">
+            <h1 className="mt-2 text-3xl font-bold sm:text-3xl sm:text-4xl">
               {shop.name}
             </h1>
 
             <div className="mt-3 flex flex-wrap items-center gap-3">
-              <p className="text-gray-500">
+              <p className="text-muted-foreground">
                 เจ้าของร้าน: {user.username}
               </p>
 
@@ -217,18 +145,13 @@ export default async function SellerDashboardPage() {
                     : "rounded-full bg-gray-200 px-3 py-1 text-xs font-medium text-gray-600"
                 }
               >
-                {shop.status === "ACTIVE"
-                  ? "ร้านเปิดใช้งาน"
-                  : "ร้านถูกปิด"}
+                {shop.status === "ACTIVE" ? "ร้านเปิดใช้งาน" : "ร้านถูกปิด"}
               </span>
             </div>
           </div>
 
           {shop.status === "ACTIVE" && (
-            <Link
-              href={`/shops/${shop.id}`}
-              className="w-fit rounded-xl border border-gray-200 bg-white px-5 py-3 text-sm font-medium transition hover:bg-gray-100"
-            >
+            <Link href={`/shops/${shop.id}`} className="btn btn-secondary">
               ดูหน้าร้าน →
             </Link>
           )}
@@ -237,28 +160,20 @@ export default async function SellerDashboardPage() {
         {/* STOCK WARNING */}
         {hasStockWarning && (
           <section className="mt-8 rounded-2xl border border-yellow-200 bg-yellow-50 p-5">
-            <h2 className="font-bold text-yellow-800">
-              ตรวจสอบ Stock สินค้า
-            </h2>
+            <h2 className="font-bold text-yellow-800">ตรวจสอบสินค้าคงเหลือ</h2>
 
             <p className="mt-2 text-sm leading-6 text-yellow-700">
               {lowStock > 0 && (
                 <>
-                  มีสินค้าใกล้หมด{" "}
-                  <strong>{lowStock}</strong>{" "}
-                  รายการ
+                  มีสินค้าใกล้หมด <strong>{lowStock}</strong> รายการ
                 </>
               )}
 
-              {lowStock > 0 &&
-                outOfStock > 0 &&
-                " และ "}
+              {lowStock > 0 && outOfStock > 0 && " และ "}
 
               {outOfStock > 0 && (
                 <>
-                  สินค้าหมด{" "}
-                  <strong>{outOfStock}</strong>{" "}
-                  รายการ
+                  สินค้าหมด <strong>{outOfStock}</strong> รายการ
                 </>
               )}
             </p>
@@ -274,111 +189,69 @@ export default async function SellerDashboardPage() {
 
         {/* SUMMARY */}
         <section className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-gray-500">
-              สินค้าทั้งหมด
-            </p>
+          <StatCard
+            label="สินค้าทั้งหมด"
+            value={totalProducts}
+            icon={<Package aria-hidden="true" className="size-5" />}
+            href="/seller/products"
+          />
 
-            <p className="mt-3 text-4xl font-bold">
-              {totalProducts}
-            </p>
+          <StatCard
+            label="สินค้าใกล้หมด"
+            value={lowStock}
+            icon={<TriangleAlert aria-hidden="true" className="size-5" />}
+            description="เหลือ 1 - 5 ชิ้น"
+          />
 
-            <Link
-              href="/seller/products"
-              className="mt-5 inline-block text-sm font-medium text-gray-500 hover:text-black"
-            >
-              จัดการสินค้า →
-            </Link>
-          </div>
+          <StatCard
+            label="คำสั่งซื้อรอยืนยัน"
+            value={pendingOrders}
+            icon={<ShoppingBag aria-hidden="true" className="size-5" />}
+            href="/seller/orders"
+          />
 
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-gray-500">
-              สินค้าใกล้หมด
-            </p>
-
-            <p className="mt-3 text-4xl font-bold">
-              {lowStock}
-            </p>
-
-            <p className="mt-5 text-sm text-gray-400">
-              เหลือ 1 - 5 ชิ้น
-            </p>
-          </div>
-
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-gray-500">
-              Order รอยืนยัน
-            </p>
-
-            <p className="mt-3 text-4xl font-bold">
-              {pendingOrders}
-            </p>
-
-            <Link
-              href="/seller/orders"
-              className="mt-5 inline-block text-sm font-medium text-gray-500 hover:text-black"
-            >
-              ตรวจสอบ Order →
-            </Link>
-          </div>
-
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-gray-500">
-              จัดส่งแล้ว
-            </p>
-
-            <p className="mt-3 text-4xl font-bold">
-              {shippedOrders}
-            </p>
-
-            <p className="mt-5 text-sm text-gray-400">
-              รอลูกค้ายืนยันรับสินค้า
-            </p>
-          </div>
+          <StatCard
+            label="จัดส่งแล้ว"
+            value={shippedOrders}
+            icon={<Truck aria-hidden="true" className="size-5" />}
+            description="รอลูกค้ายืนยันรับสินค้า"
+          />
         </section>
 
         {/* MANAGEMENT */}
-        <section className="mt-8 rounded-2xl bg-white p-6 shadow-sm sm:p-8">
-          <h2 className="text-2xl font-bold">
-            จัดการร้านค้า
-          </h2>
+        <section className="mt-8 surface p-6 sm:p-5 sm:p-8">
+          <h2 className="text-2xl font-bold">จัดการร้านค้า</h2>
 
           <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <Link
               href="/seller/products"
-              className="rounded-2xl border border-gray-200 p-5 transition hover:-translate-y-1 hover:shadow-md"
+              className="rounded-2xl border border-border p-5 transition motion-safe:hover:-translate-y-0.5 hover:shadow-md"
             >
-              <h3 className="font-bold">
-                สินค้าของร้าน
-              </h3>
+              <h3 className="font-bold">สินค้าของร้าน</h3>
 
-              <p className="mt-2 text-sm leading-6 text-gray-500">
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
                 เพิ่ม แก้ไข เปิด/ปิด และจัดการ Stock สินค้า
               </p>
             </Link>
 
             <Link
               href="/seller/products/new"
-              className="rounded-2xl border border-gray-200 p-5 transition hover:-translate-y-1 hover:shadow-md"
+              className="rounded-2xl border border-border p-5 transition motion-safe:hover:-translate-y-0.5 hover:shadow-md"
             >
-              <h3 className="font-bold">
-                เพิ่มสินค้าใหม่
-              </h3>
+              <h3 className="font-bold">เพิ่มสินค้าใหม่</h3>
 
-              <p className="mt-2 text-sm leading-6 text-gray-500">
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
                 เพิ่มสินค้าใหม่เข้าสู่ร้านค้า
               </p>
             </Link>
 
             <Link
               href="/seller/orders"
-              className="rounded-2xl border border-gray-200 p-5 transition hover:-translate-y-1 hover:shadow-md"
+              className="rounded-2xl border border-border p-5 transition motion-safe:hover:-translate-y-0.5 hover:shadow-md"
             >
-              <h3 className="font-bold">
-                คำสั่งซื้อ
-              </h3>
+              <h3 className="font-bold">คำสั่งซื้อ</h3>
 
-              <p className="mt-2 text-sm leading-6 text-gray-500">
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
                 ยืนยันคำสั่งซื้อและอัปเดตสถานะการจัดส่ง
               </p>
             </Link>
@@ -386,36 +259,24 @@ export default async function SellerDashboardPage() {
         </section>
 
         {/* SHOP INFO */}
-        <section className="mt-8 rounded-2xl bg-white p-6 shadow-sm sm:p-8">
-          <h2 className="text-2xl font-bold">
-            ข้อมูลร้านค้า
-          </h2>
+        <section className="mt-8 surface p-6 sm:p-5 sm:p-8">
+          <h2 className="text-2xl font-bold">ข้อมูลร้านค้า</h2>
 
           <div className="mt-6 grid gap-6 md:grid-cols-2">
             <div>
-              <p className="text-sm text-gray-500">
-                ชื่อร้าน
-              </p>
+              <p className="text-sm text-muted-foreground">ชื่อร้าน</p>
 
-              <p className="mt-2 font-medium">
-                {shop.name}
-              </p>
+              <p className="mt-2 font-medium">{shop.name}</p>
             </div>
 
             <div>
-              <p className="text-sm text-gray-500">
-                เบอร์โทรศัพท์
-              </p>
+              <p className="text-sm text-muted-foreground">เบอร์โทรศัพท์</p>
 
-              <p className="mt-2 font-medium">
-                {shop.phone}
-              </p>
+              <p className="mt-2 font-medium">{shop.phone}</p>
             </div>
 
             <div className="md:col-span-2">
-              <p className="text-sm text-gray-500">
-                รายละเอียด
-              </p>
+              <p className="text-sm text-muted-foreground">รายละเอียด</p>
 
               <p className="mt-2 whitespace-pre-wrap leading-7">
                 {shop.description}
@@ -423,9 +284,7 @@ export default async function SellerDashboardPage() {
             </div>
 
             <div className="md:col-span-2">
-              <p className="text-sm text-gray-500">
-                ที่อยู่
-              </p>
+              <p className="text-sm text-muted-foreground">ที่อยู่</p>
 
               <p className="mt-2 whitespace-pre-wrap leading-7">
                 {shop.address}

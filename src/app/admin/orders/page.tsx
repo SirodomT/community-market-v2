@@ -1,55 +1,11 @@
+import { ShoppingBag, CircleCheck, TriangleAlert } from "lucide-react";
+import { StatCard, EmptyState, StatusBadge } from "@/components/ui/primitives";
 import Link from "next/link";
-import {
-  desc,
-  eq,
-} from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import {
-  orders,
-  orderShops,
-  users,
-} from "@/db/schema";
+import { orders, orderShops, users } from "@/db/schema";
 import { requireRole } from "@/lib/auth";
-
-type OrderStatus =
-  | "PENDING"
-  | "CONFIRMED"
-  | "SHIPPED"
-  | "COMPLETED"
-  | "CANCELLED";
-
-const statusLabels: Record<
-  OrderStatus,
-  string
-> = {
-  PENDING: "รอดำเนินการ",
-  CONFIRMED: "ยืนยันแล้ว",
-  SHIPPED: "จัดส่งแล้ว",
-  COMPLETED: "สำเร็จ",
-  CANCELLED: "ยกเลิก",
-};
-
-function getStatusClass(
-  status: OrderStatus
-) {
-  switch (status) {
-    case "PENDING":
-      return "bg-yellow-100 text-yellow-700";
-
-    case "CONFIRMED":
-      return "bg-blue-100 text-blue-700";
-
-    case "SHIPPED":
-      return "bg-purple-100 text-purple-700";
-
-    case "COMPLETED":
-      return "bg-green-100 text-green-700";
-
-    case "CANCELLED":
-      return "bg-red-100 text-red-700";
-  }
-}
 
 export default async function AdminOrdersPage() {
   await requireRole(["ADMIN"]);
@@ -62,149 +18,106 @@ export default async function AdminOrdersPage() {
       username: users.username,
       email: users.email,
 
-      shippingName:
-        orders.shippingName,
-      shippingPhone:
-        orders.shippingPhone,
+      shippingName: orders.shippingName,
+      shippingPhone: orders.shippingPhone,
 
-      totalAmount:
-        orders.totalAmount,
+      totalAmount: orders.totalAmount,
 
       status: orders.status,
 
-      createdAt:
-        orders.createdAt,
+      createdAt: orders.createdAt,
     })
     .from(orders)
-    .innerJoin(
-      users,
-      eq(
-        orders.userId,
-        users.id
-      )
-    )
-    .orderBy(
-      desc(orders.createdAt)
-    );
+    .innerJoin(users, eq(orders.userId, users.id))
+    .orderBy(desc(orders.createdAt));
 
   const allShopOrders = await db
     .select({
       id: orderShops.id,
-      orderId:
-        orderShops.orderId,
-      shopName:
-        orderShops.shopName,
-      subtotal:
-        orderShops.subtotal,
-      status:
-        orderShops.status,
+      orderId: orderShops.orderId,
+      shopName: orderShops.shopName,
+      subtotal: orderShops.subtotal,
+      status: orderShops.status,
     })
     .from(orderShops);
 
-  const pendingCount =
-    allOrders.filter(
-      (order) =>
-        order.status === "PENDING"
-    ).length;
+  const pendingCount = allOrders.filter(
+    (order) => order.status === "PENDING",
+  ).length;
 
-  const completedCount =
-    allOrders.filter(
-      (order) =>
-        order.status ===
-        "COMPLETED"
-    ).length;
+  const completedCount = allOrders.filter(
+    (order) => order.status === "COMPLETED",
+  ).length;
 
-  const cancelledCount =
-    allOrders.filter(
-      (order) =>
-        order.status ===
-        "CANCELLED"
-    ).length;
+  const cancelledCount = allOrders.filter(
+    (order) => order.status === "CANCELLED",
+  ).length;
 
   return (
-    <main className="min-h-screen bg-gray-50 px-6 py-16">
+    <main className="page-shell">
       <div className="mx-auto max-w-7xl">
         {/* HEADER */}
         <div>
           <Link
             href="/admin"
-            className="text-sm text-gray-500 hover:text-black"
+            className="text-sm text-muted-foreground hover:text-foreground"
           >
-            ← กลับ Admin Dashboard
+            ← กลับภาพรวมระบบ
           </Link>
 
-          <h1 className="mt-5 text-4xl font-bold">
+          <h1 className="mt-5 text-3xl sm:text-4xl font-bold">
             คำสั่งซื้อทั้งหมด
           </h1>
 
-          <p className="mt-3 text-gray-500">
+          <p className="mt-3 text-muted-foreground">
             ตรวจสอบคำสั่งซื้อ ลูกค้า ร้านค้า และสถานะการจัดส่ง
           </p>
         </div>
 
         {/* STATS */}
         <section className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-gray-500">
-              คำสั่งซื้อทั้งหมด
-            </p>
+          <StatCard
+            label="คำสั่งซื้อทั้งหมด"
+            value={allOrders.length}
+            icon={<ShoppingBag aria-hidden="true" className="size-5" />}
+          />
 
-            <p className="mt-3 text-4xl font-bold">
-              {allOrders.length}
-            </p>
-          </div>
+          <StatCard
+            label="รอดำเนินการ"
+            value={pendingCount}
+            icon={<ShoppingBag aria-hidden="true" className="size-5" />}
+          />
 
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-gray-500">
-              รอดำเนินการ
-            </p>
+          <StatCard
+            label="สำเร็จ"
+            value={completedCount}
+            icon={<CircleCheck aria-hidden="true" className="size-5" />}
+          />
 
-            <p className="mt-3 text-4xl font-bold">
-              {pendingCount}
-            </p>
-          </div>
-
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-gray-500">
-              สำเร็จ
-            </p>
-
-            <p className="mt-3 text-4xl font-bold">
-              {completedCount}
-            </p>
-          </div>
-
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-gray-500">
-              ยกเลิก
-            </p>
-
-            <p className="mt-3 text-4xl font-bold">
-              {cancelledCount}
-            </p>
-          </div>
+          <StatCard
+            label="ยกเลิก"
+            value={cancelledCount}
+            icon={<TriangleAlert aria-hidden="true" className="size-5" />}
+          />
         </section>
 
         {/* ORDERS */}
         <section className="mt-10 space-y-5">
           {allOrders.length === 0 ? (
-            <div className="rounded-2xl bg-white p-10 text-center text-gray-500 shadow-sm">
-              ยังไม่มีคำสั่งซื้อในระบบ
+            <div className="mt-6">
+              <EmptyState
+                title="ยังไม่มีคำสั่งซื้อในระบบ"
+                description="ข้อมูลจะแสดงที่นี่เมื่อมีรายการใหม่"
+              />
             </div>
           ) : (
             allOrders.map((order) => {
-              const shopsForOrder =
-                allShopOrders.filter(
-                  (shopOrder) =>
-                    shopOrder.orderId ===
-                    order.id
-                );
+              const shopsForOrder = allShopOrders.filter(
+                (shopOrder) => shopOrder.orderId === order.id,
+              );
 
               return (
-                <div
-                  key={order.id}
-                  className="rounded-2xl bg-white p-6 shadow-sm"
-                >
+                <div key={order.id} className="surface p-6">
                   <div className="flex flex-col justify-between gap-6 lg:flex-row">
                     {/* LEFT */}
                     <div>
@@ -213,53 +126,37 @@ export default async function AdminOrdersPage() {
                           Order #{order.id}
                         </h2>
 
-                        <span
-                          className={`rounded-full px-3 py-2 text-xs font-medium ${getStatusClass(
-                            order.status as OrderStatus
-                          )}`}
-                        >
-                          {
-                            statusLabels[
-                              order.status as OrderStatus
-                            ]
-                          }
-                        </span>
+                        <StatusBadge status={order.status} />
                       </div>
 
-                      <p className="mt-3 text-sm text-gray-500">
-                        {order.createdAt.toLocaleString(
-                          "th-TH"
-                        )}
+                      <p className="mt-3 text-sm text-muted-foreground">
+                        {order.createdAt.toLocaleString("th-TH")}
                       </p>
 
                       <div className="mt-5">
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-muted-foreground">
                           ผู้สั่งซื้อ
                         </p>
 
-                        <p className="mt-1 font-medium">
-                          {order.username}
-                        </p>
+                        <p className="mt-1 font-medium">{order.username}</p>
 
-                        <p className="mt-1 text-sm text-gray-500">
+                        <p className="mt-1 text-sm text-muted-foreground">
                           {order.email}
                         </p>
 
-                        <p className="mt-1 text-xs text-gray-400">
+                        <p className="mt-1 text-xs text-muted-foreground">
                           User #{order.userId}
                         </p>
                       </div>
 
                       <div className="mt-5">
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-muted-foreground">
                           ผู้รับสินค้า
                         </p>
 
-                        <p className="mt-1 font-medium">
-                          {order.shippingName}
-                        </p>
+                        <p className="mt-1 font-medium">{order.shippingName}</p>
 
-                        <p className="mt-1 text-sm text-gray-500">
+                        <p className="mt-1 text-sm text-muted-foreground">
                           {order.shippingPhone}
                         </p>
                       </div>
@@ -267,26 +164,19 @@ export default async function AdminOrdersPage() {
 
                     {/* RIGHT */}
                     <div className="lg:text-right">
-                      <p className="text-sm text-gray-500">
-                        ยอดรวม
-                      </p>
+                      <p className="text-sm text-muted-foreground">ยอดรวม</p>
 
                       <p className="mt-2 text-3xl font-bold">
                         ฿
-                        {Number(
-                          order.totalAmount
-                        ).toLocaleString(
-                          "th-TH",
-                          {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          }
-                        )}
+                        {Number(order.totalAmount).toLocaleString("th-TH", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
                       </p>
 
                       <Link
                         href={`/admin/orders/${order.id}`}
-                        className="mt-5 inline-block rounded-xl bg-black px-5 py-3 text-sm font-medium text-white transition hover:bg-gray-800"
+                        className="btn btn-primary mt-5"
                       >
                         ดูรายละเอียด
                       </Link>
@@ -295,60 +185,39 @@ export default async function AdminOrdersPage() {
 
                   {/* SHOP STATUS */}
                   <div className="mt-6 border-t pt-6">
-                    <p className="font-medium">
-                      ร้านค้าในคำสั่งซื้อ
-                    </p>
+                    <p className="font-medium">ร้านค้าในคำสั่งซื้อ</p>
 
-                    {shopsForOrder.length ===
-                    0 ? (
-                      <p className="mt-3 text-sm text-gray-500">
+                    {shopsForOrder.length === 0 ? (
+                      <p className="mt-3 text-sm text-muted-foreground">
                         Order เก่า ไม่มีข้อมูลสถานะแยกร้าน
                       </p>
                     ) : (
                       <div className="mt-4 flex flex-wrap gap-3">
-                        {shopsForOrder.map(
-                          (shopOrder) => (
-                            <div
-                              key={
-                                shopOrder.id
-                              }
-                              className="rounded-xl border border-gray-200 px-4 py-3"
-                            >
-                              <p className="text-sm font-medium">
-                                {
-                                  shopOrder.shopName
-                                }
-                              </p>
+                        {shopsForOrder.map((shopOrder) => (
+                          <div
+                            key={shopOrder.id}
+                            className="rounded-xl border border-border px-4 py-3"
+                          >
+                            <p className="text-sm font-medium">
+                              {shopOrder.shopName}
+                            </p>
 
-                              <div className="mt-2 flex items-center gap-2">
-                                <span
-                                  className={`rounded-full px-2.5 py-1 text-xs font-medium ${getStatusClass(
-                                    shopOrder.status as OrderStatus
-                                  )}`}
-                                >
+                            <div className="mt-2 flex items-center gap-2">
+                              <StatusBadge status={shopOrder.status} />
+
+                              <span className="text-xs text-muted-foreground">
+                                ฿
+                                {Number(shopOrder.subtotal).toLocaleString(
+                                  "th-TH",
                                   {
-                                    statusLabels[
-                                      shopOrder.status as OrderStatus
-                                    ]
-                                  }
-                                </span>
-
-                                <span className="text-xs text-gray-500">
-                                  ฿
-                                  {Number(
-                                    shopOrder.subtotal
-                                  ).toLocaleString(
-                                    "th-TH",
-                                    {
-                                      minimumFractionDigits: 2,
-                                      maximumFractionDigits: 2,
-                                    }
-                                  )}
-                                </span>
-                              </div>
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  },
+                                )}
+                              </span>
                             </div>
-                          )
-                        )}
+                          </div>
+                        ))}
                       </div>
                     )}
                   </div>

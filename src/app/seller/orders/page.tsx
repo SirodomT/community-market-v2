@@ -1,48 +1,22 @@
+import { PageHeader } from "@/components/ui/primitives";
+import DashboardNav from "@/components/DashboardNav";
+import SubmitButton from "@/components/ui/submit-button";
+import { EmptyState, StatusBadge } from "@/components/ui/primitives";
 import Link from "next/link";
-import {
-  and,
-  desc,
-  eq,
-} from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 import { db } from "@/db";
-import {
-  orderItems,
-  orders,
-  orderShops,
-  shops,
-} from "@/db/schema";
+import { orderItems, orders, orderShops, shops } from "@/db/schema";
 import { requireRole } from "@/lib/auth";
 
-import {
-  advanceSellerOrder,
-} from "./actions";
-import CancelOrderShopButton from "@/components/CancelOrderShopButton";
+import { advanceSellerOrder } from "./actions";
+
 type OrderStatus =
-  | "PENDING"
-  | "CONFIRMED"
-  | "SHIPPED"
-  | "COMPLETED"
-  | "CANCELLED";
+  "PENDING" | "CONFIRMED" | "SHIPPED" | "COMPLETED" | "CANCELLED";
 
-const statusLabels: Record<
-  OrderStatus,
-  string
-> = {
-  PENDING: "รอยืนยัน",
-  CONFIRMED: "ยืนยันแล้ว",
-  SHIPPED: "จัดส่งแล้ว",
-  COMPLETED: "สำเร็จ",
-  CANCELLED: "ยกเลิก",
-};
-
-function getNextAction(
-  status: OrderStatus
-): {
-  status:
-    | "CONFIRMED"
-    | "SHIPPED";
+function getNextAction(status: OrderStatus): {
+  status: "CONFIRMED" | "SHIPPED";
   label: string;
 } | null {
   switch (status) {
@@ -72,9 +46,7 @@ export default async function SellerOrdersPage() {
       name: shops.name,
     })
     .from(shops)
-    .where(
-      eq(shops.ownerId, user.id)
-    )
+    .where(eq(shops.ownerId, user.id))
     .limit(1);
 
   if (!shop) {
@@ -89,57 +61,26 @@ export default async function SellerOrdersPage() {
       orderStatus: orderShops.status,
       createdAt: orders.createdAt,
 
-      shippingName:
-        orders.shippingName,
-      shippingPhone:
-        orders.shippingPhone,
-      shippingAddress:
-        orders.shippingAddress,
+      shippingName: orders.shippingName,
+      shippingPhone: orders.shippingPhone,
+      shippingAddress: orders.shippingAddress,
 
-      subtotal:
-        orderShops.subtotal,
+      subtotal: orderShops.subtotal,
 
-      orderItemId:
-        orderItems.id,
-      productName:
-        orderItems.productName,
-      price:
-        orderItems.price,
-      quantity:
-        orderItems.quantity,
-      itemSubtotal:
-        orderItems.subtotal,
+      orderItemId: orderItems.id,
+      productName: orderItems.productName,
+      price: orderItems.price,
+      quantity: orderItems.quantity,
+      itemSubtotal: orderItems.subtotal,
     })
     .from(orderShops)
-    .innerJoin(
-      orders,
-      eq(
-        orderShops.orderId,
-        orders.id
-      )
-    )
+    .innerJoin(orders, eq(orderShops.orderId, orders.id))
     .innerJoin(
       orderItems,
-      and(
-        eq(
-          orderItems.orderId,
-          orders.id
-        ),
-        eq(
-          orderItems.shopId,
-          shop.id
-        )
-      )
+      and(eq(orderItems.orderId, orders.id), eq(orderItems.shopId, shop.id)),
     )
-    .where(
-      eq(
-        orderShops.shopId,
-        shop.id
-      )
-    )
-    .orderBy(
-      desc(orders.createdAt)
-    );
+    .where(eq(orderShops.shopId, shop.id))
+    .orderBy(desc(orders.createdAt));
 
   const grouped = new Map<
     number,
@@ -166,272 +107,175 @@ export default async function SellerOrdersPage() {
   >();
 
   for (const row of rows) {
-    const existing =
-      grouped.get(
-        row.orderShopId
-      );
+    const existing = grouped.get(row.orderShopId);
 
     const item = {
       id: row.orderItemId,
-      productName:
-        row.productName,
+      productName: row.productName,
       price: row.price,
       quantity: row.quantity,
-      subtotal:
-        row.itemSubtotal,
+      subtotal: row.itemSubtotal,
     };
 
     if (existing) {
       existing.items.push(item);
     } else {
-      grouped.set(
-        row.orderShopId,
-        {
-          orderShopId:
-            row.orderShopId,
+      grouped.set(row.orderShopId, {
+        orderShopId: row.orderShopId,
 
-          orderId:
-            row.orderId,
+        orderId: row.orderId,
 
-          status:
-            row.orderStatus,
+        status: row.orderStatus,
 
-          createdAt:
-            row.createdAt,
+        createdAt: row.createdAt,
 
-          shippingName:
-            row.shippingName,
+        shippingName: row.shippingName,
 
-          shippingPhone:
-            row.shippingPhone,
+        shippingPhone: row.shippingPhone,
 
-          shippingAddress:
-            row.shippingAddress,
+        shippingAddress: row.shippingAddress,
 
-          subtotal:
-            row.subtotal,
+        subtotal: row.subtotal,
 
-          items: [item],
-        }
-      );
+        items: [item],
+      });
     }
   }
 
-  const sellerOrders =
-    Array.from(
-      grouped.values()
-    );
+  const sellerOrders = Array.from(grouped.values());
 
   return (
-    <main className="min-h-screen bg-gray-50 px-6 py-16">
+    <main className="page-shell">
       <div className="mx-auto max-w-6xl">
+        <DashboardNav mode="seller" />
         <Link
           href="/seller"
-          className="text-sm text-gray-500 hover:text-black"
+          className="text-sm text-muted-foreground hover:text-foreground"
         >
-          ← Seller Dashboard
+          ← ภาพรวมร้าน
         </Link>
 
-        <div className="mt-5">
-          <p className="text-sm font-semibold uppercase tracking-widest text-gray-500">
-            Seller Orders
-          </p>
-
-          <h1 className="mt-2 text-4xl font-bold">
-            คำสั่งซื้อของร้าน
-          </h1>
-
-          <p className="mt-3 text-gray-500">
-            จัดการคำสั่งซื้อของ{" "}
-            {shop.name}
-          </p>
-        </div>
+        <PageHeader
+          eyebrow="Seller Orders"
+          title={<>คำสั่งซื้อของร้าน</>}
+          description={<> จัดการคำสั่งซื้อของ {shop.name} </>}
+        />
 
         {sellerOrders.length === 0 ? (
-          <div className="mt-10 rounded-2xl bg-white p-12 text-center shadow-sm">
-            <h2 className="text-xl font-bold">
-              ยังไม่มีคำสั่งซื้อ
-            </h2>
-
-            <p className="mt-2 text-gray-500">
-              เมื่อมีลูกค้าสั่งสินค้า
-              รายการจะแสดงที่นี่
-            </p>
+          <div className="mt-6">
+            <EmptyState
+              title="ยังไม่มีคำสั่งซื้อ"
+              description="เมื่อมีลูกค้าสั่งสินค้า\r\n              รายการจะแสดงที่นี่"
+            />
           </div>
         ) : (
           <div className="mt-10 space-y-6">
-            {sellerOrders.map(
-              (order) => {
-                const nextAction =
-                  getNextAction(
-                    order.status
-                  );
+            {sellerOrders.map((order) => {
+              const nextAction = getNextAction(order.status);
 
-                return (
-                  <section
-                    key={
-                      order.orderShopId
-                    }
-                    className="rounded-2xl bg-white p-6 shadow-sm"
-                  >
-                    <div className="flex flex-col justify-between gap-6 border-b pb-6 md:flex-row md:items-start">
-                      <div>
-                        <p className="text-sm text-gray-500">
-                          คำสั่งซื้อ
-                        </p>
+              return (
+                <section key={order.orderShopId} className="surface p-6">
+                  <div className="flex flex-col justify-between gap-6 border-b pb-6 md:flex-row md:items-start">
+                    <div>
+                      <p className="text-sm text-muted-foreground">
+                        คำสั่งซื้อ
+                      </p>
 
-                        <h2 className="mt-1 text-2xl font-bold">
-                          #{order.orderId}
-                        </h2>
+                      <h2 className="mt-1 text-2xl font-bold">
+                        #{order.orderId}
+                      </h2>
 
-                        <p className="mt-2 text-sm text-gray-500">
-                          {order.createdAt.toLocaleString(
-                            "th-TH"
-                          )}
-                        </p>
-                      </div>
-
-                      <div className="flex flex-col items-start gap-3 md:items-end">
-                        <span className="rounded-full bg-gray-100 px-4 py-2 text-sm font-medium">
-                          {
-                            statusLabels[
-                              order.status
-                            ]
-                          }
-                        </span>
-
-                        {nextAction && (
-                          <form
-                            action={
-                              advanceSellerOrder
-                            }
-                          >
-                            <input
-                              type="hidden"
-                              name="orderShopId"
-                              value={
-                                order.orderShopId
-                              }
-                            />
-
-                            <input
-                              type="hidden"
-                              name="nextStatus"
-                              value={
-                                nextAction.status
-                              }
-                            />
-
-                            <button
-                              type="submit"
-                              className="rounded-lg bg-black px-5 py-3 text-sm font-medium text-white hover:bg-gray-800"
-                            >
-                              {
-                                nextAction.label
-                              }
-                            </button>
-                          </form>
-                        )}
-                      </div>
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        {order.createdAt.toLocaleString("th-TH")}
+                      </p>
                     </div>
 
-                    <div className="mt-6">
-                      <h3 className="font-bold">
-                        รายการสินค้า
-                      </h3>
+                    <div className="flex flex-col items-start gap-3 md:items-end">
+                      <StatusBadge status={order.status} />
 
-                      <div className="mt-4 space-y-4">
-                        {order.items.map(
-                          (item) => (
-                            <div
-                              key={
-                                item.id
-                              }
-                              className="flex justify-between gap-5 border-b pb-4 last:border-0"
-                            >
-                              <div>
-                                <p className="font-medium">
-                                  {
-                                    item.productName
-                                  }
-                                </p>
+                      {nextAction && (
+                        <form action={advanceSellerOrder}>
+                          <input
+                            type="hidden"
+                            name="orderShopId"
+                            value={order.orderShopId}
+                          />
 
-                                <p className="mt-1 text-sm text-gray-500">
-                                  ฿
-                                  {
-                                    item.price
-                                  }{" "}
-                                  ×{" "}
-                                  {
-                                    item.quantity
-                                  }
-                                </p>
-                              </div>
+                          <input
+                            type="hidden"
+                            name="nextStatus"
+                            value={nextAction.status}
+                          />
 
-                              <p className="font-bold">
-                                ฿
-                                {Number(
-                                  item.subtotal
-                                ).toLocaleString(
-                                  "th-TH",
-                                  {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                  }
-                                )}
-                              </p>
-                            </div>
-                          )
-                        )}
-                      </div>
+                          <SubmitButton
+                            type="submit"
+                            variant="primary"
+                            className=""
+                          >
+                            {nextAction.label}
+                          </SubmitButton>
+                        </form>
+                      )}
+                    </div>
+                  </div>
 
-                      <div className="mt-5 flex justify-between border-t pt-5">
-                        <span className="font-medium">
-                          ยอดรวมของร้าน
-                        </span>
+                  <div className="mt-6">
+                    <h3 className="font-bold">รายการสินค้า</h3>
 
-                        <span className="text-xl font-bold">
-                          ฿
-                          {Number(
-                            order.subtotal
-                          ).toLocaleString(
-                            "th-TH",
-                            {
+                    <div className="mt-4 space-y-4">
+                      {order.items.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex justify-between gap-5 border-b pb-4 last:border-0"
+                        >
+                          <div>
+                            <p className="font-medium">{item.productName}</p>
+
+                            <p className="mt-1 text-sm text-muted-foreground">
+                              ฿{item.price} × {item.quantity}
+                            </p>
+                          </div>
+
+                          <p className="font-bold">
+                            ฿
+                            {Number(item.subtotal).toLocaleString("th-TH", {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
-                            }
-                          )}
-                        </span>
-                      </div>
+                            })}
+                          </p>
+                        </div>
+                      ))}
                     </div>
 
-                    <div className="mt-6 border-t pt-6">
-                      <h3 className="font-bold">
-                        ข้อมูลจัดส่ง
-                      </h3>
+                    <div className="mt-5 flex justify-between border-t pt-5">
+                      <span className="font-medium">ยอดรวมของร้าน</span>
 
-                      <p className="mt-3">
-                        {
-                          order.shippingName
-                        }
-                      </p>
-
-                      <p className="mt-2 text-sm text-gray-500">
-                        {
-                          order.shippingPhone
-                        }
-                      </p>
-
-                      <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-gray-500">
-                        {
-                          order.shippingAddress
-                        }
-                      </p>
+                      <span className="text-xl font-bold">
+                        ฿
+                        {Number(order.subtotal).toLocaleString("th-TH", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </span>
                     </div>
-                  </section>
-                );
-              }
-            )}
+                  </div>
+
+                  <div className="mt-6 border-t pt-6">
+                    <h3 className="font-bold">ข้อมูลจัดส่ง</h3>
+
+                    <p className="mt-3">{order.shippingName}</p>
+
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      {order.shippingPhone}
+                    </p>
+
+                    <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
+                      {order.shippingAddress}
+                    </p>
+                  </div>
+                </section>
+              );
+            })}
           </div>
         )}
       </div>

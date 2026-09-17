@@ -1,12 +1,28 @@
+import Image from "next/image";
+import {
+  MapPin,
+  Search,
+  ArrowUpRight,
+  ArrowRight,
+  Package,
+  Leaf,
+  Utensils,
+  Shirt,
+  Sprout,
+  Armchair,
+  Shapes,
+} from "lucide-react";
+import {
+  SectionHeader,
+  EmptyState,
+  ShopCard,
+} from "@/components/ui/primitives";
+import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
 import { and, desc, eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import {
-  categories,
-  products,
-  shops,
-} from "@/db/schema";
+import { categories, products, shops } from "@/db/schema";
 
 export default async function HomePage() {
   const latestProducts = await db
@@ -21,20 +37,9 @@ export default async function HomePage() {
       shopName: shops.name,
     })
     .from(products)
-    .innerJoin(
-      shops,
-      eq(products.shopId, shops.id)
-    )
-    .leftJoin(
-      categories,
-      eq(products.categoryId, categories.id)
-    )
-    .where(
-      and(
-        eq(products.status, "ACTIVE"),
-        eq(shops.status, "ACTIVE")
-      )
-    )
+    .innerJoin(shops, eq(products.shopId, shops.id))
+    .leftJoin(categories, eq(products.categoryId, categories.id))
+    .where(and(eq(products.status, "ACTIVE"), eq(shops.status, "ACTIVE")))
     .orderBy(desc(products.createdAt))
     .limit(4);
 
@@ -51,240 +56,246 @@ export default async function HomePage() {
     .orderBy(desc(shops.createdAt))
     .limit(3);
 
+  const discoveryCategories = await db
+    .select({ id: categories.id, name: categories.name })
+    .from(categories);
+  const spotlight = latestProducts[0];
   return (
     <main>
-      {/* HERO */}
-      <section className="bg-gray-50 px-6 py-24">
-        <div className="mx-auto max-w-7xl">
-          <div className="max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-widest text-gray-500">
-              Community Enterprise Market
+      <section className="mx-auto max-w-7xl px-4 pb-8 pt-6 sm:px-6 sm:pt-10">
+        <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr]">
+          <div className="relative overflow-hidden rounded-3xl bg-[#e8eee2] p-6 sm:p-10 lg:p-12">
+            <p className="eyebrow flex items-center gap-2">
+              <MapPin aria-hidden="true" className="size-4" />
+              นิคมพัฒนา · ระยอง
             </p>
-
-            <h1 className="mt-5 text-5xl font-bold leading-tight md:text-6xl">
-              ตลาดวิสาหกิจชุมชน
+            <h1 className="mt-6 max-w-xl text-3xl font-bold leading-[1.4] tracking-tight sm:text-5xl">
+              ของดีจากชุมชน
               <br />
-              อำเภอนิคมพัฒนา
+              <span className="text-primary">ส่งต่อถึงมือคุณ</span>
             </h1>
-
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-600">
-              เลือกซื้อสินค้าและสนับสนุนผู้ประกอบการ
-              วิสาหกิจชุมชนในอำเภอนิคมพัฒนา จังหวัดระยอง
+            <p className="mt-5 max-w-lg text-sm leading-8 text-muted-foreground sm:text-base">
+              ค้นพบสินค้า ร้านค้า และความตั้งใจของผู้ประกอบการท้องถิ่น
+              <br className="hidden sm:block" />
+              เลือกสิ่งที่ชอบ พร้อมเป็นส่วนหนึ่งในการสนับสนุนชุมชน
             </p>
-
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Link
-                href="/products"
-                className="rounded-lg bg-black px-6 py-3 font-medium text-white hover:bg-gray-800"
-              >
-                เลือกซื้อสินค้า
-              </Link>
-
-              <Link
-                href="/shops"
-                className="rounded-lg border border-gray-300 bg-white px-6 py-3 font-medium hover:bg-gray-100"
-              >
-                ดูร้านค้า
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* PRODUCTS */}
-      <section className="px-6 py-20">
-        <div className="mx-auto max-w-7xl">
-          <div className="flex items-end justify-between gap-5">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-widest text-gray-500">
-                Products
-              </p>
-
-              <h2 className="mt-2 text-3xl font-bold">
-                สินค้าล่าสุด
-              </h2>
-
-              <p className="mt-2 text-gray-500">
-                สินค้าจากผู้ประกอบการในชุมชน
-              </p>
-            </div>
-
-            <Link
-              href="/products"
-              className="hidden text-sm font-medium underline sm:block"
+            <form
+              action="/products"
+              method="GET"
+              className="mt-7 flex max-w-xl items-center gap-2 rounded-2xl border border-primary/15 bg-white p-2"
             >
-              ดูสินค้าทั้งหมด
-            </Link>
+              <label htmlFor="home-search" className="sr-only">
+                ค้นหาสินค้าหรือร้านค้า
+              </label>
+              <Search
+                aria-hidden="true"
+                className="ml-2 hidden size-5 shrink-0 text-muted-foreground sm:block"
+              />
+              <input
+                id="home-search"
+                name="q"
+                type="search"
+                maxLength={100}
+                placeholder="ค้นหาสินค้าหรือร้านค้า…"
+                className="min-w-0 flex-1 rounded-xl px-2 py-3 text-base"
+              />
+              <button type="submit" className="btn btn-primary">
+                ค้นหา
+              </button>
+            </form>
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <Link href="/products" className="btn btn-primary">
+                เลือกซื้อสินค้า
+                <ArrowUpRight aria-hidden="true" className="size-4" />
+              </Link>
+              <Link href="/shops" className="btn btn-ghost text-primary">
+                รู้จักร้านค้าชุมชน
+                <ArrowRight aria-hidden="true" className="size-4" />
+              </Link>
+            </div>
           </div>
-
-          {latestProducts.length === 0 ? (
-            <div className="mt-10 rounded-2xl bg-gray-50 p-12 text-center">
-              <p className="text-gray-500">
-                ยังไม่มีสินค้า
-              </p>
-            </div>
-          ) : (
-            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {latestProducts.map((product) => (
-                <Link
-                  key={product.id}
-                  href={`/products/${product.id}`}
-                  className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+            {spotlight ? (
+              <Link
+                href={`/products/${spotlight.id}`}
+                className="group relative flex min-h-52 flex-col justify-end overflow-hidden rounded-3xl bg-[#ede2d2] p-6 sm:min-h-60"
+              >
+                {spotlight.imageUrl ? (
+                  <>
+                    <Image
+                      src={spotlight.imageUrl}
+                      alt={spotlight.name}
+                      fill
+                      unoptimized
+                      sizes="(min-width: 1024px) 450px, 50vw"
+                      className="object-cover transition duration-200 motion-safe:group-hover:scale-[1.03]"
+                    />
+                    <div className="absolute inset-0 bg-black/45" />
+                  </>
+                ) : (
+                  <Package
+                    aria-hidden="true"
+                    className="absolute right-7 top-7 size-20 stroke-[.75] text-accent/30"
+                  />
+                )}
+                <div
+                  className={`relative ${spotlight.imageUrl ? "text-white" : "text-foreground"}`}
                 >
-                  <div className="flex aspect-[4/3] items-center justify-center bg-gray-100">
-                    {product.imageUrl ? (
-                      <img
-                        src={product.imageUrl}
-                        alt={product.name}
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <span className="text-sm text-gray-400">
-                        ยังไม่มีรูปสินค้า
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="p-5">
-                    <p className="text-xs text-gray-500">
-                      {product.categoryName ??
-                        "ไม่ระบุหมวดหมู่"}
-                    </p>
-
-                    <h3 className="mt-2 text-xl font-bold">
-                      {product.name}
-                    </h3>
-
-                    <p className="mt-2 line-clamp-2 text-sm leading-6 text-gray-500">
-                      {product.description}
-                    </p>
-
-                    <p className="mt-4 text-sm text-gray-500">
-                      ร้าน {product.shopName}
-                    </p>
-
-                    <div className="mt-5 flex items-end justify-between">
-                      <p className="text-xl font-bold">
-                        ฿
-                        {Number(
-                          product.price
-                        ).toLocaleString("th-TH", {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </p>
-
-                      <p className="text-xs text-gray-500">
-                        เหลือ {product.stock}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-
-          <Link
-            href="/products"
-            className="mt-8 inline-block text-sm font-medium underline sm:hidden"
-          >
-            ดูสินค้าทั้งหมด
-          </Link>
-        </div>
-      </section>
-
-      {/* SHOPS */}
-      <section className="bg-gray-50 px-6 py-20">
-        <div className="mx-auto max-w-7xl">
-          <div className="flex items-end justify-between gap-5">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-widest text-gray-500">
-                Community Shops
-              </p>
-
-              <h2 className="mt-2 text-3xl font-bold">
-                ร้านค้าในชุมชน
-              </h2>
-
-              <p className="mt-2 text-gray-500">
-                รู้จักร้านค้าและผู้ประกอบการในพื้นที่
-              </p>
-            </div>
-
+                  <p className="text-xs font-semibold">ค้นพบสินค้าจากชุมชน</p>
+                  <h2 className="mt-3 text-2xl font-bold">{spotlight.name}</h2>
+                  <p className="mt-2 text-sm">จากร้าน {spotlight.shopName}</p>
+                  <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold">
+                    ดูรายละเอียด
+                    <ArrowUpRight aria-hidden="true" className="size-4" />
+                  </span>
+                </div>
+              </Link>
+            ) : (
+              <div className="flex min-h-52 flex-col justify-between rounded-3xl bg-[#ede2d2] p-6">
+                <Leaf aria-hidden="true" className="size-10 text-accent" />
+                <p className="mt-6 text-2xl font-bold leading-relaxed">
+                  สินค้าท้องถิ่น
+                  <br />
+                  คุณค่าที่ส่งต่อได้
+                </p>
+              </div>
+            )}
             <Link
               href="/shops"
-              className="hidden text-sm font-medium underline sm:block"
+              className="flex items-center justify-between gap-5 rounded-3xl bg-primary p-6 text-white"
             >
-              ดูร้านค้าทั้งหมด
+              <div>
+                <p className="text-xs text-white/80">จากคนในชุมชน ถึงคุณ</p>
+                <h2 className="mt-2 text-xl font-bold">
+                  รู้จักคนเบื้องหลังสินค้า
+                </h2>
+                <p className="mt-2 text-sm text-white/80">
+                  แวะชมร้านค้าและเรื่องราวในพื้นที่
+                </p>
+              </div>
+              <ArrowUpRight aria-hidden="true" className="size-6 shrink-0" />
             </Link>
           </div>
-
-          {activeShops.length === 0 ? (
-            <div className="mt-10 rounded-2xl bg-white p-12 text-center">
-              <p className="text-gray-500">
-                ยังไม่มีร้านค้า
-              </p>
-            </div>
-          ) : (
-            <div className="mt-10 grid gap-6 md:grid-cols-3">
-              {activeShops.map((shop) => (
-                <Link
-                  key={shop.id}
-                  href={`/shops/${shop.id}`}
-                  className="rounded-2xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
-                >
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-100 text-xl font-bold">
-                    {shop.name.charAt(0).toUpperCase()}
-                  </div>
-
-                  <h3 className="mt-5 text-2xl font-bold">
-                    {shop.name}
-                  </h3>
-
-                  <p className="mt-3 line-clamp-3 leading-7 text-gray-500">
-                    {shop.description}
-                  </p>
-
-                  <div className="mt-6 border-t pt-5">
-                    <p className="text-sm text-gray-500">
-                      {shop.address}
-                    </p>
-                  </div>
-
-                  <p className="mt-5 text-sm font-medium">
-                    ดูร้านค้า →
-                  </p>
-                </Link>
-              ))}
-            </div>
-          )}
         </div>
       </section>
-
-      {/* SELLER CTA */}
-      <section className="px-6 py-20">
-        <div className="mx-auto max-w-7xl rounded-3xl bg-black px-8 py-14 text-white md:px-14">
-          <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-widest text-gray-400">
-              For Community Sellers
-            </p>
-
-            <h2 className="mt-3 text-3xl font-bold md:text-4xl">
-              มีผลิตภัณฑ์จากชุมชนของคุณเอง?
+      {discoveryCategories.length > 0 && (
+        <section className="mx-auto max-w-7xl px-4 py-7 sm:px-6">
+          <SectionHeader
+            title="วันนี้อยากค้นพบอะไร?"
+            description="เลือกหมวดหมู่ที่สนใจ แล้วเริ่มสำรวจของดีในชุมชน"
+          />
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+            {discoveryCategories.map((category) => {
+              const Icon = /อาหาร|เครื่องดื่ม/.test(category.name)
+                ? Utensils
+                : /เสื้อ|แต่งกาย/.test(category.name)
+                  ? Shirt
+                  : /เกษตร/.test(category.name)
+                    ? Sprout
+                    : /ตกแต่ง|ของใช้/.test(category.name)
+                      ? Armchair
+                      : Shapes;
+              return (
+                <Link
+                  key={category.id}
+                  href={`/products?category=${category.id}`}
+                  className="surface group flex items-center gap-3 p-4 transition hover:border-primary/40 sm:flex-col sm:py-6 sm:text-center"
+                >
+                  <span className="rounded-xl bg-primary-soft p-3 text-primary">
+                    <Icon aria-hidden="true" className="size-5" />
+                  </span>
+                  <span className="text-xs font-semibold leading-6 sm:text-sm">
+                    {category.name}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
+        <SectionHeader
+          title="สินค้าล่าสุดจากชุมชน"
+          description="ของกิน ของใช้ และความตั้งใจจากผู้ประกอบการท้องถิ่น"
+          href="/products"
+          linkLabel="ดูสินค้าทั้งหมด"
+        />
+        {latestProducts.length ? (
+          <div className="grid grid-cols-2 gap-2 sm:gap-5 lg:grid-cols-4">
+            {latestProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="เรื่องราวใหม่กำลังเริ่มต้น"
+            description="สินค้าจากชุมชนจะมาอยู่ที่นี่เร็ว ๆ นี้ ระหว่างนี้แวะชมร้านค้าของเราได้"
+            href="/shops"
+            label="สำรวจร้านค้า"
+          />
+        )}
+      </section>
+      <section className="border-y border-border bg-[#eeece4]">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 sm:py-14 md:grid-cols-2 md:items-center">
+          <div>
+            <p className="eyebrow">มากกว่าสินค้า คือความตั้งใจ</p>
+            <h2 className="mt-4 text-3xl font-bold leading-relaxed">
+              ทุกการเลือกซื้อ
+              <br />
+              เชื่อมเราเข้ากับชุมชน
             </h2>
-
-            <p className="mt-4 leading-7 text-gray-300">
-              สมัครเปิดร้านและนำสินค้าของคุณมาแสดงบน
-              Community Market
+          </div>
+          <div>
+            <p className="text-sm leading-8 text-muted-foreground sm:text-base">
+              ตลาดวิสาหกิจชุมชน อำเภอนิคมพัฒนา จังหวัดระยอง
+              เป็นพื้นที่ให้คุณได้รู้จักผู้ประกอบการในท้องถิ่น
+              ผ่านสินค้าและเรื่องราวของแต่ละร้าน เลือกซื้อสิ่งที่ชอบ
+              และส่งต่อโอกาสให้ชุมชนเติบโตไปด้วยกัน
             </p>
-
-            <Link
-              href="/seller/apply"
-              className="mt-7 inline-block rounded-lg bg-white px-6 py-3 font-medium text-black hover:bg-gray-200"
-            >
-              สมัครเปิดร้าน
+            <Link href="/shops" className="btn btn-secondary mt-5">
+              สำรวจร้านค้า
+              <ArrowUpRight aria-hidden="true" className="size-4" />
             </Link>
           </div>
+        </div>
+      </section>
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
+        <SectionHeader
+          title="แวะทักทายร้านค้าในชุมชน"
+          description="ทำความรู้จักร้านค้า ผู้คน และสินค้าของพวกเขา"
+          href="/shops"
+          linkLabel="ดูร้านค้าทั้งหมด"
+        />
+        {activeShops.length ? (
+          <div className="grid gap-5 md:grid-cols-3">
+            {activeShops.map((shop) => (
+              <ShopCard key={shop.id} shop={shop} />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="พื้นที่สำหรับร้านค้าของชุมชน"
+            description="ร้านค้าที่พร้อมให้บริการจะแสดงที่นี่"
+          />
+        )}
+      </section>
+      <section className="mx-auto max-w-7xl px-4 pb-14 sm:px-6">
+        <div className="flex flex-col justify-between gap-6 rounded-3xl bg-primary p-6 text-white sm:p-10 md:flex-row md:items-center">
+          <div>
+            <p className="text-xs font-semibold text-white/80">
+              เติบโตไปกับชุมชน
+            </p>
+            <h2 className="mt-3 text-2xl font-bold sm:text-3xl">
+              มีของดี อยากให้คนได้รู้จัก?
+            </h2>
+            <p className="mt-3 text-sm text-white/80">
+              เริ่มต้นเปิดร้าน และนำสินค้าของคุณมาพบกับลูกค้าใหม่
+            </p>
+          </div>
+          <Link href="/seller/apply" className="btn btn-secondary shrink-0">
+            สมัครเปิดร้าน
+            <ArrowUpRight aria-hidden="true" className="size-4" />
+          </Link>
         </div>
       </section>
     </main>

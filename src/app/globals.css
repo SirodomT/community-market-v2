@@ -1,31 +1,257 @@
 @import "tailwindcss";
 
-* {
-  box-sizing: border-box;
+:root {
+  --background: #f8f7f3;
+  --foreground: #26352e;
+  --surface: #ffffff;
+  --muted: #f0eee7;
+  --muted-foreground: #626a63;
+  --primary: #245b43;
+  --primary-hover: #194530;
+  --primary-soft: #eaf1e8;
+  --border: #dedfd5;
+  --accent: #a44d2f;
+  --radius: 1.25rem;
+  --shadow-card: 0 4px 24px -16px #26352e30;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #ffffff;
-  color: #171717;
-}
-
-button,
-input,
-textarea,
-select {
-  font: inherit;
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
 }
 
 @layer base {
+  * {
+    box-sizing: border-box;
+    border-color: var(--border);
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+  body {
+    margin: 0;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: "Leelawadee UI", Tahoma, Arial, sans-serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
   a {
     color: inherit;
     text-decoration: none;
+  }
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+  button:not(:disabled),
+  summary {
+    cursor: pointer;
+  }
+  input,
+  textarea,
+  select {
+    min-width: 0;
+    accent-color: var(--primary);
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  main {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  ::selection {
+    background: #d5e6d5;
+    color: #194530;
+  }
+}
+
+/* Outside the base layer so utility classes cannot suppress keyboard focus. */
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 4px;
+}
+.skip-link {
+  position: fixed;
+  top: -6rem;
+  left: 1rem;
+  z-index: 100;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--primary);
+  color: white;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+@layer components {
+  .page-shell {
+    min-height: 65vh;
+    padding: 2rem 1rem 4rem;
+  }
+  .surface {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+  }
+  .eyebrow {
+    color: var(--primary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .btn {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1px solid transparent;
+    border-radius: 0.75rem;
+    padding: 0.65rem 1.1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.5;
+    transition:
+      background-color 180ms,
+      border-color 180ms,
+      box-shadow 180ms;
+  }
+  .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+  .btn-primary:hover {
+    background: var(--primary-hover);
+  }
+  .btn-secondary {
+    background: white;
+    border-color: var(--border);
+    color: var(--foreground);
+  }
+  .btn-secondary:hover,
+  .btn-ghost:hover {
+    background: var(--muted);
+  }
+  .btn-danger {
+    background: #fff7f5;
+    border-color: #e8c8c0;
+    color: #a12919;
+  }
+  .btn-danger:hover {
+    background: #fbe8e2;
+  }
+  .field {
+    display: block;
+    width: 100%;
+    min-height: 2.875rem;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    background: white;
+    padding: 0.65rem 0.85rem;
+    color: var(--foreground);
+    font-size: 1rem;
+    transition: border-color 180ms;
+  }
+  .field:focus {
+    border-color: var(--primary);
+  }
+  .field::placeholder {
+    color: #787e76;
+  }
+  .field:disabled {
+    background: var(--muted);
+    cursor: not-allowed;
+  }
+  .field-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  .table-scroll {
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    border-radius: 0.875rem;
+  }
+  .data-table {
+    width: 100%;
+    text-align: left;
+    font-size: 0.875rem;
+    border-collapse: collapse;
+  }
+  .data-table th {
+    padding: 0.9rem 1rem;
+    background: var(--muted);
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .data-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .data-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  .data-table tbody tr:hover {
+    background: #fafbf8;
+  }
+  .notice {
+    border: 1px solid;
+    border-radius: 1rem;
+    padding: 1rem;
+    font-size: 0.875rem;
+  }
+  .notice-error {
+    border-color: #e8c8c0;
+    background: #fff3ef;
+    color: #982c1b;
+  }
+  .notice-success {
+    border-color: #c8ddc6;
+    background: #edf6e9;
+    color: #28552a;
+  }
+}
+@media (min-width: 640px) {
+  .page-shell {
+    padding: 2.75rem 1.5rem 5rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

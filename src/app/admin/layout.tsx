@@ -1,3 +1,5 @@
+import DashboardNav from "@/components/DashboardNav";
+import { ShieldCheck, LogOut } from "lucide-react";
 import Link from "next/link";
 import { logoutUser } from "@/app/account/actions";
 import { requireRole } from "@/lib/auth";
@@ -7,86 +9,41 @@ export default async function AdminLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const admin = await requireRole([
-    "ADMIN",
-  ]);
+  const admin = await requireRole(["ADMIN"]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* ADMIN HEADER */}
-      <header className="border-b bg-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-6 py-5 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <Link
-              href="/admin"
-              className="text-xl font-bold"
-            >
-              Admin Panel
-            </Link>
-
-            <p className="mt-1 text-xs text-gray-500">
-              เข้าสู่ระบบเป็น{" "}
-              <span className="font-medium text-black">
+    <div className="mx-auto grid max-w-[1536px] grid-cols-1 lg:grid-cols-[230px_minmax(0,1fr)]">
+      <aside className="min-w-0 border-b border-border bg-surface p-4 lg:border-b-0 lg:border-r">
+        <div className="lg:sticky lg:top-24">
+          <div className="mb-5 flex items-center gap-3 px-3">
+            <span className="rounded-xl bg-primary-soft p-2.5 text-primary">
+              <ShieldCheck aria-hidden="true" className="size-5" />
+            </span>
+            <div className="min-w-0">
+              <Link href="/admin" className="text-sm font-bold">
+                ผู้ดูแลระบบ
+              </Link>
+              <p className="truncate text-xs text-muted-foreground">
                 {admin.username}
-              </span>
-            </p>
+              </p>
+            </div>
           </div>
-
-          <nav className="flex flex-wrap gap-2">
-            <Link
-              href="/admin"
-              className="rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-black"
+          <DashboardNav mode="admin" />
+          <form
+            action={logoutUser}
+            className="mt-6 hidden border-t border-border pt-4 lg:block"
+          >
+            <button
+              type="submit"
+              className="btn btn-ghost w-full justify-start text-muted-foreground"
             >
-              Dashboard
-            </Link>
-
-            <Link
-              href="/admin/users"
-              className="rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-black"
-            >
-              Users
-            </Link>
-
-            <Link
-              href="/admin/shops"
-              className="rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-black"
-            >
-              Shops
-            </Link>
-
-            <Link
-              href="/admin/orders"
-              className="rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-black"
-            >
-              Orders
-            </Link>
-
-            <Link
-              href="/admin/shop-requests"
-              className="rounded-lg px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-black"
-            >
-              Shop Requests
-            </Link>
-
-            <Link
-              href="/"
-              className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium transition hover:bg-gray-100"
-            >
-              หน้าหลัก
-            </Link>
-            <form action={logoutUser}>
-  <button
-    type="submit"
-    className="rounded-lg border border-red-200 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50"
-  >
-    Logout
-  </button>
-</form>
-          </nav>
+              <LogOut aria-hidden="true" className="size-4" />
+              ออกจากระบบ
+            </button>
+          </form>
         </div>
-      </header>
-
-      {children}
+      </aside>
+      <div className="min-w-0">{children}</div>
     </div>
   );
 }
