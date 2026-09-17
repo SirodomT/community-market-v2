@@ -29,6 +29,27 @@
       "when": 1789523093598,
       "tag": "0003_fixed_zombie",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1789543381158,
+      "tag": "0004_gifted_alex_wilder",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1789544333914,
+      "tag": "0005_nosy_mysterio",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1789545944741,
+      "tag": "0006_ancient_post",
+      "breakpoints": true
     }
   ]
 }

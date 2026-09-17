@@ -6,8 +6,48 @@ import {
   timestamp,
   text,
   decimal,
+  uniqueIndex,
 } from "drizzle-orm/mysql-core";
+export const cartItems = mysqlTable(
+  "cart_items",
+  {
+    id: int("id")
+      .autoincrement()
+      .primaryKey(),
 
+    userId: int("user_id")
+      .notNull()
+      .references(() => users.id, {
+        onDelete: "cascade",
+      }),
+
+    productId: int("product_id")
+      .notNull()
+      .references(() => products.id, {
+        onDelete: "cascade",
+      }),
+
+    quantity: int("quantity")
+      .notNull()
+      .default(1),
+
+    createdAt: timestamp("created_at")
+      .defaultNow()
+      .notNull(),
+
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    uniqueIndex(
+      "cart_items_user_product_unique"
+    ).on(
+      table.userId,
+      table.productId
+    ),
+  ]
+);
 export const users = mysqlTable("users", {
   id: int("id").autoincrement().primaryKey(),
 
@@ -208,3 +248,149 @@ export const products = mysqlTable("products", {
     .defaultNow()
     .notNull(),
 });
+export const orders = mysqlTable("orders", {
+  id: int("id")
+    .autoincrement()
+    .primaryKey(),
+
+  userId: int("user_id")
+    .notNull()
+    .references(() => users.id, {
+      onDelete: "restrict",
+    }),
+
+  shippingName: varchar("shipping_name", {
+    length: 150,
+  }).notNull(),
+
+  shippingPhone: varchar("shipping_phone", {
+    length: 20,
+  }).notNull(),
+
+  shippingAddress: text("shipping_address")
+    .notNull(),
+
+  totalAmount: decimal("total_amount", {
+    precision: 10,
+    scale: 2,
+  }).notNull(),
+
+  status: mysqlEnum("status", [
+    "PENDING",
+    "CONFIRMED",
+    "SHIPPED",
+    "COMPLETED",
+    "CANCELLED",
+  ])
+    .notNull()
+    .default("PENDING"),
+
+  createdAt: timestamp("created_at")
+    .defaultNow()
+    .notNull(),
+
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .notNull(),
+});
+
+export const orderItems = mysqlTable("order_items", {
+  id: int("id")
+    .autoincrement()
+    .primaryKey(),
+
+  orderId: int("order_id")
+    .notNull()
+    .references(() => orders.id, {
+      onDelete: "cascade",
+    }),
+
+  productId: int("product_id")
+    .references(() => products.id, {
+      onDelete: "set null",
+    }),
+
+  shopId: int("shop_id")
+    .references(() => shops.id, {
+      onDelete: "set null",
+    }),
+
+  productName: varchar("product_name", {
+    length: 150,
+  }).notNull(),
+
+  shopName: varchar("shop_name", {
+    length: 150,
+  }).notNull(),
+
+  price: decimal("price", {
+    precision: 10,
+    scale: 2,
+  }).notNull(),
+
+  quantity: int("quantity")
+    .notNull(),
+
+  subtotal: decimal("subtotal", {
+    precision: 10,
+    scale: 2,
+  }).notNull(),
+
+  createdAt: timestamp("created_at")
+    .defaultNow()
+    .notNull(),
+});
+export const orderShops = mysqlTable(
+  "order_shops",
+  {
+    id: int("id")
+      .autoincrement()
+      .primaryKey(),
+
+    orderId: int("order_id")
+      .notNull()
+      .references(() => orders.id, {
+        onDelete: "cascade",
+      }),
+
+    shopId: int("shop_id")
+      .references(() => shops.id, {
+        onDelete: "set null",
+      }),
+
+    shopName: varchar("shop_name", {
+      length: 150,
+    }).notNull(),
+
+    subtotal: decimal("subtotal", {
+      precision: 10,
+      scale: 2,
+    }).notNull(),
+
+    status: mysqlEnum("status", [
+      "PENDING",
+      "CONFIRMED",
+      "SHIPPED",
+      "COMPLETED",
+      "CANCELLED",
+    ])
+      .notNull()
+      .default("PENDING"),
+
+    createdAt: timestamp("created_at")
+      .defaultNow()
+      .notNull(),
+
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    uniqueIndex(
+      "order_shops_order_shop_unique"
+    ).on(
+      table.orderId,
+      table.shopId
+    ),
+  ]
+);

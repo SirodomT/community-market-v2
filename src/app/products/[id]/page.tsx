@@ -2,18 +2,26 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { and, eq } from "drizzle-orm";
+import { addToCart } from "@/app/cart/actions";
 
 import { db } from "@/db";
 import { categories, products, shops } from "@/db/schema";
 
 export default async function ProductDetailPage({
   params,
+  searchParams,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{
+    id: string;
+  }>;
+
+  searchParams: Promise<{
+    error?: string;
+  }>;
 }) {
   const { id } = await params;
   const productId = Number(id);
-
+  const query = await searchParams;
   if (!/^\d+$/.test(id) || !Number.isSafeInteger(productId) || productId <= 0) {
     notFound();
   }
@@ -87,6 +95,66 @@ export default async function ProductDetailPage({
               <p className="mt-3 text-sm text-gray-500">
                 คงเหลือ {product.stock} ชิ้น
               </p>
+              {query.error === "stock" && (
+  <p className="mt-4 rounded-lg bg-red-100 p-3 text-sm text-red-700">
+    จำนวนสินค้าที่เลือกเกินจำนวนคงเหลือ
+  </p>
+)}
+
+{query.error === "quantity" && (
+  <p className="mt-4 rounded-lg bg-red-100 p-3 text-sm text-red-700">
+    จำนวนสินค้าไม่ถูกต้อง
+  </p>
+)}
+
+{query.error === "out-of-stock" && (
+  <p className="mt-4 rounded-lg bg-red-100 p-3 text-sm text-red-700">
+    สินค้านี้หมด
+  </p>
+)}
+
+{product.stock > 0 ? (
+  <form
+    action={addToCart}
+    className="mt-6 flex flex-wrap items-center gap-3"
+  >
+    <input
+      type="hidden"
+      name="productId"
+      value={productId}
+    />
+
+    <div>
+      <label
+        htmlFor="quantity"
+        className="mb-2 block text-sm font-medium"
+      >
+        จำนวน
+      </label>
+
+      <input
+        id="quantity"
+        name="quantity"
+        type="number"
+        defaultValue={1}
+        min={1}
+        max={product.stock}
+        className="w-24 rounded-lg border border-gray-300 px-3 py-3 text-center outline-none focus:border-black"
+      />
+    </div>
+
+    <button
+      type="submit"
+      className="mt-7 rounded-lg bg-black px-6 py-3 font-medium text-white transition hover:bg-gray-800"
+    >
+      เพิ่มลงตะกร้า
+    </button>
+  </form>
+) : (
+  <p className="mt-6 font-medium text-red-600">
+    สินค้าหมด
+  </p>
+)}
             </div>
           </div>
 
