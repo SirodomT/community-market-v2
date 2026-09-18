@@ -1,8 +1,6 @@
 "use server";
 
-import { randomUUID } from "crypto";
-import { mkdir, writeFile } from "fs/promises";
-import { join } from "path";
+import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE, uploadProductImage, removeUnusedProductImage } from "@/lib/product-images";
 
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
@@ -14,30 +12,6 @@ import {
   shops,
 } from "@/db/schema";
 import { requireRole } from "@/lib/auth";
-
-const ALLOWED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-];
-
-const MAX_IMAGE_SIZE = 900 * 1024; // 900 KB
-
-function getImageExtension(type: string) {
-  switch (type) {
-    case "image/jpeg":
-      return "jpg";
-
-    case "image/png":
-      return "png";
-
-    case "image/webp":
-      return "webp";
-
-    default:
-      return null;
-  }
-}
 
 export async function createProduct(formData: FormData) {
   const user = await requireRole(["SELLER"]);
@@ -143,39 +117,11 @@ export async function createProduct(formData: FormData) {
       redirect("/seller/products/new?error=image-size");
     }
 
-    const extension = getImageExtension(image.type);
-
-    if (!extension) {
-      redirect("/seller/products/new?error=image");
-    }
-
-    const fileName = `${randomUUID()}.${extension}`;
-
-    const uploadDirectory = join(
-      process.cwd(),
-      "public",
-      "uploads",
-      "products"
-    );
-
-    await mkdir(uploadDirectory, {
-      recursive: true,
-    });
-
-    const filePath = join(
-      uploadDirectory,
-      fileName
-    );
-
-    const bytes = await image.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    await writeFile(filePath, buffer);
-
-    imageUrl = `/uploads/products/${fileName}`;
+    imageUrl = await uploadProductImage(image, shop.id);
   }
 
-  await db.insert(products).values({
+  try {
+    await db.insert(products).values({
     shopId: shop.id,
     categoryId,
     name,
@@ -183,7 +129,11 @@ export async function createProduct(formData: FormData) {
     price: price.toFixed(2),
     stock,
     imageUrl,
-  });
+    });
+  } catch (error) {
+    await removeUnusedProductImage(imageUrl, shop.id);
+    throw error;
+  }
 
   redirect("/seller/products");
 }

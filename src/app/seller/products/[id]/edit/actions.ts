@@ -1,10 +1,8 @@
 "use server";
 
-import { randomUUID } from "crypto";
-import { mkdir, unlink, writeFile } from "fs/promises";
-import { basename, join } from "path";
+import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE, uploadProductImage, removeUnusedProductImage } from "@/lib/product-images";
 
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -15,53 +13,6 @@ import {
   shops,
 } from "@/db/schema";
 import { requireRole } from "@/lib/auth";
-
-const ALLOWED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-];
-
-const MAX_IMAGE_SIZE = 900 * 1024;
-
-function getImageExtension(type: string) {
-  switch (type) {
-    case "image/jpeg":
-      return "jpg";
-    case "image/png":
-      return "png";
-    case "image/webp":
-      return "webp";
-    default:
-      return null;
-  }
-}
-
-async function deleteProductImage(
-  imageUrl: string | null
-) {
-  if (!imageUrl) return;
-
-  if (!imageUrl.startsWith("/uploads/products/")) {
-    return;
-  }
-
-  const fileName = basename(imageUrl);
-
-  const filePath = join(
-    process.cwd(),
-    "public",
-    "uploads",
-    "products",
-    fileName
-  );
-
-  try {
-    await unlink(filePath);
-  } catch {
-    // ถ้าไฟล์ไม่มีอยู่แล้ว ไม่ต้องทำอะไร
-  }
-}
 
 export async function updateProduct(
   formData: FormData
@@ -230,90 +181,34 @@ export async function updateProduct(
       );
     }
 
-    const extension =
-      getImageExtension(newImage.type);
-
-    if (!extension) {
-      redirect(
-        `/seller/products/${productId}/edit?error=image`
-      );
-    }
-
-    const fileName =
-      `${randomUUID()}.${extension}`;
-
-    const uploadDirectory = join(
-      process.cwd(),
-      "public",
-      "uploads",
-      "products"
-    );
-
-    await mkdir(uploadDirectory, {
-      recursive: true,
-    });
-
-    const filePath = join(
-      uploadDirectory,
-      fileName
-    );
-
-    const bytes =
-      await newImage.arrayBuffer();
-
-    await writeFile(
-      filePath,
-      Buffer.from(bytes)
-    );
-
-    uploadedImageUrl =
-      `/uploads/products/${fileName}`;
+    uploadedImageUrl = await uploadProductImage(newImage, shopId);
 
     imageUrl = uploadedImageUrl;
   } else if (removeImage) {
     imageUrl = null;
   }
 
+  const changesImage = uploadedImageUrl !== null || removeImage;
   try {
-    await db
-      .update(products)
-      .set({
-        name,
-        description,
-        price: price.toFixed(2),
-        stock,
-        categoryId,
-        imageUrl,
-        updatedAt: new Date(),
-      })
-      .where(
-        and(
-          eq(products.id, productId),
-          eq(products.shopId, shopId)
-        )
-      );
+    const updated = await db.update(products).set({
+      name, description, price: price.toFixed(2), stock, categoryId,
+      ...(changesImage ? { imageUrl } : {}), updatedAt: new Date(),
+    }).where(and(
+      eq(products.id, productId), eq(products.shopId, shopId),
+      changesImage
+        ? (currentProduct.imageUrl === null ? isNull(products.imageUrl) : eq(products.imageUrl, currentProduct.imageUrl))
+        : undefined,
+    )).returning({ id: products.id });
+    if (updated.length !== 1) throw new Error("Product changed. Reload before replacing its image.");
   } catch (error) {
-    if (uploadedImageUrl) {
-      await deleteProductImage(
-        uploadedImageUrl
-      );
-    }
-
+    if (uploadedImageUrl) await removeUnusedProductImage(uploadedImageUrl, shopId);
     throw error;
   }
-
-  if (
-    currentProduct.imageUrl &&
-    currentProduct.imageUrl !== imageUrl
-  ) {
-    await deleteProductImage(
-      currentProduct.imageUrl
-    );
+  if (changesImage && currentProduct.imageUrl && currentProduct.imageUrl !== imageUrl) {
+    await removeUnusedProductImage(currentProduct.imageUrl, shopId);
   }
-
   revalidatePath("/products");
   revalidatePath(`/products/${productId}`);
   revalidatePath("/seller/products");
-
   redirect("/seller/products");
 }
