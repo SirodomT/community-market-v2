@@ -1,0 +1,1250 @@
+{
+  "inspectedAt": "2026-09-18T01:36:58.121Z",
+  "state": {
+    "tables": [
+      {
+        "name": "cart_items",
+        "rls": true
+      },
+      {
+        "name": "categories",
+        "rls": true
+      },
+      {
+        "name": "order_items",
+        "rls": true
+      },
+      {
+        "name": "order_shops",
+        "rls": true
+      },
+      {
+        "name": "orders",
+        "rls": true
+      },
+      {
+        "name": "products",
+        "rls": true
+      },
+      {
+        "name": "sessions",
+        "rls": true
+      },
+      {
+        "name": "shop_requests",
+        "rls": true
+      },
+      {
+        "name": "shops",
+        "rls": true
+      },
+      {
+        "name": "users",
+        "rls": true
+      }
+    ],
+    "columns": [
+      {
+        "table_name": "cart_items",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "cart_items",
+        "name": "user_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "cart_items",
+        "name": "product_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "cart_items",
+        "name": "quantity",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": "1"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "updated_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "categories",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "categories",
+        "name": "name",
+        "type": "character varying(100)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "categories",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "order_items",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "product_id",
+        "type": "integer",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "shop_id",
+        "type": "integer",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "product_name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "shop_name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "price",
+        "type": "numeric(10,2)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "quantity",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "subtotal",
+        "type": "numeric(10,2)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_shops",
+        "name": "shop_id",
+        "type": "integer",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_shops",
+        "name": "shop_name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_shops",
+        "name": "subtotal",
+        "type": "numeric(10,2)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_shops",
+        "name": "status",
+        "type": "order_status_enum",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'PENDING'::order_status_enum"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "updated_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "orders",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "orders",
+        "name": "user_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "orders",
+        "name": "shipping_name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "orders",
+        "name": "shipping_phone",
+        "type": "character varying(20)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "orders",
+        "name": "shipping_address",
+        "type": "text",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "orders",
+        "name": "total_amount",
+        "type": "numeric(10,2)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "orders",
+        "name": "status",
+        "type": "order_status_enum",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'PENDING'::order_status_enum"
+      },
+      {
+        "table_name": "orders",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "orders",
+        "name": "updated_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "products",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "shop_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "category_id",
+        "type": "integer",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "description",
+        "type": "text",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "price",
+        "type": "numeric(10,2)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "stock",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": "0"
+      },
+      {
+        "table_name": "products",
+        "name": "image_url",
+        "type": "character varying(500)",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "status",
+        "type": "active_status_enum",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'ACTIVE'::active_status_enum"
+      },
+      {
+        "table_name": "products",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "products",
+        "name": "updated_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "sessions",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "sessions",
+        "name": "user_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "sessions",
+        "name": "token_hash",
+        "type": "character varying(64)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "sessions",
+        "name": "expires_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "sessions",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "user_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "description",
+        "type": "text",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "phone",
+        "type": "character varying(20)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "address",
+        "type": "text",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "status",
+        "type": "shop_request_status_enum",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'PENDING'::shop_request_status_enum"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "review_note",
+        "type": "text",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "reviewed_at",
+        "type": "timestamp without time zone",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "owner_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "description",
+        "type": "text",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "phone",
+        "type": "character varying(20)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "address",
+        "type": "text",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "status",
+        "type": "active_status_enum",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'ACTIVE'::active_status_enum"
+      },
+      {
+        "table_name": "shops",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "shops",
+        "name": "updated_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "users",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "users",
+        "name": "username",
+        "type": "character varying(100)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "users",
+        "name": "email",
+        "type": "character varying(255)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "users",
+        "name": "password_hash",
+        "type": "character varying(255)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "users",
+        "name": "role",
+        "type": "user_role_enum",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'USER'::user_role_enum"
+      },
+      {
+        "table_name": "users",
+        "name": "status",
+        "type": "user_status_enum",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'ACTIVE'::user_status_enum"
+      },
+      {
+        "table_name": "users",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "users",
+        "name": "updated_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      }
+    ],
+    "constraints": [
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_product_id_products_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_user_id_users_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_user_product_unique",
+        "type": "u",
+        "valid": true,
+        "definition": "UNIQUE (user_id, product_id)"
+      },
+      {
+        "table_name": "categories",
+        "name": "categories_name_unique",
+        "type": "u",
+        "valid": true,
+        "definition": "UNIQUE (name)"
+      },
+      {
+        "table_name": "categories",
+        "name": "categories_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_order_id_orders_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_product_id_products_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_shop_id_shops_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (shop_id) REFERENCES shops(id) ON DELETE SET NULL"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_order_id_orders_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_order_shop_unique",
+        "type": "u",
+        "valid": true,
+        "definition": "UNIQUE (order_id, shop_id)"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_shop_id_shops_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (shop_id) REFERENCES shops(id) ON DELETE SET NULL"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_user_id_users_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES users(id)"
+      },
+      {
+        "table_name": "products",
+        "name": "products_category_id_categories_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL"
+      },
+      {
+        "table_name": "products",
+        "name": "products_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "products",
+        "name": "products_shop_id_shops_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (shop_id) REFERENCES shops(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_token_hash_unique",
+        "type": "u",
+        "valid": true,
+        "definition": "UNIQUE (token_hash)"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_user_id_users_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_user_id_users_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_owner_id_unique",
+        "type": "u",
+        "valid": true,
+        "definition": "UNIQUE (owner_id)"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_owner_id_users_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "users",
+        "name": "users_email_unique",
+        "type": "u",
+        "valid": true,
+        "definition": "UNIQUE (email)"
+      },
+      {
+        "table_name": "users",
+        "name": "users_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      }
+    ],
+    "indexes": [
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX cart_items_pkey ON public.cart_items USING btree (id)"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_product_id_products_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX cart_items_product_id_products_id_fk ON public.cart_items USING btree (product_id)"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_user_product_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX cart_items_user_product_unique ON public.cart_items USING btree (user_id, product_id)"
+      },
+      {
+        "table_name": "categories",
+        "name": "categories_name_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX categories_name_unique ON public.categories USING btree (name)"
+      },
+      {
+        "table_name": "categories",
+        "name": "categories_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX categories_pkey ON public.categories USING btree (id)"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_order_id_orders_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX order_items_order_id_orders_id_fk ON public.order_items USING btree (order_id)"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX order_items_pkey ON public.order_items USING btree (id)"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_product_id_products_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX order_items_product_id_products_id_fk ON public.order_items USING btree (product_id)"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_shop_id_shops_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX order_items_shop_id_shops_id_fk ON public.order_items USING btree (shop_id)"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_order_shop_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX order_shops_order_shop_unique ON public.order_shops USING btree (order_id, shop_id)"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX order_shops_pkey ON public.order_shops USING btree (id)"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_shop_id_shops_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX order_shops_shop_id_shops_id_fk ON public.order_shops USING btree (shop_id)"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX orders_pkey ON public.orders USING btree (id)"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_user_id_users_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX orders_user_id_users_id_fk ON public.orders USING btree (user_id)"
+      },
+      {
+        "table_name": "products",
+        "name": "products_category_id_categories_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX products_category_id_categories_id_fk ON public.products USING btree (category_id)"
+      },
+      {
+        "table_name": "products",
+        "name": "products_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX products_pkey ON public.products USING btree (id)"
+      },
+      {
+        "table_name": "products",
+        "name": "products_shop_id_shops_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX products_shop_id_shops_id_fk ON public.products USING btree (shop_id)"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX sessions_pkey ON public.sessions USING btree (id)"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_token_hash_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX sessions_token_hash_unique ON public.sessions USING btree (token_hash)"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_user_id_users_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX sessions_user_id_users_id_fk ON public.sessions USING btree (user_id)"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX shop_requests_pkey ON public.shop_requests USING btree (id)"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_user_id_users_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX shop_requests_user_id_users_id_fk ON public.shop_requests USING btree (user_id)"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_owner_id_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX shops_owner_id_unique ON public.shops USING btree (owner_id)"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX shops_pkey ON public.shops USING btree (id)"
+      },
+      {
+        "table_name": "users",
+        "name": "users_email_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX users_email_unique ON public.users USING btree (email)"
+      },
+      {
+        "table_name": "users",
+        "name": "users_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX users_pkey ON public.users USING btree (id)"
+      }
+    ],
+    "enums": [
+      {
+        "name": "active_status_enum",
+        "label": "ACTIVE"
+      },
+      {
+        "name": "active_status_enum",
+        "label": "INACTIVE"
+      },
+      {
+        "name": "order_status_enum",
+        "label": "PENDING"
+      },
+      {
+        "name": "order_status_enum",
+        "label": "CONFIRMED"
+      },
+      {
+        "name": "order_status_enum",
+        "label": "SHIPPED"
+      },
+      {
+        "name": "order_status_enum",
+        "label": "COMPLETED"
+      },
+      {
+        "name": "order_status_enum",
+        "label": "CANCELLED"
+      },
+      {
+        "name": "shop_request_status_enum",
+        "label": "PENDING"
+      },
+      {
+        "name": "shop_request_status_enum",
+        "label": "APPROVED"
+      },
+      {
+        "name": "shop_request_status_enum",
+        "label": "REJECTED"
+      },
+      {
+        "name": "user_role_enum",
+        "label": "USER"
+      },
+      {
+        "name": "user_role_enum",
+        "label": "SELLER"
+      },
+      {
+        "name": "user_role_enum",
+        "label": "ADMIN"
+      },
+      {
+        "name": "user_status_enum",
+        "label": "ACTIVE"
+      },
+      {
+        "name": "user_status_enum",
+        "label": "SUSPENDED"
+      }
+    ],
+    "policies": [],
+    "authTriggers": [
+      {
+        "tgname": "RI_ConstraintTrigger_a_16694",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_16694\" AFTER DELETE ON auth.users FROM auth.identities NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_16695",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_16695\" AFTER UPDATE ON auth.users FROM auth.identities NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_16722",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_16722\" AFTER DELETE ON auth.users FROM auth.sessions NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_16723",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_16723\" AFTER UPDATE ON auth.users FROM auth.sessions NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_16759",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_16759\" AFTER DELETE ON auth.users FROM auth.mfa_factors NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_16760",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_16760\" AFTER UPDATE ON auth.users FROM auth.mfa_factors NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_16950",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_16950\" AFTER DELETE ON auth.users FROM auth.one_time_tokens NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_16951",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_16951\" AFTER UPDATE ON auth.users FROM auth.one_time_tokens NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_17029",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17029\" AFTER DELETE ON auth.users FROM auth.oauth_authorizations NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_17030",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17030\" AFTER UPDATE ON auth.users FROM auth.oauth_authorizations NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_17048",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17048\" AFTER DELETE ON auth.users FROM auth.oauth_consents NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_17049",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17049\" AFTER UPDATE ON auth.users FROM auth.oauth_consents NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_17143",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17143\" AFTER DELETE ON auth.users FROM auth.webauthn_credentials NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_17144",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17144\" AFTER UPDATE ON auth.users FROM auth.webauthn_credentials NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_17160",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17160\" AFTER DELETE ON auth.users FROM auth.webauthn_challenges NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_17161",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17161\" AFTER UPDATE ON auth.users FROM auth.webauthn_challenges NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_17185",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17185\" AFTER DELETE ON auth.users FROM auth.scim_users NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_setnull_del\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_17186",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17186\" AFTER UPDATE ON auth.users FROM auth.scim_users NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_17233",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17233\" AFTER DELETE ON auth.users FROM auth.mfa_recovery_code_sets NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_cascade_del\"()"
+      },
+      {
+        "tgname": "RI_ConstraintTrigger_a_17234",
+        "definition": "CREATE CONSTRAINT TRIGGER \"RI_ConstraintTrigger_a_17234\" AFTER UPDATE ON auth.users FROM auth.mfa_recovery_code_sets NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE FUNCTION \"RI_FKey_noaction_upd\"()"
+      }
+    ],
+    "journal": [
+      {
+        "journal": null
+      }
+    ],
+    "rows": [
+      {
+        "table": "cart_items",
+        "count": 1,
+        "sha256": "39bf8677d448d639e9a5fcc7e70b64c489e7c203e769fd38f3a04960eab4c49b"
+      },
+      {
+        "table": "categories",
+        "count": 6,
+        "sha256": "ff9ea8873c66db46874fdbbb405dff2a404987c6f25292a21e31e8c25362f29d"
+      },
+      {
+        "table": "order_items",
+        "count": 14,
+        "sha256": "3932662cf89012c5c54b5722d495528450c127e4db5a0dacf54f3c8a72e0bf38"
+      },
+      {
+        "table": "order_shops",
+        "count": 11,
+        "sha256": "739e5bcbc0ccd1bf30fa07d3dd4683bfb99f0ab3e7002e7f39bb0533d69b72cf"
+      },
+      {
+        "table": "orders",
+        "count": 13,
+        "sha256": "2468d84ae5c34198218992152a36ea5b705c8d384c2c8003d98d5c6ada190d90"
+      },
+      {
+        "table": "products",
+        "count": 5,
+        "sha256": "7ae7c20838fd9714aa0d9f3773a9c6506622cc02497ccc561816a3ed0a87f9ac"
+      },
+      {
+        "table": "sessions",
+        "count": 2,
+        "sha256": "e471a46953392347ccd55e6e299699e448dba9efee00db88ab49b942899adc46"
+      },
+      {
+        "table": "shop_requests",
+        "count": 3,
+        "sha256": "c86dc1d4fa0dcdf942219f36a7cacede76080c92cea8d58d6cc3d235f1c4b195"
+      },
+      {
+        "table": "shops",
+        "count": 2,
+        "sha256": "c8dd03cff2ad0c9b74205ae597de2d19f74007f5723b4baedca603335ce022fe"
+      },
+      {
+        "table": "users",
+        "count": 4,
+        "sha256": "e452baaf44201fd7e078895aeb79bbee96409e98f934cc719b9b50ae847e60ad"
+      }
+    ],
+    "duplicates": {
+      "emails": 0,
+      "categories": 0
+    }
+  }
+}

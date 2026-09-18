@@ -1,0 +1,75 @@
+{
+  "testedAt": "2026-09-18T06:33:29.762Z",
+  "method": "HTTP server-action form submissions and protected route GETs; no marketplace mutations",
+  "results": [
+    {
+      "test": "ADMIN: password login",
+      "result": "PASS"
+    },
+    {
+      "test": "ADMIN: protected account access",
+      "result": "PASS",
+      "elapsedMs": 1376
+    },
+    {
+      "test": "ADMIN: account displays expected email",
+      "result": "PASS"
+    },
+    {
+      "test": "ADMIN: UUID resolves to integer ID 2, correct role and ACTIVE status",
+      "result": "PASS"
+    },
+    {
+      "test": "ADMIN: /admin authorized",
+      "result": "PASS",
+      "elapsedMs": 2454
+    },
+    {
+      "test": "ADMIN: /admin/users authorized",
+      "result": "PASS",
+      "elapsedMs": 1219
+    },
+    {
+      "test": "ADMIN: /admin/shops authorized",
+      "result": "PASS",
+      "elapsedMs": 1264
+    },
+    {
+      "test": "ADMIN: /admin/orders authorized",
+      "result": "PASS",
+      "elapsedMs": 1413
+    },
+    {
+      "test": "ADMIN: logout",
+      "result": "PASS"
+    },
+    {
+      "test": "ADMIN: logged-out /account denied",
+      "result": "PASS"
+    },
+    {
+      "test": "ADMIN: logged-out /seller denied",
+      "result": "PASS"
+    },
+    {
+      "test": "ADMIN: logged-out /admin denied",
+      "result": "PASS"
+    },
+    {
+      "test": "Wrong password rejected",
+      "result": "PASS"
+    },
+    {
+      "test": "After wrong password: /account denied",
+      "result": "PASS"
+    },
+    {
+      "test": "After wrong password: /seller denied",
+      "result": "PASS"
+    },
+    {
+      "test": "After wrong password: /admin denied",
+      "result": "PASS"
+    }
+  ]
+}

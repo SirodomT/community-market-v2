@@ -1,4 +1,10 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a Next.js App Router / TypeScript marketplace using Supabase Auth and
+Drizzle with Supabase PostgreSQL. Phase 2 code and migrations are prepared; live
+schema application and data movement require approval.
+
+Read [the PostgreSQL migration plan](docs/supabase-phase2.md) before configuring or
+deploying. Copy variable names from `.env.example`; never restore a MySQL/TiDB URL.
+Original MySQL definitions are preserved in `legacy/mysql/` and `drizzle/`.
 
 ## Getting Started
 

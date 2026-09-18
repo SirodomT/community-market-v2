@@ -1,0 +1,8 @@
+import { int, mysqlTable, varchar } from "drizzle-orm/mysql-core";
+import { users } from "./schema";
+
+// Auth-only bridge: marketplace foreign keys continue to use users.id.
+export const authIdentities = mysqlTable("auth_identities", {
+  supabaseUserId: varchar("supabase_user_id", { length: 36 }).primaryKey(),
+  userId: int("user_id").notNull().unique().references(() => users.id, { onDelete: "cascade" }),
+});

@@ -13,6 +13,11 @@ export default async function LoginPage({
   }>;
 }) {
   const params = await searchParams;
+  const authErrors: Record<string, string> = {
+    configuration: "ระบบเข้าสู่ระบบยังไม่พร้อมใช้งาน กรุณาติดต่อผู้ดูแลระบบ",
+    confirmation: "กรุณายืนยันอีเมลก่อนเข้าสู่ระบบ หรือลองขอลิงก์ยืนยันใหม่",
+    unlinked: "บัญชีเดิมยังไม่ได้เชื่อมต่อ กรุณาติดต่อผู้ดูแลระบบ",
+  };
 
   return (
     <main className="page-shell flex items-center justify-center">
@@ -59,6 +64,11 @@ export default async function LoginPage({
           </p>
         )}
 
+        {params.error && authErrors[params.error] && (
+          <p role="alert" className="mt-4 rounded-lg bg-red-100 p-3 text-center text-red-700">
+            {authErrors[params.error]}
+          </p>
+        )}
         <form action={loginUser} className="mt-8 space-y-5">
           <div>
             <label htmlFor="email" className="field-label">

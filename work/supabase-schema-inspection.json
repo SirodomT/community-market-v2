@@ -1,0 +1,2859 @@
+{
+  "inspectedAt": "2026-09-18T01:23:10.620Z",
+  "history": [],
+  "actual": {
+    "tables": [
+      {
+        "name": "cart_items",
+        "rls": true
+      },
+      {
+        "name": "categories",
+        "rls": true
+      },
+      {
+        "name": "order_items",
+        "rls": true
+      },
+      {
+        "name": "order_shops",
+        "rls": true
+      },
+      {
+        "name": "orders",
+        "rls": true
+      },
+      {
+        "name": "products",
+        "rls": true
+      },
+      {
+        "name": "sessions",
+        "rls": true
+      },
+      {
+        "name": "shop_requests",
+        "rls": true
+      },
+      {
+        "name": "shops",
+        "rls": true
+      },
+      {
+        "name": "users",
+        "rls": true
+      }
+    ],
+    "columns": [
+      {
+        "table_name": "cart_items",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "cart_items",
+        "name": "user_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "cart_items",
+        "name": "product_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "cart_items",
+        "name": "quantity",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": "1"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "updated_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "categories",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "categories",
+        "name": "name",
+        "type": "character varying(100)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "categories",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "order_items",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "product_id",
+        "type": "integer",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "shop_id",
+        "type": "integer",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "product_name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "shop_name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "price",
+        "type": "numeric(10,2)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "quantity",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "subtotal",
+        "type": "numeric(10,2)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_shops",
+        "name": "shop_id",
+        "type": "integer",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_shops",
+        "name": "shop_name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_shops",
+        "name": "subtotal",
+        "type": "numeric(10,2)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_shops",
+        "name": "status",
+        "type": "order_status_enum",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'PENDING'::order_status_enum"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "updated_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "orders",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "orders",
+        "name": "user_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "orders",
+        "name": "shipping_name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "orders",
+        "name": "shipping_phone",
+        "type": "character varying(20)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "orders",
+        "name": "shipping_address",
+        "type": "text",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "orders",
+        "name": "total_amount",
+        "type": "numeric(10,2)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "orders",
+        "name": "status",
+        "type": "order_status_enum",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'PENDING'::order_status_enum"
+      },
+      {
+        "table_name": "orders",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "orders",
+        "name": "updated_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "products",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "shop_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "category_id",
+        "type": "integer",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "description",
+        "type": "text",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "price",
+        "type": "numeric(10,2)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "stock",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": "0"
+      },
+      {
+        "table_name": "products",
+        "name": "image_url",
+        "type": "character varying(500)",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "status",
+        "type": "active_status_enum",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'ACTIVE'::active_status_enum"
+      },
+      {
+        "table_name": "products",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "products",
+        "name": "updated_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "sessions",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "sessions",
+        "name": "user_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "sessions",
+        "name": "token_hash",
+        "type": "character varying(64)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "sessions",
+        "name": "expires_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "sessions",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "user_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "description",
+        "type": "text",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "phone",
+        "type": "character varying(20)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "address",
+        "type": "text",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "status",
+        "type": "shop_request_status_enum",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'PENDING'::shop_request_status_enum"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "review_note",
+        "type": "text",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "reviewed_at",
+        "type": "timestamp without time zone",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "owner_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "description",
+        "type": "text",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "phone",
+        "type": "character varying(20)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "address",
+        "type": "text",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "status",
+        "type": "active_status_enum",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'ACTIVE'::active_status_enum"
+      },
+      {
+        "table_name": "shops",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "shops",
+        "name": "updated_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "users",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "users",
+        "name": "username",
+        "type": "character varying(100)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "users",
+        "name": "email",
+        "type": "character varying(255)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "users",
+        "name": "password_hash",
+        "type": "character varying(255)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "users",
+        "name": "role",
+        "type": "user_role_enum",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'USER'::user_role_enum"
+      },
+      {
+        "table_name": "users",
+        "name": "status",
+        "type": "user_status_enum",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'ACTIVE'::user_status_enum"
+      },
+      {
+        "table_name": "users",
+        "name": "created_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      },
+      {
+        "table_name": "users",
+        "name": "updated_at",
+        "type": "timestamp without time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "CURRENT_TIMESTAMP"
+      }
+    ],
+    "constraints": [
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_product_id_products_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_user_id_users_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_user_product_unique",
+        "type": "u",
+        "valid": true,
+        "definition": "UNIQUE (user_id, product_id)"
+      },
+      {
+        "table_name": "categories",
+        "name": "categories_name_unique",
+        "type": "u",
+        "valid": true,
+        "definition": "UNIQUE (name)"
+      },
+      {
+        "table_name": "categories",
+        "name": "categories_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_order_id_orders_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_product_id_products_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_shop_id_shops_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (shop_id) REFERENCES shops(id) ON DELETE SET NULL"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_order_id_orders_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_order_shop_unique",
+        "type": "u",
+        "valid": true,
+        "definition": "UNIQUE (order_id, shop_id)"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_shop_id_shops_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (shop_id) REFERENCES shops(id) ON DELETE SET NULL"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_user_id_users_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES users(id)"
+      },
+      {
+        "table_name": "products",
+        "name": "products_category_id_categories_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL"
+      },
+      {
+        "table_name": "products",
+        "name": "products_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "products",
+        "name": "products_shop_id_shops_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (shop_id) REFERENCES shops(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_token_hash_unique",
+        "type": "u",
+        "valid": true,
+        "definition": "UNIQUE (token_hash)"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_user_id_users_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_user_id_users_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_owner_id_unique",
+        "type": "u",
+        "valid": true,
+        "definition": "UNIQUE (owner_id)"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_owner_id_users_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "users",
+        "name": "users_email_unique",
+        "type": "u",
+        "valid": true,
+        "definition": "UNIQUE (email)"
+      },
+      {
+        "table_name": "users",
+        "name": "users_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      }
+    ],
+    "indexes": [
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX cart_items_pkey ON public.cart_items USING btree (id)"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_product_id_products_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX cart_items_product_id_products_id_fk ON public.cart_items USING btree (product_id)"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_user_product_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX cart_items_user_product_unique ON public.cart_items USING btree (user_id, product_id)"
+      },
+      {
+        "table_name": "categories",
+        "name": "categories_name_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX categories_name_unique ON public.categories USING btree (name)"
+      },
+      {
+        "table_name": "categories",
+        "name": "categories_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX categories_pkey ON public.categories USING btree (id)"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_order_id_orders_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX order_items_order_id_orders_id_fk ON public.order_items USING btree (order_id)"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX order_items_pkey ON public.order_items USING btree (id)"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_product_id_products_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX order_items_product_id_products_id_fk ON public.order_items USING btree (product_id)"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_shop_id_shops_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX order_items_shop_id_shops_id_fk ON public.order_items USING btree (shop_id)"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_order_shop_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX order_shops_order_shop_unique ON public.order_shops USING btree (order_id, shop_id)"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX order_shops_pkey ON public.order_shops USING btree (id)"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_shop_id_shops_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX order_shops_shop_id_shops_id_fk ON public.order_shops USING btree (shop_id)"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX orders_pkey ON public.orders USING btree (id)"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_user_id_users_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX orders_user_id_users_id_fk ON public.orders USING btree (user_id)"
+      },
+      {
+        "table_name": "products",
+        "name": "products_category_id_categories_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX products_category_id_categories_id_fk ON public.products USING btree (category_id)"
+      },
+      {
+        "table_name": "products",
+        "name": "products_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX products_pkey ON public.products USING btree (id)"
+      },
+      {
+        "table_name": "products",
+        "name": "products_shop_id_shops_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX products_shop_id_shops_id_fk ON public.products USING btree (shop_id)"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX sessions_pkey ON public.sessions USING btree (id)"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_token_hash_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX sessions_token_hash_unique ON public.sessions USING btree (token_hash)"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_user_id_users_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX sessions_user_id_users_id_fk ON public.sessions USING btree (user_id)"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX shop_requests_pkey ON public.shop_requests USING btree (id)"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_user_id_users_id_fk",
+        "valid": true,
+        "definition": "CREATE INDEX shop_requests_user_id_users_id_fk ON public.shop_requests USING btree (user_id)"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_owner_id_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX shops_owner_id_unique ON public.shops USING btree (owner_id)"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX shops_pkey ON public.shops USING btree (id)"
+      },
+      {
+        "table_name": "users",
+        "name": "users_email_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX users_email_unique ON public.users USING btree (email)"
+      },
+      {
+        "table_name": "users",
+        "name": "users_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX users_pkey ON public.users USING btree (id)"
+      }
+    ],
+    "enums": [],
+    "policies": []
+  },
+  "expected": {
+    "tables": [
+      {
+        "name": "auth_identities",
+        "rls": true
+      },
+      {
+        "name": "cart_items",
+        "rls": true
+      },
+      {
+        "name": "categories",
+        "rls": true
+      },
+      {
+        "name": "order_items",
+        "rls": true
+      },
+      {
+        "name": "order_shops",
+        "rls": true
+      },
+      {
+        "name": "orders",
+        "rls": true
+      },
+      {
+        "name": "products",
+        "rls": true
+      },
+      {
+        "name": "sessions",
+        "rls": true
+      },
+      {
+        "name": "shop_requests",
+        "rls": true
+      },
+      {
+        "name": "shops",
+        "rls": true
+      },
+      {
+        "name": "users",
+        "rls": true
+      }
+    ],
+    "columns": [
+      {
+        "table_name": "auth_identities",
+        "name": "supabase_user_id",
+        "type": "uuid",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "auth_identities",
+        "name": "user_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "cart_items",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "cart_items",
+        "name": "user_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "cart_items",
+        "name": "product_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "cart_items",
+        "name": "quantity",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": "1"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "created_at",
+        "type": "timestamp(3) with time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "now()"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "updated_at",
+        "type": "timestamp(3) with time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "now()"
+      },
+      {
+        "table_name": "categories",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "categories",
+        "name": "name",
+        "type": "character varying(100)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "categories",
+        "name": "created_at",
+        "type": "timestamp(3) with time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "now()"
+      },
+      {
+        "table_name": "order_items",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "product_id",
+        "type": "integer",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "shop_id",
+        "type": "integer",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "product_name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "shop_name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "price",
+        "type": "numeric(10,2)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "quantity",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "subtotal",
+        "type": "numeric(10,2)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_items",
+        "name": "created_at",
+        "type": "timestamp(3) with time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "now()"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_shops",
+        "name": "shop_id",
+        "type": "integer",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_shops",
+        "name": "shop_name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_shops",
+        "name": "subtotal",
+        "type": "numeric(10,2)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "order_shops",
+        "name": "status",
+        "type": "order_shop_status",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'PENDING'::order_shop_status"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "created_at",
+        "type": "timestamp(3) with time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "now()"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "updated_at",
+        "type": "timestamp(3) with time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "now()"
+      },
+      {
+        "table_name": "orders",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "orders",
+        "name": "user_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "orders",
+        "name": "shipping_name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "orders",
+        "name": "shipping_phone",
+        "type": "character varying(20)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "orders",
+        "name": "shipping_address",
+        "type": "text",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "orders",
+        "name": "total_amount",
+        "type": "numeric(10,2)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "orders",
+        "name": "status",
+        "type": "order_status",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'PENDING'::order_status"
+      },
+      {
+        "table_name": "orders",
+        "name": "created_at",
+        "type": "timestamp(3) with time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "now()"
+      },
+      {
+        "table_name": "orders",
+        "name": "updated_at",
+        "type": "timestamp(3) with time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "now()"
+      },
+      {
+        "table_name": "products",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "shop_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "category_id",
+        "type": "integer",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "description",
+        "type": "text",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "price",
+        "type": "numeric(10,2)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "stock",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": "0"
+      },
+      {
+        "table_name": "products",
+        "name": "image_url",
+        "type": "character varying(500)",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "products",
+        "name": "status",
+        "type": "product_status",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'ACTIVE'::product_status"
+      },
+      {
+        "table_name": "products",
+        "name": "created_at",
+        "type": "timestamp(3) with time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "now()"
+      },
+      {
+        "table_name": "products",
+        "name": "updated_at",
+        "type": "timestamp(3) with time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "now()"
+      },
+      {
+        "table_name": "sessions",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "sessions",
+        "name": "user_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "sessions",
+        "name": "token_hash",
+        "type": "character varying(64)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "sessions",
+        "name": "expires_at",
+        "type": "timestamp(3) with time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "sessions",
+        "name": "created_at",
+        "type": "timestamp(3) with time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "now()"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "user_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "description",
+        "type": "text",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "phone",
+        "type": "character varying(20)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "address",
+        "type": "text",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "status",
+        "type": "shop_request_status",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'PENDING'::shop_request_status"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "review_note",
+        "type": "text",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "created_at",
+        "type": "timestamp(3) with time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "now()"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "reviewed_at",
+        "type": "timestamp(3) with time zone",
+        "not_null": false,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "owner_id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "name",
+        "type": "character varying(150)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "description",
+        "type": "text",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "phone",
+        "type": "character varying(20)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "address",
+        "type": "text",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "shops",
+        "name": "status",
+        "type": "shop_status",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'ACTIVE'::shop_status"
+      },
+      {
+        "table_name": "shops",
+        "name": "created_at",
+        "type": "timestamp(3) with time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "now()"
+      },
+      {
+        "table_name": "shops",
+        "name": "updated_at",
+        "type": "timestamp(3) with time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "now()"
+      },
+      {
+        "table_name": "users",
+        "name": "id",
+        "type": "integer",
+        "not_null": true,
+        "identity": "d",
+        "default_value": null
+      },
+      {
+        "table_name": "users",
+        "name": "username",
+        "type": "character varying(100)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "users",
+        "name": "email",
+        "type": "character varying(255)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "users",
+        "name": "password_hash",
+        "type": "character varying(255)",
+        "not_null": true,
+        "identity": "",
+        "default_value": null
+      },
+      {
+        "table_name": "users",
+        "name": "role",
+        "type": "user_role",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'USER'::user_role"
+      },
+      {
+        "table_name": "users",
+        "name": "status",
+        "type": "user_status",
+        "not_null": true,
+        "identity": "",
+        "default_value": "'ACTIVE'::user_status"
+      },
+      {
+        "table_name": "users",
+        "name": "created_at",
+        "type": "timestamp(3) with time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "now()"
+      },
+      {
+        "table_name": "users",
+        "name": "updated_at",
+        "type": "timestamp(3) with time zone",
+        "not_null": true,
+        "identity": "",
+        "default_value": "now()"
+      }
+    ],
+    "constraints": [
+      {
+        "table_name": "auth_identities",
+        "name": "auth_identities_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (supabase_user_id)"
+      },
+      {
+        "table_name": "auth_identities",
+        "name": "auth_identities_supabase_user_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL supabase_user_id"
+      },
+      {
+        "table_name": "auth_identities",
+        "name": "auth_identities_supabase_user_id_users_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (supabase_user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "auth_identities",
+        "name": "auth_identities_user_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL user_id"
+      },
+      {
+        "table_name": "auth_identities",
+        "name": "auth_identities_user_id_unique",
+        "type": "u",
+        "valid": true,
+        "definition": "UNIQUE (user_id)"
+      },
+      {
+        "table_name": "auth_identities",
+        "name": "auth_identities_user_id_users_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_created_at_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL created_at"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL id"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_product_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL product_id"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_product_id_products_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_quantity_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL quantity"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_updated_at_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL updated_at"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_user_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL user_id"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_user_id_users_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "categories",
+        "name": "categories_created_at_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL created_at"
+      },
+      {
+        "table_name": "categories",
+        "name": "categories_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL id"
+      },
+      {
+        "table_name": "categories",
+        "name": "categories_name_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL name"
+      },
+      {
+        "table_name": "categories",
+        "name": "categories_name_unique",
+        "type": "u",
+        "valid": true,
+        "definition": "UNIQUE (name)"
+      },
+      {
+        "table_name": "categories",
+        "name": "categories_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_created_at_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL created_at"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL id"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_order_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL order_id"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_order_id_orders_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_price_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL price"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_product_id_products_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_product_name_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL product_name"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_quantity_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL quantity"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_shop_id_shops_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (shop_id) REFERENCES shops(id) ON DELETE SET NULL"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_shop_name_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL shop_name"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_subtotal_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL subtotal"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_created_at_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL created_at"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL id"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_order_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL order_id"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_order_id_orders_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_shop_id_shops_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (shop_id) REFERENCES shops(id) ON DELETE SET NULL"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_shop_name_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL shop_name"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_status_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL status"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_subtotal_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL subtotal"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_updated_at_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL updated_at"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_created_at_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL created_at"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL id"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_shipping_address_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL shipping_address"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_shipping_name_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL shipping_name"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_shipping_phone_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL shipping_phone"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_status_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL status"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_total_amount_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL total_amount"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_updated_at_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL updated_at"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_user_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL user_id"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_user_id_users_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT"
+      },
+      {
+        "table_name": "products",
+        "name": "products_category_id_categories_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL"
+      },
+      {
+        "table_name": "products",
+        "name": "products_created_at_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL created_at"
+      },
+      {
+        "table_name": "products",
+        "name": "products_description_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL description"
+      },
+      {
+        "table_name": "products",
+        "name": "products_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL id"
+      },
+      {
+        "table_name": "products",
+        "name": "products_name_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL name"
+      },
+      {
+        "table_name": "products",
+        "name": "products_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "products",
+        "name": "products_price_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL price"
+      },
+      {
+        "table_name": "products",
+        "name": "products_shop_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL shop_id"
+      },
+      {
+        "table_name": "products",
+        "name": "products_shop_id_shops_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (shop_id) REFERENCES shops(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "products",
+        "name": "products_status_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL status"
+      },
+      {
+        "table_name": "products",
+        "name": "products_stock_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL stock"
+      },
+      {
+        "table_name": "products",
+        "name": "products_updated_at_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL updated_at"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_created_at_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL created_at"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_expires_at_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL expires_at"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL id"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_token_hash_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL token_hash"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_token_hash_unique",
+        "type": "u",
+        "valid": true,
+        "definition": "UNIQUE (token_hash)"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_user_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL user_id"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_user_id_users_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_address_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL address"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_created_at_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL created_at"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_description_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL description"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL id"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_phone_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL phone"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_shop_name_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL shop_name"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_status_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL status"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_user_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL user_id"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_user_id_users_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_address_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL address"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_created_at_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL created_at"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_description_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL description"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL id"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_name_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL name"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_owner_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL owner_id"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_owner_id_unique",
+        "type": "u",
+        "valid": true,
+        "definition": "UNIQUE (owner_id)"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_owner_id_users_id_fk",
+        "type": "f",
+        "valid": true,
+        "definition": "FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_phone_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL phone"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_status_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL status"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_updated_at_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL updated_at"
+      },
+      {
+        "table_name": "users",
+        "name": "users_created_at_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL created_at"
+      },
+      {
+        "table_name": "users",
+        "name": "users_email_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL email"
+      },
+      {
+        "table_name": "users",
+        "name": "users_email_unique",
+        "type": "u",
+        "valid": true,
+        "definition": "UNIQUE (email)"
+      },
+      {
+        "table_name": "users",
+        "name": "users_id_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL id"
+      },
+      {
+        "table_name": "users",
+        "name": "users_password_hash_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL password_hash"
+      },
+      {
+        "table_name": "users",
+        "name": "users_pkey",
+        "type": "p",
+        "valid": true,
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "table_name": "users",
+        "name": "users_role_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL role"
+      },
+      {
+        "table_name": "users",
+        "name": "users_status_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL status"
+      },
+      {
+        "table_name": "users",
+        "name": "users_updated_at_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL updated_at"
+      },
+      {
+        "table_name": "users",
+        "name": "users_username_not_null",
+        "type": "n",
+        "valid": true,
+        "definition": "NOT NULL username"
+      }
+    ],
+    "indexes": [
+      {
+        "table_name": "auth_identities",
+        "name": "auth_identities_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX auth_identities_pkey ON public.auth_identities USING btree (supabase_user_id)"
+      },
+      {
+        "table_name": "auth_identities",
+        "name": "auth_identities_user_id_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX auth_identities_user_id_unique ON public.auth_identities USING btree (user_id)"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX cart_items_pkey ON public.cart_items USING btree (id)"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_product_id_idx",
+        "valid": true,
+        "definition": "CREATE INDEX cart_items_product_id_idx ON public.cart_items USING btree (product_id)"
+      },
+      {
+        "table_name": "cart_items",
+        "name": "cart_items_user_product_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX cart_items_user_product_unique ON public.cart_items USING btree (user_id, product_id)"
+      },
+      {
+        "table_name": "categories",
+        "name": "categories_name_lower_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX categories_name_lower_unique ON public.categories USING btree (lower((name)::text))"
+      },
+      {
+        "table_name": "categories",
+        "name": "categories_name_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX categories_name_unique ON public.categories USING btree (name)"
+      },
+      {
+        "table_name": "categories",
+        "name": "categories_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX categories_pkey ON public.categories USING btree (id)"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_order_id_idx",
+        "valid": true,
+        "definition": "CREATE INDEX order_items_order_id_idx ON public.order_items USING btree (order_id)"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX order_items_pkey ON public.order_items USING btree (id)"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_product_id_idx",
+        "valid": true,
+        "definition": "CREATE INDEX order_items_product_id_idx ON public.order_items USING btree (product_id)"
+      },
+      {
+        "table_name": "order_items",
+        "name": "order_items_shop_id_idx",
+        "valid": true,
+        "definition": "CREATE INDEX order_items_shop_id_idx ON public.order_items USING btree (shop_id)"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_order_shop_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX order_shops_order_shop_unique ON public.order_shops USING btree (order_id, shop_id)"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX order_shops_pkey ON public.order_shops USING btree (id)"
+      },
+      {
+        "table_name": "order_shops",
+        "name": "order_shops_shop_id_idx",
+        "valid": true,
+        "definition": "CREATE INDEX order_shops_shop_id_idx ON public.order_shops USING btree (shop_id)"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX orders_pkey ON public.orders USING btree (id)"
+      },
+      {
+        "table_name": "orders",
+        "name": "orders_user_id_idx",
+        "valid": true,
+        "definition": "CREATE INDEX orders_user_id_idx ON public.orders USING btree (user_id)"
+      },
+      {
+        "table_name": "products",
+        "name": "products_category_id_idx",
+        "valid": true,
+        "definition": "CREATE INDEX products_category_id_idx ON public.products USING btree (category_id)"
+      },
+      {
+        "table_name": "products",
+        "name": "products_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX products_pkey ON public.products USING btree (id)"
+      },
+      {
+        "table_name": "products",
+        "name": "products_shop_id_idx",
+        "valid": true,
+        "definition": "CREATE INDEX products_shop_id_idx ON public.products USING btree (shop_id)"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX sessions_pkey ON public.sessions USING btree (id)"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_token_hash_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX sessions_token_hash_unique ON public.sessions USING btree (token_hash)"
+      },
+      {
+        "table_name": "sessions",
+        "name": "sessions_user_id_idx",
+        "valid": true,
+        "definition": "CREATE INDEX sessions_user_id_idx ON public.sessions USING btree (user_id)"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX shop_requests_pkey ON public.shop_requests USING btree (id)"
+      },
+      {
+        "table_name": "shop_requests",
+        "name": "shop_requests_user_id_idx",
+        "valid": true,
+        "definition": "CREATE INDEX shop_requests_user_id_idx ON public.shop_requests USING btree (user_id)"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_owner_id_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX shops_owner_id_unique ON public.shops USING btree (owner_id)"
+      },
+      {
+        "table_name": "shops",
+        "name": "shops_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX shops_pkey ON public.shops USING btree (id)"
+      },
+      {
+        "table_name": "users",
+        "name": "users_email_lower_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX users_email_lower_unique ON public.users USING btree (lower((email)::text))"
+      },
+      {
+        "table_name": "users",
+        "name": "users_email_unique",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX users_email_unique ON public.users USING btree (email)"
+      },
+      {
+        "table_name": "users",
+        "name": "users_pkey",
+        "valid": true,
+        "definition": "CREATE UNIQUE INDEX users_pkey ON public.users USING btree (id)"
+      }
+    ],
+    "enums": [
+      {
+        "name": "order_shop_status",
+        "label": "PENDING"
+      },
+      {
+        "name": "order_shop_status",
+        "label": "CONFIRMED"
+      },
+      {
+        "name": "order_shop_status",
+        "label": "SHIPPED"
+      },
+      {
+        "name": "order_shop_status",
+        "label": "COMPLETED"
+      },
+      {
+        "name": "order_shop_status",
+        "label": "CANCELLED"
+      },
+      {
+        "name": "order_status",
+        "label": "PENDING"
+      },
+      {
+        "name": "order_status",
+        "label": "CONFIRMED"
+      },
+      {
+        "name": "order_status",
+        "label": "SHIPPED"
+      },
+      {
+        "name": "order_status",
+        "label": "COMPLETED"
+      },
+      {
+        "name": "order_status",
+        "label": "CANCELLED"
+      },
+      {
+        "name": "product_status",
+        "label": "ACTIVE"
+      },
+      {
+        "name": "product_status",
+        "label": "INACTIVE"
+      },
+      {
+        "name": "shop_request_status",
+        "label": "PENDING"
+      },
+      {
+        "name": "shop_request_status",
+        "label": "APPROVED"
+      },
+      {
+        "name": "shop_request_status",
+        "label": "REJECTED"
+      },
+      {
+        "name": "shop_status",
+        "label": "ACTIVE"
+      },
+      {
+        "name": "shop_status",
+        "label": "INACTIVE"
+      },
+      {
+        "name": "user_role",
+        "label": "USER"
+      },
+      {
+        "name": "user_role",
+        "label": "SELLER"
+      },
+      {
+        "name": "user_role",
+        "label": "ADMIN"
+      },
+      {
+        "name": "user_status",
+        "label": "ACTIVE"
+      },
+      {
+        "name": "user_status",
+        "label": "SUSPENDED"
+      }
+    ],
+    "policies": []
+  },
+  "counts": [
+    {
+      "table": "cart_items",
+      "count": 1
+    },
+    {
+      "table": "categories",
+      "count": 6
+    },
+    {
+      "table": "order_items",
+      "count": 14
+    },
+    {
+      "table": "order_shops",
+      "count": 11
+    },
+    {
+      "table": "orders",
+      "count": 13
+    },
+    {
+      "table": "products",
+      "count": 5
+    },
+    {
+      "table": "sessions",
+      "count": 2
+    },
+    {
+      "table": "shop_requests",
+      "count": 3
+    },
+    {
+      "table": "shops",
+      "count": 2
+    },
+    {
+      "table": "users",
+      "count": 4
+    }
+  ],
+  "allPublicEnums": [
+    {
+      "name": "active_status_enum",
+      "label": "ACTIVE"
+    },
+    {
+      "name": "active_status_enum",
+      "label": "INACTIVE"
+    },
+    {
+      "name": "order_status_enum",
+      "label": "PENDING"
+    },
+    {
+      "name": "order_status_enum",
+      "label": "CONFIRMED"
+    },
+    {
+      "name": "order_status_enum",
+      "label": "SHIPPED"
+    },
+    {
+      "name": "order_status_enum",
+      "label": "COMPLETED"
+    },
+    {
+      "name": "order_status_enum",
+      "label": "CANCELLED"
+    },
+    {
+      "name": "shop_request_status_enum",
+      "label": "PENDING"
+    },
+    {
+      "name": "shop_request_status_enum",
+      "label": "APPROVED"
+    },
+    {
+      "name": "shop_request_status_enum",
+      "label": "REJECTED"
+    },
+    {
+      "name": "user_role_enum",
+      "label": "USER"
+    },
+    {
+      "name": "user_role_enum",
+      "label": "SELLER"
+    },
+    {
+      "name": "user_role_enum",
+      "label": "ADMIN"
+    },
+    {
+      "name": "user_status_enum",
+      "label": "ACTIVE"
+    },
+    {
+      "name": "user_status_enum",
+      "label": "SUSPENDED"
+    }
+  ]
+}

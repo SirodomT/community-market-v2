@@ -1,53 +1,28 @@
 "use server";
 
-import bcrypt from "bcryptjs";
-import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
-import { createSession } from "@/lib/session";
-import { db } from "@/db";
-import { users } from "@/db/schema";
+import { createClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { ensureAuthProfile } from "@/lib/supabase/profile";
+import { getCurrentUser } from "@/lib/session";
 
 export async function loginUser(formData: FormData) {
-  const email = formData
-    .get("email")
-    ?.toString()
-    .trim()
-    .toLowerCase();
-
-  const password = formData
-    .get("password")
-    ?.toString();
-
-  if (!email || !password) {
-    redirect("/login?error=missing");
+  const email = formData.get("email")?.toString().trim().toLowerCase();
+  const password = formData.get("password")?.toString();
+  if (!email || !password) redirect("/login?error=missing");
+  if (!isSupabaseConfigured()) redirect("/login?error=configuration");
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) redirect(`/login?error=${error.code === "email_not_confirmed" ? "confirmation" : "credentials"}`);
+  const profile = await ensureAuthProfile();
+  if (profile !== "ready") {
+    await supabase.auth.signOut();
+    redirect(`/login?error=${profile === "unlinked" ? "unlinked" : "confirmation"}`);
   }
-
-  const result = await db
-    .select()
-    .from(users)
-    .where(eq(users.email, email))
-    .limit(1);
-
-  if (result.length === 0) {
-    redirect("/login?error=credentials");
-  }
-
-  const user = result[0];
-
-  if (user.status !== "ACTIVE") {
+  const user = await getCurrentUser();
+  if (!user || user.status !== "ACTIVE") {
+    await supabase.auth.signOut();
     redirect("/login?error=suspended");
   }
-
-  const passwordMatch = await bcrypt.compare(
-    password,
-    user.passwordHash
-  );
-
- if (!passwordMatch) {
-  redirect("/login?error=credentials");
-}
-
-await createSession(user.id);
-
-redirect("/account");
+  redirect("/account");
 }

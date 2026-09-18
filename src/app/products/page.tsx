@@ -2,7 +2,7 @@ import ProductCard from "@/components/ProductCard";
 import ProductFilters from "@/components/ProductFilters";
 import { PageHeader, EmptyState } from "@/components/ui/primitives";
 
-import { and, asc, desc, eq, gt, like, or } from "drizzle-orm";
+import { and, asc, desc, eq, gt, ilike, or } from "drizzle-orm";
 
 import { db } from "@/db";
 import { categories, products, shops } from "@/db/schema";
@@ -74,8 +74,8 @@ export default async function ProductsPage({
 
         search
           ? or(
-              like(products.name, `%${search}%`),
-              like(shops.name, `%${search}%`),
+              ilike(products.name, `%${search}%`),
+              ilike(shops.name, `%${search}%`),
             )
           : undefined,
 

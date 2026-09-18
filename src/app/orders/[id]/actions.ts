@@ -192,10 +192,10 @@ export async function cancelOrderShop(
           eq(orderShops.id, shopOrder.id),
           eq(orderShops.status, "PENDING")
         )
-      );
+      ).returning({ id: orderShops.id });
 
     if (
-      updateResult[0].affectedRows !== 1
+      updateResult.length !== 1
     ) {
       throw new Error(
         "Order status has already changed"

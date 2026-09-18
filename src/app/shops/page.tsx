@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/primitives";
 import Link from "next/link";
 
-import { and, desc, eq, like, or } from "drizzle-orm";
+import { and, desc, eq, ilike, or } from "drizzle-orm";
 
 import { db } from "@/db";
 import { shops } from "@/db/schema";
@@ -39,9 +39,9 @@ export default async function ShopsPage({
 
         search
           ? or(
-              like(shops.name, `%${search}%`),
-              like(shops.description, `%${search}%`),
-              like(shops.address, `%${search}%`),
+              ilike(shops.name, `%${search}%`),
+              ilike(shops.description, `%${search}%`),
+              ilike(shops.address, `%${search}%`),
             )
           : undefined,
       ),

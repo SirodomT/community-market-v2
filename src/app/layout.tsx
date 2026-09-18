@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+
+// Marketplace/auth data is request-specific; builds must not query a live database.
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Community Enterprise Market",
   description: "ตลาดวิสาหกิจชุมชน อำเภอนิคมพัฒนา จังหวัดระยอง",

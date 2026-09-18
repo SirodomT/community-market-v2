@@ -170,7 +170,7 @@ export async function checkout(
               totalAmount:
                 total.toFixed(2),
             })
-            .$returningId();
+            .returning({ id: orders.id });
 
         const newOrderId =
           insertedOrders[0]?.id;
@@ -319,11 +319,10 @@ export async function checkout(
                     item.quantity
                   )
                 )
-              );
+              ).returning({ id: products.id });
 
           if (
-            updateResult[0]
-              .affectedRows !== 1
+            updateResult.length !== 1
           ) {
             throw new Error(
               "INSUFFICIENT_STOCK"

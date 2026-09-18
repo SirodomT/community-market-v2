@@ -1,0 +1,126 @@
+{
+  "testedAt": "2026-09-18T06:15:02.377Z",
+  "method": "HTTP server-action form submissions and protected route GETs; no marketplace mutations",
+  "results": [
+    {
+      "test": "USER: password login",
+      "result": "PASS"
+    },
+    {
+      "test": "USER: protected account access",
+      "result": "PASS"
+    },
+    {
+      "test": "USER: account displays expected email",
+      "result": "PASS"
+    },
+    {
+      "test": "USER: UUID resolves to integer ID 3, correct role and ACTIVE status",
+      "result": "PASS"
+    },
+    {
+      "test": "USER: /seller denied",
+      "result": "PASS"
+    },
+    {
+      "test": "USER: /seller/products denied",
+      "result": "PASS"
+    },
+    {
+      "test": "USER: /admin denied",
+      "result": "PASS"
+    },
+    {
+      "test": "USER: logout",
+      "result": "PASS"
+    },
+    {
+      "test": "USER: logged-out /account denied",
+      "result": "PASS"
+    },
+    {
+      "test": "USER: logged-out /seller denied",
+      "result": "PASS"
+    },
+    {
+      "test": "USER: logged-out /admin denied",
+      "result": "PASS"
+    },
+    {
+      "test": "SELLER: password login",
+      "result": "PASS"
+    },
+    {
+      "test": "SELLER: protected account access",
+      "result": "PASS"
+    },
+    {
+      "test": "SELLER: account displays expected email",
+      "result": "PASS"
+    },
+    {
+      "test": "SELLER: UUID resolves to integer ID 1, correct role and ACTIVE status",
+      "result": "PASS"
+    },
+    {
+      "test": "SELLER: /seller authorized",
+      "result": "PASS"
+    },
+    {
+      "test": "SELLER: /seller/products authorized",
+      "result": "PASS"
+    },
+    {
+      "test": "SELLER: /seller/orders authorized",
+      "result": "PASS"
+    },
+    {
+      "test": "SELLER: own product edit page authorized (GET only)",
+      "result": "PASS"
+    },
+    {
+      "test": "SELLER: other shop product edit page denied",
+      "result": "PASS"
+    },
+    {
+      "test": "SELLER: /admin denied",
+      "result": "PASS"
+    },
+    {
+      "test": "SELLER: logout",
+      "result": "PASS"
+    },
+    {
+      "test": "SELLER: logged-out /account denied",
+      "result": "PASS"
+    },
+    {
+      "test": "SELLER: logged-out /seller denied",
+      "result": "PASS"
+    },
+    {
+      "test": "SELLER: logged-out /admin denied",
+      "result": "PASS"
+    },
+    {
+      "test": "ADMIN: password login",
+      "result": "PASS"
+    },
+    {
+      "test": "ADMIN: protected account access",
+      "result": "PASS"
+    },
+    {
+      "test": "ADMIN: account displays expected email",
+      "result": "PASS"
+    },
+    {
+      "test": "ADMIN: UUID resolves to integer ID 2, correct role and ACTIVE status",
+      "result": "PASS"
+    },
+    {
+      "test": "Smoke test infrastructure error (sensitive details suppressed)",
+      "result": "FAIL"
+    }
+  ]
+}

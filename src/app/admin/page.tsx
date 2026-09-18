@@ -11,44 +11,38 @@ import { requireRole } from "@/lib/auth";
 export default async function AdminPage() {
   const admin = await requireRole(["ADMIN"]);
 
-  const [
-    usersResult,
-    shopsResult,
-    productsResult,
-    ordersResult,
-    pendingRequestsResult,
-  ] = await Promise.all([
-    db
-      .select({
-        total: count(),
-      })
-      .from(users),
+  // Avoid pipelining this batch through the single-connection transaction pooler:
+  // concurrent counts can leave replies pending and stall subsequent requests.
+  const usersResult = await db
+    .select({
+      total: count(),
+    })
+    .from(users);
 
-    db
-      .select({
-        total: count(),
-      })
-      .from(shops),
+  const shopsResult = await db
+    .select({
+      total: count(),
+    })
+    .from(shops);
 
-    db
-      .select({
-        total: count(),
-      })
-      .from(products),
+  const productsResult = await db
+    .select({
+      total: count(),
+    })
+    .from(products);
 
-    db
-      .select({
-        total: count(),
-      })
-      .from(orders),
+  const ordersResult = await db
+    .select({
+      total: count(),
+    })
+    .from(orders);
 
-    db
-      .select({
-        total: count(),
-      })
-      .from(shopRequests)
-      .where(eq(shopRequests.status, "PENDING")),
-  ]);
+  const pendingRequestsResult = await db
+    .select({
+      total: count(),
+    })
+    .from(shopRequests)
+    .where(eq(shopRequests.status, "PENDING"));
 
   const recentOrders = await db
     .select({

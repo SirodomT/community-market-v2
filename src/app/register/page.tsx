@@ -26,7 +26,7 @@ export default async function RegisterPage({
         </p>
         {params.success === "1" && (
           <p className="mt-4 rounded-lg bg-green-100 p-3 text-center text-green-700">
-            สมัครสมาชิกสำเร็จ
+            หากสามารถสมัครด้วยอีเมลนี้ได้ ระบบจะส่งลิงก์ยืนยันให้ กรุณาตรวจสอบอีเมลก่อนเข้าสู่ระบบ
           </p>
         )}
 
@@ -44,7 +44,7 @@ export default async function RegisterPage({
             role="alert"
             className="mt-4 rounded-lg bg-red-100 p-3 text-center text-red-700"
           >
-            ชื่อผู้ใช้ต้องมีอย่างน้อย 3 ตัวอักษร
+            ชื่อผู้ใช้ต้องมี 3 ถึง 100 ตัวอักษร
           </p>
         )}
 
@@ -74,6 +74,13 @@ export default async function RegisterPage({
           </p>
         )}
 
+        {(params.error === "configuration" || params.error === "signup") && (
+          <p role="alert" className="mt-4 rounded-lg bg-red-100 p-3 text-center text-red-700">
+            {params.error === "configuration"
+              ? "ระบบสมัครสมาชิกยังไม่พร้อมใช้งาน กรุณาติดต่อผู้ดูแลระบบ"
+              : "ไม่สามารถสมัครสมาชิกได้ กรุณาตรวจสอบข้อมูลหรือลองอีกครั้งภายหลัง"}
+          </p>
+        )}
         <form action={registerUser} className="mt-8 space-y-5">
           <div>
             <label htmlFor="username" className="field-label">
@@ -87,6 +94,7 @@ export default async function RegisterPage({
               type="text"
               required
               minLength={3}
+              maxLength={100}
               placeholder="กรอกชื่อผู้ใช้"
               className=""
             />

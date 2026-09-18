@@ -1,45 +1,85 @@
+import { sql } from "drizzle-orm";
 import {
-  mysqlTable,
-  int,
+  pgTable,
+  integer,
   varchar,
-  mysqlEnum,
+  pgEnum,
   timestamp,
   text,
-  decimal,
+  numeric,
   uniqueIndex,
-} from "drizzle-orm/mysql-core";
-export const cartItems = mysqlTable(
+  index,
+} from "drizzle-orm/pg-core";
+export const userRole = pgEnum("user_role", [
+    "USER",
+    "SELLER",
+    "ADMIN",
+  ]);
+export const userStatus = pgEnum("user_status", [
+    "ACTIVE",
+    "SUSPENDED",
+  ]);
+export const shopStatus = pgEnum("shop_status", [
+    "ACTIVE",
+    "INACTIVE",
+  ]);
+export const shopRequestStatus = pgEnum("shop_request_status", [
+    "PENDING",
+    "APPROVED",
+    "REJECTED",
+  ]);
+export const productStatus = pgEnum("product_status", [
+    "ACTIVE",
+    "INACTIVE",
+  ]);
+export const orderStatus = pgEnum("order_status", [
+    "PENDING",
+    "CONFIRMED",
+    "SHIPPED",
+    "COMPLETED",
+    "CANCELLED",
+  ]);
+export const orderShopStatus = pgEnum("order_shop_status", [
+      "PENDING",
+      "CONFIRMED",
+      "SHIPPED",
+      "COMPLETED",
+      "CANCELLED",
+    ]);
+
+export const cartItems = pgTable(
   "cart_items",
   {
-    id: int("id")
-      .autoincrement()
+    id: integer("id")
+      .generatedByDefaultAsIdentity()
       .primaryKey(),
 
-    userId: int("user_id")
+    userId: integer("user_id")
       .notNull()
       .references(() => users.id, {
         onDelete: "cascade",
       }),
 
-    productId: int("product_id")
+    productId: integer("product_id")
       .notNull()
       .references(() => products.id, {
         onDelete: "cascade",
       }),
 
-    quantity: int("quantity")
+    quantity: integer("quantity")
       .notNull()
       .default(1),
 
-    createdAt: timestamp("created_at")
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "date", precision: 3 })
       .defaultNow()
       .notNull(),
 
-    updatedAt: timestamp("updated_at")
+    updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date", precision: 3 })
       .defaultNow()
       .notNull(),
   },
   (table) => [
+    index("cart_items_product_id_idx").on(table.productId),
     uniqueIndex(
       "cart_items_user_product_unique"
     ).on(
@@ -47,9 +87,9 @@ export const cartItems = mysqlTable(
       table.productId
     ),
   ]
-);
-export const users = mysqlTable("users", {
-  id: int("id").autoincrement().primaryKey(),
+).enableRLS();
+export const users = pgTable("users", {
+  id: integer("id").generatedByDefaultAsIdentity().primaryKey(),
 
   username: varchar("username", {
     length: 100,
@@ -65,33 +105,28 @@ export const users = mysqlTable("users", {
     length: 255,
   }).notNull(),
 
-  role: mysqlEnum("role", [
-    "USER",
-    "SELLER",
-    "ADMIN",
-  ])
+  role: userRole("role")
     .notNull()
     .default("USER"),
 
-  status: mysqlEnum("status", [
-    "ACTIVE",
-    "SUSPENDED",
-  ])
+  status: userStatus("status")
     .notNull()
     .default("ACTIVE"),
 
-  createdAt: timestamp("created_at")
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date", precision: 3 })
     .defaultNow()
     .notNull(),
 
-  updatedAt: timestamp("updated_at")
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date", precision: 3 })
     .defaultNow()
     .notNull(),
-});
-export const sessions = mysqlTable("sessions", {
-  id: int("id").autoincrement().primaryKey(),
+}, (table) => [
+  uniqueIndex("users_email_lower_unique").on(sql`lower(${table.email})`),
+]).enableRLS();
+export const sessions = pgTable("sessions", {
+  id: integer("id").generatedByDefaultAsIdentity().primaryKey(),
 
-  userId: int("user_id")
+  userId: integer("user_id")
     .notNull()
     .references(() => users.id, {
       onDelete: "cascade",
@@ -103,16 +138,18 @@ export const sessions = mysqlTable("sessions", {
     .notNull()
     .unique(),
 
-  expiresAt: timestamp("expires_at").notNull(),
+  expiresAt: timestamp("expires_at", { withTimezone: true, mode: "date", precision: 3 }).notNull(),
 
-  createdAt: timestamp("created_at")
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date", precision: 3 })
     .defaultNow()
     .notNull(),
-});
-export const shops = mysqlTable("shops", {
-  id: int("id").autoincrement().primaryKey(),
+}, (table) => [
+  index("sessions_user_id_idx").on(table.userId),
+]).enableRLS();
+export const shops = pgTable("shops", {
+  id: integer("id").generatedByDefaultAsIdentity().primaryKey(),
 
-  ownerId: int("owner_id")
+  ownerId: integer("owner_id")
     .notNull()
     .references(() => users.id, {
       onDelete: "cascade",
@@ -131,26 +168,23 @@ export const shops = mysqlTable("shops", {
 
   address: text("address").notNull(),
 
-  status: mysqlEnum("status", [
-    "ACTIVE",
-    "INACTIVE",
-  ])
+  status: shopStatus("status")
     .notNull()
     .default("ACTIVE"),
 
-  createdAt: timestamp("created_at")
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date", precision: 3 })
     .defaultNow()
     .notNull(),
 
-  updatedAt: timestamp("updated_at")
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date", precision: 3 })
     .defaultNow()
     .notNull(),
-});
+}).enableRLS();
 
-export const shopRequests = mysqlTable("shop_requests", {
-  id: int("id").autoincrement().primaryKey(),
+export const shopRequests = pgTable("shop_requests", {
+  id: integer("id").generatedByDefaultAsIdentity().primaryKey(),
 
-  userId: int("user_id")
+  userId: integer("user_id")
     .notNull()
     .references(() => users.id, {
       onDelete: "cascade",
@@ -168,24 +202,22 @@ export const shopRequests = mysqlTable("shop_requests", {
 
   address: text("address").notNull(),
 
-  status: mysqlEnum("status", [
-    "PENDING",
-    "APPROVED",
-    "REJECTED",
-  ])
+  status: shopRequestStatus("status")
     .notNull()
     .default("PENDING"),
 
   reviewNote: text("review_note"),
 
-  createdAt: timestamp("created_at")
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date", precision: 3 })
     .defaultNow()
     .notNull(),
 
-  reviewedAt: timestamp("reviewed_at"),
-});
-export const categories = mysqlTable("categories", {
-  id: int("id").autoincrement().primaryKey(),
+  reviewedAt: timestamp("reviewed_at", { withTimezone: true, mode: "date", precision: 3 }),
+}, (table) => [
+  index("shop_requests_user_id_idx").on(table.userId),
+]).enableRLS();
+export const categories = pgTable("categories", {
+  id: integer("id").generatedByDefaultAsIdentity().primaryKey(),
 
   name: varchar("name", {
     length: 100,
@@ -193,21 +225,23 @@ export const categories = mysqlTable("categories", {
     .notNull()
     .unique(),
 
-  createdAt: timestamp("created_at")
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date", precision: 3 })
     .defaultNow()
     .notNull(),
-});
+}, (table) => [
+  uniqueIndex("categories_name_lower_unique").on(sql`lower(${table.name})`),
+]).enableRLS();
 
-export const products = mysqlTable("products", {
-  id: int("id").autoincrement().primaryKey(),
+export const products = pgTable("products", {
+  id: integer("id").generatedByDefaultAsIdentity().primaryKey(),
 
-  shopId: int("shop_id")
+  shopId: integer("shop_id")
     .notNull()
     .references(() => shops.id, {
       onDelete: "cascade",
     }),
 
-  categoryId: int("category_id").references(
+  categoryId: integer("category_id").references(
     () => categories.id,
     {
       onDelete: "set null",
@@ -220,12 +254,12 @@ export const products = mysqlTable("products", {
 
   description: text("description").notNull(),
 
-  price: decimal("price", {
+  price: numeric("price", {
     precision: 10,
     scale: 2,
   }).notNull(),
 
-  stock: int("stock")
+  stock: integer("stock")
     .notNull()
     .default(0),
 
@@ -233,27 +267,27 @@ export const products = mysqlTable("products", {
     length: 500,
   }),
 
-  status: mysqlEnum("status", [
-    "ACTIVE",
-    "INACTIVE",
-  ])
+  status: productStatus("status")
     .notNull()
     .default("ACTIVE"),
 
-  createdAt: timestamp("created_at")
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date", precision: 3 })
     .defaultNow()
     .notNull(),
 
-  updatedAt: timestamp("updated_at")
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date", precision: 3 })
     .defaultNow()
     .notNull(),
-});
-export const orders = mysqlTable("orders", {
-  id: int("id")
-    .autoincrement()
+}, (table) => [
+  index("products_shop_id_idx").on(table.shopId),
+  index("products_category_id_idx").on(table.categoryId),
+]).enableRLS();
+export const orders = pgTable("orders", {
+  id: integer("id")
+    .generatedByDefaultAsIdentity()
     .primaryKey(),
 
-  userId: int("user_id")
+  userId: integer("user_id")
     .notNull()
     .references(() => users.id, {
       onDelete: "restrict",
@@ -270,47 +304,43 @@ export const orders = mysqlTable("orders", {
   shippingAddress: text("shipping_address")
     .notNull(),
 
-  totalAmount: decimal("total_amount", {
+  totalAmount: numeric("total_amount", {
     precision: 10,
     scale: 2,
   }).notNull(),
 
-  status: mysqlEnum("status", [
-    "PENDING",
-    "CONFIRMED",
-    "SHIPPED",
-    "COMPLETED",
-    "CANCELLED",
-  ])
+  status: orderStatus("status")
     .notNull()
     .default("PENDING"),
 
-  createdAt: timestamp("created_at")
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date", precision: 3 })
     .defaultNow()
     .notNull(),
 
-  updatedAt: timestamp("updated_at")
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date", precision: 3 })
     .defaultNow()
     .notNull(),
-});
+}, (table) => [
+  index("orders_user_id_idx").on(table.userId),
+]).enableRLS();
 
-export const orderItems = mysqlTable("order_items", {
-  id: int("id")
-    .autoincrement()
+export const orderItems = pgTable("order_items", {
+  id: integer("id")
+    .generatedByDefaultAsIdentity()
     .primaryKey(),
 
-  orderId: int("order_id")
+  orderId: integer("order_id")
     .notNull()
     .references(() => orders.id, {
       onDelete: "cascade",
     }),
 
-  productId: int("product_id")
+  productId: integer("product_id")
     .references(() => products.id, {
       onDelete: "set null",
     }),
 
-  shopId: int("shop_id")
+  shopId: integer("shop_id")
     .references(() => shops.id, {
       onDelete: "set null",
     }),
@@ -323,37 +353,41 @@ export const orderItems = mysqlTable("order_items", {
     length: 150,
   }).notNull(),
 
-  price: decimal("price", {
+  price: numeric("price", {
     precision: 10,
     scale: 2,
   }).notNull(),
 
-  quantity: int("quantity")
+  quantity: integer("quantity")
     .notNull(),
 
-  subtotal: decimal("subtotal", {
+  subtotal: numeric("subtotal", {
     precision: 10,
     scale: 2,
   }).notNull(),
 
-  createdAt: timestamp("created_at")
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date", precision: 3 })
     .defaultNow()
     .notNull(),
-});
-export const orderShops = mysqlTable(
+}, (table) => [
+  index("order_items_order_id_idx").on(table.orderId),
+  index("order_items_product_id_idx").on(table.productId),
+  index("order_items_shop_id_idx").on(table.shopId),
+]).enableRLS();
+export const orderShops = pgTable(
   "order_shops",
   {
-    id: int("id")
-      .autoincrement()
+    id: integer("id")
+      .generatedByDefaultAsIdentity()
       .primaryKey(),
 
-    orderId: int("order_id")
+    orderId: integer("order_id")
       .notNull()
       .references(() => orders.id, {
         onDelete: "cascade",
       }),
 
-    shopId: int("shop_id")
+    shopId: integer("shop_id")
       .references(() => shops.id, {
         onDelete: "set null",
       }),
@@ -362,26 +396,20 @@ export const orderShops = mysqlTable(
       length: 150,
     }).notNull(),
 
-    subtotal: decimal("subtotal", {
+    subtotal: numeric("subtotal", {
       precision: 10,
       scale: 2,
     }).notNull(),
 
-    status: mysqlEnum("status", [
-      "PENDING",
-      "CONFIRMED",
-      "SHIPPED",
-      "COMPLETED",
-      "CANCELLED",
-    ])
+    status: orderShopStatus("status")
       .notNull()
       .default("PENDING"),
 
-    createdAt: timestamp("created_at")
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "date", precision: 3 })
       .defaultNow()
       .notNull(),
 
-    updatedAt: timestamp("updated_at")
+    updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date", precision: 3 })
       .defaultNow()
       .notNull(),
   },
@@ -392,5 +420,6 @@ export const orderShops = mysqlTable(
       table.orderId,
       table.shopId
     ),
+    index("order_shops_shop_id_idx").on(table.shopId),
   ]
-);
+).enableRLS();

@@ -1,48 +1,19 @@
 import { defineConfig } from "drizzle-kit";
 import { config } from "dotenv";
 
-config({
-  path: ".env.local",
-});
+config({ path: ".env.local", quiet: true });
 
-const databaseUrl =
-  process.env.DATABASE_URL;
-
-if (!databaseUrl) {
-  throw new Error(
-    "DATABASE_URL is not defined in .env.local"
-  );
+// Generation is offline. A future approved migration should use a direct or
+// session-mode connection, supplied separately from the transaction pooler.
+const databaseUrl = process.env.DATABASE_MIGRATION_URL;
+if (databaseUrl && !/^postgres(ql)?:\/\//.test(databaseUrl)) {
+  throw new Error("DATABASE_MIGRATION_URL must be PostgreSQL; MySQL/TiDB is retired.");
 }
 
-const url = new URL(databaseUrl);
-
 export default defineConfig({
-  dialect: "mysql",
-  schema: "./src/db/schema.ts",
-  out: "./drizzle",
-
-  dbCredentials: {
-    host: url.hostname,
-
-    port: Number(
-      url.port || 4000
-    ),
-
-    user: decodeURIComponent(
-      url.username
-    ),
-
-    password: decodeURIComponent(
-      url.password
-    ),
-
-    database: url.pathname.replace(
-      /^\//,
-      ""
-    ),
-
-    ssl: {
-      rejectUnauthorized: true,
-    },
-  },
+  dialect: "postgresql",
+  schema: ["./src/db/schema.ts", "./src/db/auth-schema.ts"],
+  out: "./drizzle-postgres",
+  strict: true,
+  ...(databaseUrl ? { dbCredentials: { url: databaseUrl } } : {}),
 });
