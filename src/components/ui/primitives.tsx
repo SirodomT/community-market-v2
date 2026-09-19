@@ -116,7 +116,10 @@ export function SectionHeader({
         )}
       </div>
       {href && (
-        <Link href={href} className="btn btn-ghost text-primary">
+        <Link
+          href={href}
+          className="btn btn-ghost border-x-0 border-t-0 border-b border-primary/30 rounded-none px-0 text-primary"
+        >
           {linkLabel}
           <ArrowUpRight aria-hidden="true" className="size-4" />
         </Link>
@@ -296,10 +299,10 @@ export function ShopCard({
   return (
     <Link
       href={`/shops/${shop.id}`}
-      className="surface group flex min-w-0 flex-col p-6 transition duration-200 hover:border-primary/40"
+      className="surface group flex min-w-0 flex-col p-6 transition duration-200 hover:border-primary/40 hover:bg-primary-soft/30"
     >
       <div className="mb-5 flex items-center justify-between">
-        <span className="flex size-14 items-center justify-center rounded-2xl bg-primary-soft text-xl font-bold text-primary">
+        <span className="flex size-14 items-center justify-center rounded-full bg-primary-soft text-xl font-bold text-primary">
           {shop.name.charAt(0)}
         </span>
         <Store aria-hidden="true" className="size-5 text-muted-foreground" />

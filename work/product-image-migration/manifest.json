@@ -1,0 +1,215 @@
+{
+  "status": "completed",
+  "project": "gufciylnlhyjywonvxsn.supabase.co",
+  "createdAt": "2026-09-18T12:23:47.217Z",
+  "before": {
+    "full": [
+      {
+        "table": "cart_items",
+        "count": 1,
+        "sha256": "39bf8677d448d639e9a5fcc7e70b64c489e7c203e769fd38f3a04960eab4c49b"
+      },
+      {
+        "table": "categories",
+        "count": 6,
+        "sha256": "ff9ea8873c66db46874fdbbb405dff2a404987c6f25292a21e31e8c25362f29d"
+      },
+      {
+        "table": "order_items",
+        "count": 14,
+        "sha256": "3932662cf89012c5c54b5722d495528450c127e4db5a0dacf54f3c8a72e0bf38"
+      },
+      {
+        "table": "order_shops",
+        "count": 11,
+        "sha256": "739e5bcbc0ccd1bf30fa07d3dd4683bfb99f0ab3e7002e7f39bb0533d69b72cf"
+      },
+      {
+        "table": "orders",
+        "count": 13,
+        "sha256": "2468d84ae5c34198218992152a36ea5b705c8d384c2c8003d98d5c6ada190d90"
+      },
+      {
+        "table": "products",
+        "count": 5,
+        "sha256": "7ae7c20838fd9714aa0d9f3773a9c6506622cc02497ccc561816a3ed0a87f9ac"
+      },
+      {
+        "table": "sessions",
+        "count": 2,
+        "sha256": "e471a46953392347ccd55e6e299699e448dba9efee00db88ab49b942899adc46"
+      },
+      {
+        "table": "shop_requests",
+        "count": 3,
+        "sha256": "c86dc1d4fa0dcdf942219f36a7cacede76080c92cea8d58d6cc3d235f1c4b195"
+      },
+      {
+        "table": "shops",
+        "count": 2,
+        "sha256": "c8dd03cff2ad0c9b74205ae597de2d19f74007f5723b4baedca603335ce022fe"
+      },
+      {
+        "table": "users",
+        "count": 4,
+        "sha256": "e452baaf44201fd7e078895aeb79bbee96409e98f934cc719b9b50ae847e60ad"
+      }
+    ],
+    "nonImage": [
+      {
+        "table": "cart_items",
+        "count": 1,
+        "sha256": "39bf8677d448d639e9a5fcc7e70b64c489e7c203e769fd38f3a04960eab4c49b"
+      },
+      {
+        "table": "categories",
+        "count": 6,
+        "sha256": "ff9ea8873c66db46874fdbbb405dff2a404987c6f25292a21e31e8c25362f29d"
+      },
+      {
+        "table": "order_items",
+        "count": 14,
+        "sha256": "3932662cf89012c5c54b5722d495528450c127e4db5a0dacf54f3c8a72e0bf38"
+      },
+      {
+        "table": "order_shops",
+        "count": 11,
+        "sha256": "739e5bcbc0ccd1bf30fa07d3dd4683bfb99f0ab3e7002e7f39bb0533d69b72cf"
+      },
+      {
+        "table": "orders",
+        "count": 13,
+        "sha256": "2468d84ae5c34198218992152a36ea5b705c8d384c2c8003d98d5c6ada190d90"
+      },
+      {
+        "table": "products",
+        "count": 5,
+        "sha256": "67264ca13899cb01636312bdbde92a6edaed2fd5532341f87c1255337d0f99c4"
+      },
+      {
+        "table": "sessions",
+        "count": 2,
+        "sha256": "e471a46953392347ccd55e6e299699e448dba9efee00db88ab49b942899adc46"
+      },
+      {
+        "table": "shop_requests",
+        "count": 3,
+        "sha256": "c86dc1d4fa0dcdf942219f36a7cacede76080c92cea8d58d6cc3d235f1c4b195"
+      },
+      {
+        "table": "shops",
+        "count": 2,
+        "sha256": "c8dd03cff2ad0c9b74205ae597de2d19f74007f5723b4baedca603335ce022fe"
+      },
+      {
+        "table": "users",
+        "count": 4,
+        "sha256": "e452baaf44201fd7e078895aeb79bbee96409e98f934cc719b9b50ae847e60ad"
+      }
+    ],
+    "products": [
+      {
+        "id": 1,
+        "shop_id": 1,
+        "image_url": "/uploads/products/ea235494-f6dc-4b94-aba0-6b74e385ccf0.png"
+      },
+      {
+        "id": 3,
+        "shop_id": 1,
+        "image_url": "/uploads/products/0cb723ae-14f8-471d-8673-b9437d2b40de.jpg"
+      },
+      {
+        "id": 4,
+        "shop_id": 1,
+        "image_url": "/uploads/products/19564b9f-e777-4b9d-886e-73bc56242ec5.png"
+      },
+      {
+        "id": 5,
+        "shop_id": 2,
+        "image_url": "/uploads/products/af828aaa-1b0b-4b3a-8762-72080db4557c.png"
+      },
+      {
+        "id": 6,
+        "shop_id": 2,
+        "image_url": "/uploads/products/a17e6678-5113-4ee0-bf28-1cf42c2d56cb.jpg"
+      }
+    ],
+    "objects": [],
+    "links": [
+      {
+        "supabase_user_id": "fb648b70-3f99-423b-bc76-7b34c132837f",
+        "user_id": 1
+      },
+      {
+        "supabase_user_id": "2e391ca0-546f-4142-9cf7-e995c27c1632",
+        "user_id": 2
+      },
+      {
+        "supabase_user_id": "dc1d3d2d-c86a-4fbf-ad90-703a50ca733c",
+        "user_id": 3
+      },
+      {
+        "supabase_user_id": "4205d6af-3c65-4c58-80e6-8165c0086895",
+        "user_id": 4
+      }
+    ]
+  },
+  "images": [
+    {
+      "productId": 1,
+      "shopId": 1,
+      "oldUrl": "/uploads/products/ea235494-f6dc-4b94-aba0-6b74e385ccf0.png",
+      "filename": "ea235494-f6dc-4b94-aba0-6b74e385ccf0.png",
+      "size": 572869,
+      "sha256": "995ca248c0e4c7fbbbdb01b246665cd6e05de920cec11742d25bdbe831b02b78",
+      "objectPath": "products/1/f387757e-3179-4951-a8f3-4f5617c11448.png",
+      "newUrl": "https://gufciylnlhyjywonvxsn.supabase.co/storage/v1/object/public/product-images/products/1/f387757e-3179-4951-a8f3-4f5617c11448.png",
+      "status": "verified"
+    },
+    {
+      "productId": 3,
+      "shopId": 1,
+      "oldUrl": "/uploads/products/0cb723ae-14f8-471d-8673-b9437d2b40de.jpg",
+      "filename": "0cb723ae-14f8-471d-8673-b9437d2b40de.jpg",
+      "size": 237319,
+      "sha256": "d61a8aa58ad8f14afee2616c91d133dc3c7e21bdcb8b2da60f3cf29df5b18085",
+      "objectPath": "products/1/9f413db4-c40c-4e94-bcd1-8675d42677bc.jpg",
+      "newUrl": "https://gufciylnlhyjywonvxsn.supabase.co/storage/v1/object/public/product-images/products/1/9f413db4-c40c-4e94-bcd1-8675d42677bc.jpg",
+      "status": "verified"
+    },
+    {
+      "productId": 4,
+      "shopId": 1,
+      "oldUrl": "/uploads/products/19564b9f-e777-4b9d-886e-73bc56242ec5.png",
+      "filename": "19564b9f-e777-4b9d-886e-73bc56242ec5.png",
+      "size": 548284,
+      "sha256": "4c4344e72d162498afbb81c42534c638ed2443740ee9d4cce25e20877f936a42",
+      "objectPath": "products/1/98710b88-d0ab-4510-abbe-77587e36c29a.png",
+      "newUrl": "https://gufciylnlhyjywonvxsn.supabase.co/storage/v1/object/public/product-images/products/1/98710b88-d0ab-4510-abbe-77587e36c29a.png",
+      "status": "verified"
+    },
+    {
+      "productId": 5,
+      "shopId": 2,
+      "oldUrl": "/uploads/products/af828aaa-1b0b-4b3a-8762-72080db4557c.png",
+      "filename": "af828aaa-1b0b-4b3a-8762-72080db4557c.png",
+      "size": 455593,
+      "sha256": "554a6bbf103420e0f0c1dbca5510350016ab3379fe512a976e48d52d79b40c71",
+      "objectPath": "products/2/ddcfa47c-3464-4e43-8669-dd111d5da843.png",
+      "newUrl": "https://gufciylnlhyjywonvxsn.supabase.co/storage/v1/object/public/product-images/products/2/ddcfa47c-3464-4e43-8669-dd111d5da843.png",
+      "status": "verified"
+    },
+    {
+      "productId": 6,
+      "shopId": 2,
+      "oldUrl": "/uploads/products/a17e6678-5113-4ee0-bf28-1cf42c2d56cb.jpg",
+      "filename": "a17e6678-5113-4ee0-bf28-1cf42c2d56cb.jpg",
+      "size": 199050,
+      "sha256": "c7246ce531fcacc7e962f591e2cbd6f4869349899da309e3b5346157184c81f9",
+      "objectPath": "products/2/9a77f803-accd-4c01-8b0d-cd50a2967efd.jpg",
+      "newUrl": "https://gufciylnlhyjywonvxsn.supabase.co/storage/v1/object/public/product-images/products/2/9a77f803-accd-4c01-8b0d-cd50a2967efd.jpg",
+      "status": "verified"
+    }
+  ],
+  "completedAt": "2026-09-18T12:24:29.549Z"
+}

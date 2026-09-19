@@ -53,19 +53,24 @@ export default function MarketplaceNav({ username, role, cartCount }: Props) {
     });
   }
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-surface">
+    <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-md">
+      <div className="flex min-h-8 items-center justify-center bg-primary px-4 py-1.5 text-center text-[10px] tracking-wide text-white">
+        ของดีจากนิคมพัฒนา · ส่งต่อความตั้งใจจากชุมชนระยอง
+      </div>
       <div className="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
         <Link
           href="/"
           className="flex min-w-0 items-center gap-2.5"
           aria-label="Community Market หน้าแรก"
         >
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-white">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-white">
             <Store aria-hidden="true" className="size-5" />
           </span>
           <span className="text-sm font-bold leading-tight tracking-tight sm:text-lg">
             Community
-            <span className="block text-primary sm:inline"> Market</span>
+            <span className="block text-[10px] font-medium tracking-[.18em] text-primary sm:text-[11px]">
+              MARKET / RAYONG
+            </span>
           </span>
         </Link>
         <nav

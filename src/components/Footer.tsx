@@ -2,8 +2,8 @@ import Link from "next/link";
 import { Store, MapPin, ArrowUpRight } from "lucide-react";
 export default function Footer() {
   return (
-    <footer className="border-t border-border bg-muted/60">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-[2fr_1fr_1fr]">
+    <footer className="market-footer">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 md:grid-cols-[2fr_1fr_1fr]">
         <div>
           <Link
             href="/"

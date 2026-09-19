@@ -4,8 +4,10 @@ import {
   Search,
   ArrowUpRight,
   ArrowRight,
-  Package,
-  Leaf,
+  Heart,
+  Store,
+  Banknote,
+  Sparkles,
   Utensils,
   Shirt,
   Sprout,
@@ -59,169 +61,175 @@ export default async function HomePage() {
   const discoveryCategories = await db
     .select({ id: categories.id, name: categories.name })
     .from(categories);
-  const spotlight = latestProducts[0];
   return (
     <main>
-      <section className="mx-auto max-w-7xl px-4 pb-8 pt-6 sm:px-6 sm:pt-10">
-        <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr]">
-          <div className="relative overflow-hidden rounded-3xl bg-[#e8eee2] p-6 sm:p-10 lg:p-12">
-            <p className="eyebrow flex items-center gap-2">
-              <MapPin aria-hidden="true" className="size-4" />
-              นิคมพัฒนา · ระยอง
-            </p>
-            <h1 className="mt-6 max-w-xl text-3xl font-bold leading-[1.4] tracking-tight sm:text-5xl">
-              ของดีจากชุมชน
-              <br />
-              <span className="text-primary">ส่งต่อถึงมือคุณ</span>
-            </h1>
-            <p className="mt-5 max-w-lg text-sm leading-8 text-muted-foreground sm:text-base">
-              ค้นพบสินค้า ร้านค้า และความตั้งใจของผู้ประกอบการท้องถิ่น
-              <br className="hidden sm:block" />
-              เลือกสิ่งที่ชอบ พร้อมเป็นส่วนหนึ่งในการสนับสนุนชุมชน
-            </p>
-            <form
-              action="/products"
-              method="GET"
-              className="mt-7 flex max-w-xl items-center gap-2 rounded-2xl border border-primary/15 bg-white p-2"
-            >
-              <label htmlFor="home-search" className="sr-only">
-                ค้นหาสินค้าหรือร้านค้า
-              </label>
-              <Search
-                aria-hidden="true"
-                className="ml-2 hidden size-5 shrink-0 text-muted-foreground sm:block"
-              />
-              <input
-                id="home-search"
-                name="q"
-                type="search"
-                maxLength={100}
-                placeholder="ค้นหาสินค้าหรือร้านค้า…"
-                className="min-w-0 flex-1 rounded-xl px-2 py-3 text-base"
-              />
-              <button type="submit" className="btn btn-primary">
-                ค้นหา
-              </button>
-            </form>
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <Link href="/products" className="btn btn-primary">
-                เลือกซื้อสินค้า
-                <ArrowUpRight aria-hidden="true" className="size-4" />
-              </Link>
-              <Link href="/shops" className="btn btn-ghost text-primary">
-                รู้จักร้านค้าชุมชน
-                <ArrowRight aria-hidden="true" className="size-4" />
-              </Link>
-            </div>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-            {spotlight ? (
-              <Link
-                href={`/products/${spotlight.id}`}
-                className="group relative flex min-h-52 flex-col justify-end overflow-hidden rounded-3xl bg-[#ede2d2] p-6 sm:min-h-60"
-              >
-                {spotlight.imageUrl ? (
-                  <>
-                    <Image
-                      src={spotlight.imageUrl}
-                      alt={spotlight.name}
-                      fill
-                      unoptimized
-                      sizes="(min-width: 1024px) 450px, 50vw"
-                      className="object-cover transition duration-200 motion-safe:group-hover:scale-[1.03]"
-                    />
-                    <div className="absolute inset-0 bg-black/45" />
-                  </>
-                ) : (
-                  <Package
-                    aria-hidden="true"
-                    className="absolute right-7 top-7 size-20 stroke-[.75] text-accent/30"
-                  />
-                )}
-                <div
-                  className={`relative ${spotlight.imageUrl ? "text-white" : "text-foreground"}`}
-                >
-                  <p className="text-xs font-semibold">ค้นพบสินค้าจากชุมชน</p>
-                  <h2 className="mt-3 text-2xl font-bold">{spotlight.name}</h2>
-                  <p className="mt-2 text-sm">จากร้าน {spotlight.shopName}</p>
-                  <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold">
-                    ดูรายละเอียด
-                    <ArrowUpRight aria-hidden="true" className="size-4" />
-                  </span>
-                </div>
-              </Link>
-            ) : (
-              <div className="flex min-h-52 flex-col justify-between rounded-3xl bg-[#ede2d2] p-6">
-                <Leaf aria-hidden="true" className="size-10 text-accent" />
-                <p className="mt-6 text-2xl font-bold leading-relaxed">
-                  สินค้าท้องถิ่น
-                  <br />
-                  คุณค่าที่ส่งต่อได้
-                </p>
-              </div>
-            )}
-            <Link
-              href="/shops"
-              className="flex items-center justify-between gap-5 rounded-3xl bg-primary p-6 text-white"
-            >
-              <div>
-                <p className="text-xs text-white/80">จากคนในชุมชน ถึงคุณ</p>
-                <h2 className="mt-2 text-xl font-bold">
-                  รู้จักคนเบื้องหลังสินค้า
-                </h2>
-                <p className="mt-2 text-sm text-white/80">
-                  แวะชมร้านค้าและเรื่องราวในพื้นที่
-                </p>
-              </div>
-              <ArrowUpRight aria-hidden="true" className="size-6 shrink-0" />
-            </Link>
+      <section className="market-hero" aria-labelledby="hero-title">
+        <div className="hero-copy">
+          <p className="editorial-kicker">
+            <span className="size-2 rounded-full bg-current" /> LOCAL GOODS.
+            GOOD STORIES.
+          </p>
+          <h1 id="hero-title" className="hero-title">
+            ของดีใกล้ตัว
+            <br />
+            <span>ความสุขใกล้ใจ</span>
+          </h1>
+          <p className="mt-6 max-w-sm text-sm leading-8 text-foreground/75 sm:text-base">
+            ค้นพบรสชาติ งานฝีมือ และความตั้งใจ
+            <br className="hidden sm:block" />
+            จากคนในชุมชนระยอง สู่วันดี ๆ ของคุณ
+          </p>
+          <Link
+            href="/products"
+            className="btn btn-primary mt-8 w-fit px-7 py-3.5"
+          >
+            ออกไปค้นพบของดี{" "}
+            <ArrowUpRight aria-hidden="true" className="size-5" />
+          </Link>
+          <div className="mt-10 flex items-center gap-3 border-t border-foreground/15 pt-5 text-xs text-foreground/70">
+            <MapPin aria-hidden="true" className="size-4" /> นิคมพัฒนา · ระยอง{" "}
+            <span className="ml-auto font-mono text-[10px] tracking-widest">
+              MADE WITH HEART
+            </span>
           </div>
         </div>
+        <div className="hero-art">
+          <span className="hero-orbit" aria-hidden="true" />
+          <span className="hero-art-word" aria-hidden="true">
+            LOCAL
+            <br />
+            FLAVOUR.
+          </span>
+          <div className="hero-product hero-product-back">
+            <Image
+              src="/images/editorial/banana-chips.webp"
+              alt="ขนมกล้วยอบกรอบจากภาพอ้างอิง"
+              fill
+              sizes="(min-width: 1024px) 330px, 48vw"
+              loading="eager"
+              className="object-contain mix-blend-multiply"
+            />
+          </div>
+          <div className="hero-product hero-product-front">
+            <Image
+              src="/images/editorial/durian-chips.webp"
+              alt="ทุเรียนทอดกรอบจากภาพอ้างอิง"
+              fill
+              sizes="(min-width: 1024px) 330px, 48vw"
+              loading="eager"
+              className="object-contain mix-blend-multiply"
+            />
+          </div>
+          <span className="hero-stamp">
+            <Sparkles aria-hidden="true" className="size-5" />
+            <span>
+              เล็ก ๆ จากชุมชน
+              <br />
+              มากมายด้วยใจ
+            </span>
+          </span>
+          <p className="hero-caption">
+            A TASTE OF RAYONG <span>ภาพบรรยากาศสินค้าชุมชน</span>
+          </p>
+        </div>
       </section>
-      {discoveryCategories.length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 py-7 sm:px-6">
-          <SectionHeader
-            title="วันนี้อยากค้นพบอะไร?"
-            description="เลือกหมวดหมู่ที่สนใจ แล้วเริ่มสำรวจของดีในชุมชน"
-          />
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+
+      <div className="market-ribbon" aria-hidden="true">
+        <span>LOCAL ROOTS</span>
+        <span>✳</span>
+        <span>ของดีที่มีเรื่องราว</span>
+        <span>✳</span>
+        <span>MADE WITH HEART</span>
+        <span>✳</span>
+        <span>เลือกซื้อ ส่งต่อความสุข</span>
+        <span>✳</span>
+      </div>
+
+      <section
+        className="market-section pb-0!"
+        aria-labelledby="discover-title"
+      >
+        <div className="flex flex-col justify-between gap-5 md:flex-row md:items-center">
+          <div>
+            <p className="editorial-kicker text-accent">
+              FIND YOUR EVERYDAY FAVOURITES
+            </p>
+            <h2
+              id="discover-title"
+              className="mt-3 text-2xl font-bold sm:text-3xl"
+            >
+              วันนี้อยากค้นพบอะไร?
+            </h2>
+          </div>
+          <form
+            action="/products"
+            method="GET"
+            className="market-search md:w-96"
+          >
+            <Search aria-hidden="true" className="size-5 shrink-0" />
+            <label htmlFor="home-search" className="sr-only">
+              ค้นหาสินค้าหรือร้านค้า
+            </label>
+            <input
+              id="home-search"
+              name="q"
+              type="search"
+              maxLength={100}
+              placeholder="ลองค้นหาของดีที่คุณชอบ…"
+              className="min-w-0 flex-1 bg-transparent py-3 text-sm outline-none"
+            />
+            <button
+              type="submit"
+              aria-label="ค้นหา"
+              className="flex size-11 shrink-0 items-center justify-center rounded-full bg-foreground text-white hover:bg-primary"
+            >
+              <ArrowRight aria-hidden="true" className="size-4" />
+            </button>
+          </form>
+        </div>
+        {discoveryCategories.length > 0 && (
+          <div className="mt-8 flex flex-wrap gap-3">
             {discoveryCategories.map((category) => {
               const Icon = /อาหาร|เครื่องดื่ม/.test(category.name)
                 ? Utensils
-                : /เสื้อ|แต่งกาย/.test(category.name)
+                : /เสื้อ|ผ้า/.test(category.name)
                   ? Shirt
                   : /เกษตร/.test(category.name)
                     ? Sprout
-                    : /ตกแต่ง|ของใช้/.test(category.name)
+                    : /บ้าน/.test(category.name)
                       ? Armchair
                       : Shapes;
               return (
                 <Link
                   key={category.id}
                   href={`/products?category=${category.id}`}
-                  className="surface group flex items-center gap-3 p-4 transition hover:border-primary/40 sm:flex-col sm:py-6 sm:text-center"
+                  className="category-chip"
                 >
-                  <span className="rounded-xl bg-primary-soft p-3 text-primary">
-                    <Icon aria-hidden="true" className="size-5" />
-                  </span>
-                  <span className="text-xs font-semibold leading-6 sm:text-sm">
-                    {category.name}
-                  </span>
+                  <Icon aria-hidden="true" className="size-4" />
+                  {category.name}
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    className="ml-2 size-3.5 opacity-50"
+                  />
                 </Link>
               );
             })}
           </div>
-        </section>
-      )}
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
+        )}
+      </section>
+
+      <section className="market-section">
+        <p className="editorial-kicker mb-4 text-accent">
+          FRESH FROM THE COMMUNITY
+        </p>
         <SectionHeader
-          title="สินค้าล่าสุดจากชุมชน"
-          description="ของกิน ของใช้ และความตั้งใจจากผู้ประกอบการท้องถิ่น"
+          title="ของดีมาใหม่ น่าลองทุกชิ้น"
+          description="เลือกสิ่งที่ชอบ แล้วให้ทุกการซื้อเป็นส่วนหนึ่งของเรื่องราวดี ๆ"
           href="/products"
-          linkLabel="ดูสินค้าทั้งหมด"
+          linkLabel="เลือกดูทั้งหมด"
         />
         {latestProducts.length ? (
-          <div className="grid grid-cols-2 gap-2 sm:gap-5 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 lg:grid-cols-4">
             {latestProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -235,39 +243,57 @@ export default async function HomePage() {
           />
         )}
       </section>
-      <section className="border-y border-border bg-[#eeece4]">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 sm:py-14 md:grid-cols-2 md:items-center">
-          <div>
-            <p className="eyebrow">มากกว่าสินค้า คือความตั้งใจ</p>
-            <h2 className="mt-4 text-3xl font-bold leading-relaxed">
-              ทุกการเลือกซื้อ
-              <br />
-              เชื่อมเราเข้ากับชุมชน
-            </h2>
-          </div>
-          <div>
-            <p className="text-sm leading-8 text-muted-foreground sm:text-base">
-              ตลาดวิสาหกิจชุมชน อำเภอนิคมพัฒนา จังหวัดระยอง
-              เป็นพื้นที่ให้คุณได้รู้จักผู้ประกอบการในท้องถิ่น
-              ผ่านสินค้าและเรื่องราวของแต่ละร้าน เลือกซื้อสิ่งที่ชอบ
-              และส่งต่อโอกาสให้ชุมชนเติบโตไปด้วยกัน
-            </p>
-            <Link href="/shops" className="btn btn-secondary mt-5">
-              สำรวจร้านค้า
-              <ArrowUpRight aria-hidden="true" className="size-4" />
-            </Link>
-          </div>
+
+      <section className="story-band" aria-labelledby="story-title">
+        <div className="story-photo">
+          <Image
+            src="/images/editorial/local-snacks.webp"
+            alt="ขนมท้องถิ่นในบรรจุภัณฑ์ จากภาพอ้างอิงชุมชน"
+            fill
+            sizes="(min-width: 768px) 50vw, 100vw"
+            className="object-cover"
+          />
+          <span className="story-photo-label">SMALL MAKERS. BIG HEART.</span>
+        </div>
+        <div className="story-copy">
+          <p className="editorial-kicker">BEHIND EVERY GOOD THING</p>
+          <h2
+            id="story-title"
+            className="mt-6 text-3xl font-bold leading-relaxed sm:text-4xl"
+          >
+            ไม่ใช่แค่ของดี
+            <br />
+            แต่มีเรื่องราวดี ๆ อยู่ด้วย
+          </h2>
+          <p className="mt-6 max-w-md text-sm leading-8 text-white/80">
+            จากวัตถุดิบที่คุ้นเคย สู่ความตั้งใจของคนในท้องถิ่น ทุกชิ้นมีที่มา
+            ทุกการเลือกซื้อช่วยส่งต่อโอกาสให้ชุมชนนิคมพัฒนาเติบโตไปด้วยกัน
+          </p>
+          <Link
+            href="/shops"
+            className="btn mt-8 w-fit border-white/40 text-white hover:bg-white/10"
+          >
+            รู้จักร้านค้าและคนเบื้องหลัง{" "}
+            <ArrowUpRight aria-hidden="true" className="size-5" />
+          </Link>
+          <span className="story-number" aria-hidden="true">
+            ระยอง.
+          </span>
         </div>
       </section>
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
+
+      <section className="market-section">
+        <p className="editorial-kicker mb-4 text-accent">
+          MEET YOUR LOCAL MAKERS
+        </p>
         <SectionHeader
-          title="แวะทักทายร้านค้าในชุมชน"
-          description="ทำความรู้จักร้านค้า ผู้คน และสินค้าของพวกเขา"
+          title="ร้านเล็ก ๆ ที่อยากให้รู้จัก"
+          description="แวะทักทายผู้คน แล้วค้นพบของโปรดร้านใหม่ของคุณ"
           href="/shops"
-          linkLabel="ดูร้านค้าทั้งหมด"
+          linkLabel="สำรวจทุกร้าน"
         />
         {activeShops.length ? (
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-5">
             {activeShops.map((shop) => (
               <ShopCard key={shop.id} shop={shop} />
             ))}
@@ -279,24 +305,47 @@ export default async function HomePage() {
           />
         )}
       </section>
-      <section className="mx-auto max-w-7xl px-4 pb-14 sm:px-6">
-        <div className="flex flex-col justify-between gap-6 rounded-3xl bg-primary p-6 text-white sm:p-10 md:flex-row md:items-center">
-          <div>
-            <p className="text-xs font-semibold text-white/80">
-              เติบโตไปกับชุมชน
-            </p>
-            <h2 className="mt-3 text-2xl font-bold sm:text-3xl">
-              มีของดี อยากให้คนได้รู้จัก?
-            </h2>
-            <p className="mt-3 text-sm text-white/80">
-              เริ่มต้นเปิดร้าน และนำสินค้าของคุณมาพบกับลูกค้าใหม่
-            </p>
-          </div>
-          <Link href="/seller/apply" className="btn btn-secondary shrink-0">
-            สมัครเปิดร้าน
-            <ArrowUpRight aria-hidden="true" className="size-4" />
-          </Link>
+
+      <section className="market-values" aria-label="ซื้อสินค้าจากชุมชน">
+        <div>
+          <Store aria-hidden="true" />
+          <span>
+            <strong>ใกล้ชุมชน ใกล้คุณ</strong>
+            <small>รู้จักร้านค้าและผู้ประกอบการท้องถิ่น</small>
+          </span>
         </div>
+        <div>
+          <Heart aria-hidden="true" />
+          <span>
+            <strong>ทุกชิ้นมีความตั้งใจ</strong>
+            <small>เลือกซื้อ ส่งต่อโอกาสให้ชุมชน</small>
+          </span>
+        </div>
+        <div>
+          <Banknote aria-hidden="true" />
+          <span>
+            <strong>ชำระเงินเมื่อได้รับสินค้า</strong>
+            <small>สั่งซื้อด้วยบริการเก็บเงินปลายทาง</small>
+          </span>
+        </div>
+      </section>
+      <section className="seller-invite">
+        <div>
+          <p className="editorial-kicker">GROW TOGETHER</p>
+          <h2 className="mt-3 text-2xl font-bold sm:text-4xl">
+            ของดีของคุณ ให้ชุมชนได้รู้จัก
+          </h2>
+          <p className="mt-4 text-sm text-foreground/70">
+            เริ่มต้นเรื่องราวบทใหม่ เปิดร้านและเติบโตไปด้วยกัน
+          </p>
+        </div>
+        <Link
+          href="/seller/apply"
+          className="btn btn-primary shrink-0 px-7 py-4"
+        >
+          มาเป็นร้านค้าของเรา{" "}
+          <ArrowUpRight aria-hidden="true" className="size-5" />
+        </Link>
       </section>
     </main>
   );
